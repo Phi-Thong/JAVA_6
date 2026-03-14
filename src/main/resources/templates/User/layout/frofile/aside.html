@@ -1,0 +1,42 @@
+<aside class="w-full lg:w-1/4" th :fragment="sidebar">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky-sidebar h-full"
+         data-purpose="user-sidebar">
+        <!-- User Profile Header -->
+        <div class="flex flex-col items-center text-center mb-8">
+            <div class="relative group cursor-pointer">
+                <img alt="Avatar Nguyễn Phi Thông"
+                     class="w-24 h-24 rounded-full object-cover border-4 border-gray-50 shadow-sm"
+                     id="avatar-preview"
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO98zXZPgyfghnCd_ZDybi8zBNKCYGXqz1DTE4kTYoBgpTn0iSDXxZEpkHXK-4ybddPe8abc7rcMDia_C1V3SPsAzczB9CDsg_c_xwzcZn_iO03S08grPmOKy12e5DCj5qmPVV_Gu3FgQBCz4F_AX6xnxC1qPuOR5BRFS98pu5LXiYzhlsQcEi4dtjrYI03mxGJ3LSvbWufrBzzmKxq46VRP99wW5dvnjreYVeRa1HZi_U-DJ37Gjm3xTVkCHaBVSdNfkK2vRz9js"/>
+                <div class="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="text-white w-6 h-6" data-lucide="camera"></i>
+                </div>
+            </div>
+            <h2 class="mt-4 font-bold text-lg text-gray-800">Nguyễn Phi Thông</h2>
+            <p class="text-sm text-gray-500">thong@example.com</p>
+        </div>
+        <!-- Navigation Tabs -->
+        <nav class="space-y-1" data-purpose="profile-navigation">
+            <button class="tab-btn active-tab flex items-center w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 hover:bg-gray-50 group"
+                    data-tab="profile" onclick="switchTab('profile')">
+                <i class="w-5 h-5 mr-3 text-gray-400 group-hover:text-black" data-lucide="user"></i>
+                Thông tin cá nhân
+            </button>
+            <button class="tab-btn flex items-center w-full px-4 py-3 text-sm font-medium text-gray-600 rounded-xl transition-all duration-200 hover:bg-gray-50 group"
+                    data-tab="orders" onclick="switchTab('orders')">
+                <i class="w-5 h-5 mr-3 text-gray-400 group-hover:text-black" data-lucide="shopping-bag"></i>
+                Lịch sử đơn hàng
+            </button>
+            <button class="tab-btn flex items-center w-full px-4 py-3 text-sm font-medium text-gray-600 rounded-xl transition-all duration-200 hover:bg-gray-50 group"
+                    data-tab="security" onclick="switchTab('security')">
+                <i class="w-5 h-5 mr-3 text-gray-400 group-hover:text-black" data-lucide="shield-check"></i>
+                Bảo mật tài khoản
+            </button>
+            <hr class="my-4 border-gray-100"/>
+            <button class="flex items-center w-full px-4 py-3 text-sm font-medium text-red-500 rounded-xl transition-all duration-200 hover:bg-red-50 group">
+                <i class="w-5 h-5 mr-3" data-lucide="log-out"></i>
+                Đăng xuất
+            </button>
+        </nav>
+    </div>
+</aside>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+          rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+          rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0056b2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1923",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <title>Sneaker Store - Shop</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 tracking-tight leading-relaxed">
+<div th:replace="User/layout/header :: header"></div>
+<main class="max-w-7xl mx-auto px-4 py-8 flex gap-8">
+    <aside class="w-[250px] shrink-0 hidden md:block border-r border-slate-100 dark:border-slate-800 pr-8">
+        <div class="sticky top-24 space-y-8">
+            <div class="border-b border-slate-100 dark:border-slate-800 last:border-0">
+                <h3 class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500">
+                    <span class="material-symbols-outlined text-base">search</span>
+                    Tìm kiếm
+                </h3>
+                <div class="relative">
+                    <input class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary"
+                           placeholder="Tên sản phẩm..." type="text"/>
+                </div>
+            </div>
+            <div class="border-b border-slate-100 dark:border-slate-800 last:border-0">
+                <h3 class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500">
+                    <span class="material-symbols-outlined text-base">sell</span>
+                    Thương hiệu
+                </h3>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+                        <span class="text-sm group-hover:text-primary transition-colors">Nike</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+                        <span class="text-sm group-hover:text-primary transition-colors">Adidas</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+                        <span class="text-sm group-hover:text-primary transition-colors">Puma</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+                        <span class="text-sm group-hover:text-primary transition-colors">Converse</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+                        <span class="text-sm group-hover:text-primary transition-colors">New Balance</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+                        <span class="text-sm group-hover:text-primary transition-colors">Vans</span>
+                    </label>
+                </div>
+            </div>
+            <div class="border-b border-slate-100 dark:border-slate-800 last:border-0">
+                <h3 class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500">
+                    <span class="material-symbols-outlined text-base">straighten</span>
+                    Kích thước
+                </h3>
+                <div class="grid grid-cols-4 gap-2">
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                        38
+                    </button>
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                        39
+                    </button>
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all bg-primary text-white border-primary">
+                        40
+                    </button>
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                        41
+                    </button>
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                        42
+                    </button>
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                        43
+                    </button>
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                        44
+                    </button>
+                    <button class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                        45
+                    </button>
+                </div>
+            </div>
+            <div class="border-b border-slate-100 dark:border-slate-800 last:border-0">
+                <h3 class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500">
+                    <span class="material-symbols-outlined text-base">payments</span>
+                    Khoảng giá
+                </h3>
+                <input class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                       max="5000000" min="500000" step="100000" type="range"/>
+                <div class="flex justify-between mt-2 text-xs font-medium text-slate-500">
+                    <span>500k VNĐ</span>
+                    <span>5tr VNĐ</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <section class="flex-1 space-y-16">
+        <div id="all-products">
+            <div class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h2 class="flex items-center gap-2 text-2xl font-bold">
+                    <span class="material-symbols-outlined text-3xl">inventory_2</span>
+                    Tất cả sản phẩm
+                </h2>
+                <div class="flex items-center gap-2">
+         <span class="flex items-center gap-1 text-sm text-slate-500">
+    <span class="material-symbols-outlined text-base">sort</span>
+    Sắp xếp:
+</span>
+                    <select class="bg-transparent border-none text-sm font-medium focus:ring-0 cursor-pointer">
+                        <option>Mới nhất</option>
+                        <option>Giá: Thấp đến Cao</option>
+                        <option>Giá: Cao đến Thấp</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Nike Air Force 1 -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <a href="/detail">
+                        <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1U1qRAuryY-qj9i94ALnp3upVkF089Haqc51sE_pnhxw1R7gN_a7ZqUfB8k4rHWft4Go-Uex8tKD9-jMrYhSXrinlMni6xcJLFp4nMbMj_otYfzudjcUry7JhcU4cSx-697nPzvKF3tD-OmUch70FWG3OiwAFR0gNc7NJk98v5ZYugPVRd4uF-vPk1r-4ZVnt8X4CAzoJjEGXldkv63tj4HBTIC0xikxLB5Tb199J4fe1Axk6MvipgvjRQ9khbWW1eqo-HOBAd4I"/>
+                            <button class="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur rounded-full shadow-sm hover:text-red-500 transition-colors">
+                                <span class="material-symbols-outlined text-sm">favorite</span>
+                            </button>
+                        </div>
+                        <div class="p-4 space-y-2">
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Nike</p>
+                                <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                    Nike Air Force 1</h3>
+                            </div>
+                            <p class="font-bold text-primary text-base">2.650.000₫</p>
+                            <div class="flex gap-2 pt-3">
+
+                                <!-- Thêm vào giỏ -->
+                                <button class="flex-[1.6] flex items-center justify-center gap-1
+                                  bg-slate-900 dark:bg-white text-white dark:text-slate-900
+                                  text-[9px] font-semibold py-2 px-3 rounded-xl
+                                  whitespace-nowrap
+                                  hover:bg-primary dark:hover:bg-primary dark:hover:text-white
+                                  transition-all duration-300 uppercase tracking-wide">
+
+                                    <span class="material-symbols-outlined text-xs">shopping_cart</span>
+                                    Thêm vào giỏ
+
+                                </button>
+
+                                <!-- Chi tiết -->
+                                <button class="flex-[1] flex items-center justify-center gap-1
+                                  border border-slate-200 dark:border-slate-700
+                                  text-slate-600 dark:text-slate-400
+                                  text-[9px] font-semibold py-2 px-3 rounded-xl
+                                  whitespace-nowrap
+                                  hover:bg-slate-100 dark:hover:bg-slate-700
+                                  hover:text-slate-900 dark:hover:text-white
+                                  transition-all duration-300 uppercase tracking-wide">
+
+                                    <span class="material-symbols-outlined text-xs">visibility</span>
+                                    Chi tiết
+
+                                </button>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Adidas Ultraboost -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"><img
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxYAQ9OBmgrWW6yNf7KE0-0k3WroIyxEOiojKowjUiCZSuJSO-xj0UZt8jw4IYbzIfoNALtCnXdHXwKVsR22TUYESJrOjwC-Nix-pdIfp89uAPKXJh7DfdyPxkxVV88Za0BWImzk2rKtfHHpOlpV_KOlernnWyW6hwZmut1M_QCSsrOrEqMeFQmRrg0cnUSlpBCLmPyiWE936K7CGCPbOarkQQ0pj14_AhFjUhbG_1XbHMiSmE3CUZRsAsUgmTpK20ZmOxHwxz3y8"/>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Adidas</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Adidas Ultraboost 22</h3></div>
+                        <p class="font-bold text-primary text-base">4.200.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div><!-- Converse Chuck Taylor -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"><img
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuADG06eDoFCCyKmegbXHl8A-lZybOzufQigCjJ-o-T-NiMPyDOy9cAMZHBRsRaZKTMdaQGwHCb5ZNSIgALLesxyWJPWwXAgxqdUbHFbQetdjI2FvxPiiCT1Rai_fywKF4o0NOYIu_ta6DFfOKDCWuGeyLGXcpH0oHZ-PyOxpU7gO6MBN8QYBRfDcr85QnRgtiTOVSQ9IHbScgTEybOTEFiJxGia3uhs93q10CkCSrvd9WRKMijBPkUDbqNzew822nUHG9huF0agmSk"/>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Converse</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Converse Chuck Taylor</h3></div>
+                        <p class="font-bold text-primary text-base">1.500.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div><!-- Puma RS-X -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"><img
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwO0enZj9kncS0Wrz4kXzxfEQQJVYeA_BnBqebvpJiK30cTeLf6fTx-WFNep3JAo61C6XPB9CpETf0OOKzy0ucqVemf_NKZr0_5Tm_CY1lgMYamtM447RnnYb1hqND5rKyP6ndmHey-ep2BuFYo8SUZSnIMnoo-NJwbLqIiYAhZl386mgYDI04iMe40uPK2nb70znsLF6L48vRE_U-MH_Un2LMiyFjd8lQg-6KQeQmw5dV62radvLDpxi2qMwLGDad_LkoNXGTG_8"/>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Puma</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Puma RS-X</h3></div>
+                        <p class="font-bold text-primary text-base">3.100.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-12 gap-2">
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    1
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    2
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    3
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </button>
+            </div>
+        </div>
+        <div id="featured-products">
+            <div class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h2 class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight">
+                    <span class="material-symbols-outlined text-3xl">star</span>
+                    Sản phẩm nổi bật
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Nike Air Max 90 -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMWYi9DJQaSfq_NscNRHzVaAIvZX58lyPAXRkdfckIRRF1cstWJkdUXRkaPy_zvhPYn8ORjt6c5rQj4JQr_Wtu_HQumGTrW4bmUkctXf6TNRldTniLLNbn_08dHlHZR9GTGTy3SvoOHxfD7N8NC4gSPkEmCVkRDy1MqOW-NisaUk53NXeKXYIN_hZDyi4el6Bz6PYo30oE_aQes3RulniM5S6T6-wmkulq07b0Slm7DkpHJVEx9w_GASaD2PE8EsrKDtCmIMt1gB4"/>
+                        <span class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Hot</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Nike</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Nike Air Max 90</h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">3.800.000₫</p>
+                        <div class="flex gap-2 pt-3">
+
+                            <!-- Thêm vào giỏ -->
+                            <button class="flex-[1.6] flex items-center justify-center gap-1
+  bg-slate-900 dark:bg-white text-white dark:text-slate-900
+  text-[9px] font-semibold py-2 px-3 rounded-xl
+  whitespace-nowrap
+  hover:bg-primary dark:hover:bg-primary dark:hover:text-white
+  transition-all duration-300 uppercase tracking-wide">
+
+                                <span class="material-symbols-outlined text-xs">shopping_cart</span>
+                                Thêm vào giỏ
+
+                            </button>
+
+                            <!-- Chi tiết -->
+                            <button class="flex-[1] flex items-center justify-center gap-1
+  border border-slate-200 dark:border-slate-700
+  text-slate-600 dark:text-slate-400
+  text-[9px] font-semibold py-2 px-3 rounded-xl
+  whitespace-nowrap
+  hover:bg-slate-100 dark:hover:bg-slate-700
+  hover:text-slate-900 dark:hover:text-white
+  transition-all duration-300 uppercase tracking-wide">
+
+                                <span class="material-symbols-outlined text-xs">visibility</span>
+                                Chi tiết
+
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Adidas Forum Low -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"/>
+                        <span class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Hot</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Adidas</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Adidas Forum Low</h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">2.800.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--         -------------->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"/>
+                        <span class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Hot</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Adidas</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Adidas Forum Low</h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">2.800.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--        -------------------->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"/>
+                        <span class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Hot</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Adidas</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Adidas Forum Low</h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">2.800.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-12 gap-2">
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    1
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    2
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </button>
+            </div>
+        </div>
+        <div id="best-sellers">
+            <div class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h2 class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight text-red-600">
+                    <span class="material-symbols-outlined text-3xl">local_fire_department</span>
+                    Sản phẩm bán chạy
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- New Balance 550 -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"><img
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"/>
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Bestseller</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">New Balance</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                New Balance 550</h3></div>
+                        <p class="font-bold text-primary text-base">3.400.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Balance 550 -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"><img
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"/>
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Bestseller</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">New Balance</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                New Balance 550</h3></div>
+                        <p class="font-bold text-primary text-base">3.400.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Balance 550 -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"><img
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"/>
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Bestseller</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">New Balance</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                New Balance 550</h3></div>
+                        <p class="font-bold text-primary text-base">3.400.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Vans Old Skool -->
+                <div class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"><img
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1U1qRAuryY-qj9i94ALnp3upVkF089Haqc51sE_pnhxw1R7gN_a7ZqUfB8k4rHWft4Go-Uex8tKD9-jMrYhSXrinlMni6xcJLFp4nMbMj_otYfzudjcUry7JhcU4cSx-697nPzvKF3tD-OmUch70FWG3OiwAFR0gNc7NJk98v5ZYugPVRd4uF-vPk1r-4ZVnt8X4CAzoJjEGXldkv63tj4HBTIC0xikxLB5Tb199J4fe1Axk6MvipgvjRQ9khbWW1eqo-HOBAd4I"/>
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg">Bestseller</span>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Vans</p>
+                            <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                                Vans Old Skool</h3></div>
+                        <p class="font-bold text-primary text-base">1.850.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-12 gap-2">
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    1
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    2
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+<div th:replace="User/layout/footer :: footer"></div>
+</body>
+</html>

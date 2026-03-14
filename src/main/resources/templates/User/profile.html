@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Trang Cá Nhân - Sneaker Store</title>
+    <!-- Tailwind CSS v3 CDN with Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+          rel="stylesheet"/>
+    <!-- Lucide Icons (via CDN for simplicity) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+          rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+          rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0056b2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1923",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style data-purpose="custom-typography">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+
+        .active-tab {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+        }
+
+        .active-tab svg {
+            stroke: #ffffff !important;
+        }
+    </style>
+    <style data-purpose="custom-layout">
+        .sticky-sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-gray-900 min-h-screen">
+<div th:replace="User/layout/header :: header"></div>
+<!-- BEGIN: Main Container -->
+<main class="max-w-7xl mx-auto px-4 py-8 md:py-12 min-h-screen flex flex-col">
+    <div class="flex flex-col lg:flex-row gap-8 flex-1">
+        <!-- BEGIN: Sidebar Section -->
+        <div th:replace="User/layout/frofile/aside :: aside"></div>
+        <!-- END: Sidebar Section -->
+        <!-- BEGIN: Content Section -->
+        <section class="w-full lg:w-3/4">
+            <!-- Tab: Thông tin cá nhân -->
+            <div th:replace="User/layout/frofile/frofile1 :: profile"></div>
+            <!-- Tab: Lịch sử đơn hàng -->
+            <div th:replace="User/layout/frofile/history :: history"></div>
+            <!-- Tab: Bảo mật -->
+            <div th:replace="User/layout/frofile/security :: security"></div>
+        </section>
+        <!-- END: Content Section -->
+    </div>
+</main>
+<div th:replace="User/layout/footer :: footer"></div>
+<!-- END: Main Container -->
+<!-- BEGIN: Scripts -->
+<script data-purpose="tab-switcher">
+    function switchTab(tabId) {
+        // Hide all content
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(content => content.classList.remove('active'));
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('active-tab');
+            btn.classList.add('text-gray-600');
+        });
+
+        // Show selected content
+        const activeContent = document.getElementById(`${tabId}-content`);
+        if (activeContent) {
+            activeContent.classList.add('active');
+        }
+
+        // Set active button style
+        const activeBtn = document.querySelector(`[data-tab="${tabId}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('active-tab');
+            activeBtn.classList.remove('text-gray-600');
+        }
+
+        // Re-scroll to top of content on mobile
+        if (window.innerWidth < 1024) {
+            window.scrollTo({
+                top: document.querySelector('section').offsetTop - 20,
+                behavior: 'smooth'
+            });
+        }
+    }
+</script>
+<script data-purpose="icon-initialization">
+    // Initialize Lucide icons
+    lucide.createIcons();
+</script>
+<!-- END: Scripts -->
+</body>
+</html>

@@ -1,0 +1,34 @@
+<div class="tab-content bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 h-full"
+     id="security-content" th:fragment="security">
+    <h3 class="text-xl font-bold mb-6">Bảo mật tài khoản</h3>
+    <form class="max-w-md space-y-6">
+        <div class="space-y-1">
+            <label class="text-sm font-semibold text-gray-700">Mật khẩu hiện tại</label>
+            <input class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
+                   placeholder="••••••••" type="password"/>
+        </div>
+        <div class="space-y-1">
+            <label class="text-sm font-semibold text-gray-700">Mật khẩu mới</label>
+            <input class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
+                   placeholder="Tối thiểu 8 ký tự" type="password"/>
+        </div>
+        <div class="space-y-1">
+            <label class="text-sm font-semibold text-gray-700">Xác nhận mật khẩu mới</label>
+            <input class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
+                   placeholder="••••••••" type="password"/>
+        </div>
+        <div class="pt-2">
+            <button class="text-white px-8 py-3 rounded-xl font-semibold transition-colors bg-blue-600 hover:bg-blue-700"
+                    type="submit">
+                Cập nhật mật khẩu
+            </button>
+        </div>
+    </form>
+    <div class="mt-12 p-4 bg-gray-50 rounded-xl border border-gray-100">
+        <div class="flex gap-3">
+            <i class="w-5 h-5 text-gray-400 shrink-0" data-lucide="info"></i>
+            <p class="text-sm text-gray-500">Chúng tôi khuyến nghị bạn nên đổi mật khẩu định kỳ 6 tháng một
+                lần để bảo vệ tài khoản tốt nhất.</p>
+        </div>
+    </div>
+</div>

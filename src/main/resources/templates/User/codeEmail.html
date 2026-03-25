@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Xác thực tài khoản | Sneaker Store</title>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style data-purpose="custom-animations">
+        /* Animation for focus state and basic transitions */
+        input:focus {
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans antialiased text-slate-900">
+<!-- BEGIN: OTP Authentication Container -->
+<main class="w-full max-w-md px-4" data-purpose="otp-card-container">
+    <div class="bg-white rounded-3xl p-8 md:p-10 card-shadow border border-gray-100">
+        <!-- BEGIN: Header Section -->
+        <header class="text-center mb-8" data-purpose="card-header">
+            <h1 class="text-2xl font-bold tracking-tight text-blue-500 mb-2">
+                Xác thực tài khoản
+            </h1>
+            <p class="text-blue-300 text-sm leading-relaxed">
+                Vui lòng nhập mã 6 số đã được gửi đến email của bạn.
+            </p>
+        </header>
+        <!-- END: Header Section -->
+        <!-- BEGIN: OTP Input Form -->
+        <form action="#" data-purpose="otp-entry-form" id="otp-form" method="POST">
+            <!-- OTP Input Grid -->
+            <div class="flex justify-between gap-2 mb-8" data-purpose="otp-grid" id="otp-inputs">
+                <input class="w-12 h-14 md:w-14 md:h-16 text-center text-xl font-bold border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+                       maxlength="1" placeholder="·" type="text"/>
+                <input class="w-12 h-14 md:w-14 md:h-16 text-center text-xl font-bold border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+                       maxlength="1" placeholder="·" type="text"/>
+                <input class="w-12 h-14 md:w-14 md:h-16 text-center text-xl font-bold border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+                       maxlength="1" placeholder="·" type="text"/>
+                <input class="w-12 h-14 md:w-14 md:h-16 text-center text-xl font-bold border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+                       maxlength="1" placeholder="·" type="text"/>
+                <input class="w-12 h-14 md:w-14 md:h-16 text-center text-xl font-bold border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+                       maxlength="1" placeholder="·" type="text"/>
+                <input class="w-12 h-14 md:w-14 md:h-16 text-center text-xl font-bold border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+                       maxlength="1" placeholder="·" type="text"/>
+            </div>
+            <!-- Submit Button -->
+            <button
+                    class="w-full bg-blue-400 hover:bg-blue-500
+           text-white font-semibold py-4 rounded-xl
+           transition-all duration-300
+           shadow-md shadow-blue-300/30
+           hover:shadow-blue-400/40
+           mb-6"
+                    data-purpose="submit-button"
+                    type="submit">
+                Xác nhận mã
+            </button>
+        </form>
+        <!-- END: OTP Input Form -->
+        <!-- BEGIN: Footer Navigation -->
+        <footer class="flex flex-col items-center gap-4 text-sm" data-purpose="footer-links">
+
+            <p class="text-blue-300">
+                Bạn chưa nhận được mã?
+                <a class="text-blue-400 font-medium hover:text-blue-500 hover:underline ml-1 transition-all"
+                   data-purpose="resend-link" href="#">
+                    Gửi lại mã
+                </a>
+            </p>
+
+            <a class="flex items-center text-blue-300 hover:text-blue-500 transition-all duration-300"
+               data-purpose="back-link"
+               th:href="@{/login}">
+
+                <svg class="h-4 w-4 mr-1 text-blue-300 transition group-hover:text-blue-500"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                          stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="2"/>
+                </svg>
+
+                Quay lại
+            </a>
+
+        </footer>
+        <!-- END: Footer Navigation -->
+    </div>
+</main>
+<!-- END: OTP Authentication Container -->
+<!-- BEGIN: Input Behavior Logic -->
+<script data-purpose="otp-behavior">
+    const inputs = document.querySelectorAll('#otp-inputs input');
+
+    inputs.forEach((input, index) => {
+        // Auto-focus next input on typing
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        });
+
+        // Handle backspace to focus previous input
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+
+        // Ensure only numbers are entered
+        input.addEventListener('keypress', (e) => {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+<!-- END: Input Behavior Logic -->
+</body>
+</html>

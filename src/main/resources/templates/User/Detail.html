@@ -29,6 +29,33 @@
             },
         }
     </script>
+    <style>
+        .tab-animate-enter {
+            opacity: 0;
+            transform: scale(0.98);
+            filter: blur(6px);
+        }
+
+        .tab-animate-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .tab-animate-exit {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+        }
+
+        .tab-animate-exit-active {
+            opacity: 0;
+            transform: scale(0.98);
+            filter: blur(6px);
+            transition: all 0.3s ease;
+        }
+    </style>
     <title>Nike Air Force 1 - Detail</title>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
@@ -173,15 +200,19 @@
     <div class="border-t border-slate-200 dark:border-slate-800 py-12">
 
         <!-- TAB BUTTON -->
-        <div class="flex border-b border-slate-200 dark:border-slate-800 mb-8">
+        <div class="flex border-b border-slate-200 dark:border-slate-800 mb-8 relative">
+
+            <!-- Thanh underline chạy -->
+            <div id="tabIndicator"
+                 class="absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-in-out"></div>
 
             <button id="tabDesc"
-                    class="tab-btn px-8 py-4 border-b-2 border-primary font-bold text-primary">
+                    class="tab-btn px-8 py-4 font-bold text-primary transition-all duration-300">
                 Mô tả sản phẩm
             </button>
 
             <button id="tabReview"
-                    class="tab-btn px-8 py-4 border-b-2 border-transparent text-slate-500 font-medium hover:text-slate-900 dark:hover:text-white">
+                    class="tab-btn px-8 py-4 text-slate-500 font-medium hover:text-slate-900 dark:hover:text-white transition-all duration-300">
                 Đánh giá sản phẩm
             </button>
 
@@ -189,58 +220,60 @@
 
 
         <!-- TAB CONTENT 1 -->
-        <div id="contentDesc" class="tab-content grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- TAB CONTENT 1 -->
+        <div id="contentDescWrapper" class="transition-opacity duration-700 ease-in-out opacity-100">
 
-            <div class="md:col-span-2 space-y-6">
-                <h3 class="text-xl font-bold">Chi tiết sản phẩm</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Nike Air Force 1 '07 mang đến sự kết hợp hoàn hảo giữa thiết kế mang tính biểu tượng
-                    và sự thoải mái hiện đại.
-                </p>
+            <div id="contentDesc" class="tab-content grid grid-cols-1 md:grid-cols-3 gap-12">
 
-                <ul class="space-y-3">
-                    <li class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                        <span>Chất liệu da thật và da tổng hợp.</span>
-                    </li>
+                <div class="md:col-span-2 space-y-6">
+                    <h3 class="text-xl font-bold">Chi tiết sản phẩm</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Nike Air Force 1 '07 mang đến sự kết hợp hoàn hảo giữa thiết kế mang tính biểu tượng
+                        và sự thoải mái hiện đại.
+                    </p>
 
-                    <li class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                        <span>Đệm Nike Air êm ái.</span>
-                    </li>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            <span>Chất liệu da thật và da tổng hợp.</span>
+                        </li>
 
-                    <li class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                        <span>Đế cao su chống trượt.</span>
-                    </li>
-                </ul>
-            </div>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            <span>Đệm Nike Air êm ái.</span>
+                        </li>
 
-            <div class="space-y-6">
-                <h3 class="text-xl font-bold">Thông tin chi tiết</h3>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            <span>Đế cao su chống trượt.</span>
+                        </li>
+                    </ul>
+                </div>
 
-                <div class="space-y-4">
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold">Thông tin chi tiết</h3>
 
-                    <div class="flex justify-between py-2 border-b">
-                        <span class="text-slate-500">Mã sản phẩm</span>
-                        <span class="font-medium">CW2288-111</span>
+                    <div class="space-y-4">
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="text-slate-500">Mã sản phẩm</span>
+                            <span class="font-medium">CW2288-111</span>
+                        </div>
+
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="text-slate-500">Màu sắc</span>
+                            <span class="font-medium">White</span>
+                        </div>
+
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="text-slate-500">Chất liệu</span>
+                            <span class="font-medium">Da & Cao su</span>
+                        </div>
+
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="text-slate-500">Xuất xứ</span>
+                            <span class="font-medium">Vietnam</span>
+                        </div>
                     </div>
-
-                    <div class="flex justify-between py-2 border-b">
-                        <span class="text-slate-500">Màu sắc</span>
-                        <span class="font-medium">White</span>
-                    </div>
-
-                    <div class="flex justify-between py-2 border-b">
-                        <span class="text-slate-500">Chất liệu</span>
-                        <span class="font-medium">Da & Cao su</span>
-                    </div>
-
-                    <div class="flex justify-between py-2 border-b">
-                        <span class="text-slate-500">Xuất xứ</span>
-                        <span class="font-medium">Vietnam</span>
-                    </div>
-
                 </div>
 
             </div>
@@ -249,67 +282,45 @@
 
 
         <!-- TAB CONTENT 2 -->
-        <div id="contentReview" class="tab-content hidden">
+        <div id="contentReviewWrapper" class="hidden transition-opacity duration-700 ease-in-out opacity-0">
 
-            <h3 class="text-xl font-bold mb-6">Đánh giá sản phẩm</h3>
+            <div id="contentReview" class="tab-content">
 
-            <div class="space-y-6">
+                <h3 class="text-xl font-bold mb-6">Đánh giá sản phẩm</h3>
 
-                <!-- review 1 -->
-                <div class="border-b pb-4">
+                <div class="space-y-6">
 
-                    <div class="flex items-center gap-3 mb-2">
-
-                        <img src="/img/default.jpg"
-                             class="w-10 h-10 rounded-full">
-
-                        <div>
-                            <p class="font-semibold">Nguyễn Văn A</p>
-
-                            <div class="text-yellow-400 text-sm">
-                                ★★★★☆
+                    <div class="border-b pb-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="/img/default.jpg" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="font-semibold">Nguyễn Văn A</p>
+                                <div class="text-yellow-400 text-sm">★★★★☆</div>
                             </div>
-
                         </div>
-
+                        <p class="text-slate-600 dark:text-slate-400">
+                            Giày rất đẹp, mang êm chân và đúng size.
+                        </p>
                     </div>
 
-                    <p class="text-slate-600 dark:text-slate-400">
-                        Giày rất đẹp, mang êm chân và đúng size.
-                    </p>
-
-                </div>
-
-
-                <!-- review 2 -->
-                <div class="border-b pb-4">
-
-                    <div class="flex items-center gap-3 mb-2">
-
-                        <img src="/img/default.jpg"
-                             class="w-10 h-10 rounded-full">
-
-                        <div>
-                            <p class="font-semibold">Trần Minh</p>
-
-                            <div class="text-yellow-400 text-sm">
-                                ★★★★★
+                    <div class="border-b pb-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="/img/default.jpg" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="font-semibold">Trần Minh</p>
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
                             </div>
-
                         </div>
-
+                        <p class="text-slate-600 dark:text-slate-400">
+                            Giao hàng nhanh, giày chuẩn Nike.
+                        </p>
                     </div>
-
-                    <p class="text-slate-600 dark:text-slate-400">
-                        Giao hàng nhanh, giày chuẩn Nike.
-                    </p>
 
                 </div>
 
             </div>
 
         </div>
-
     </div>
     <!-- Related Products -->
     <div class="py-16 border-t border-slate-200 dark:border-slate-800">
@@ -516,27 +527,45 @@
     const tabDesc = document.getElementById("tabDesc");
     const tabReview = document.getElementById("tabReview");
 
-    const contentDesc = document.getElementById("contentDesc");
-    const contentReview = document.getElementById("contentReview");
+    const descWrap = document.getElementById("contentDescWrapper");
+    const reviewWrap = document.getElementById("contentReviewWrapper");
+
+    function fadeSwitch(showEl, hideEl) {
+
+        // fade out
+        hideEl.classList.remove("opacity-100");
+        hideEl.classList.add("opacity-0");
+
+        setTimeout(() => {
+            hideEl.classList.add("hidden");
+
+            // show
+            showEl.classList.remove("hidden");
+
+            // reset fade
+            showEl.classList.remove("opacity-0");
+
+            setTimeout(() => {
+                showEl.classList.add("opacity-100");
+            }, 10);
+
+        }, 200);
+    }
 
     tabDesc.onclick = function () {
 
-        contentDesc.classList.remove("hidden");
-        contentReview.classList.add("hidden");
+        fadeSwitch(descWrap, reviewWrap);
 
         tabDesc.classList.add("border-primary", "text-primary", "font-bold");
         tabReview.classList.remove("border-primary", "text-primary");
-
     }
 
     tabReview.onclick = function () {
 
-        contentReview.classList.remove("hidden");
-        contentDesc.classList.add("hidden");
+        fadeSwitch(reviewWrap, descWrap);
 
         tabReview.classList.add("border-primary", "text-primary", "font-bold");
         tabDesc.classList.remove("border-primary", "text-primary");
-
     }
     // cua bảng quy đổi size
     const openBtn = document.getElementById("openSizeChart");
@@ -579,5 +608,33 @@
         });
 
     });
+    // chuyển động mượt hơn
+    const tabs = document.querySelectorAll(".tab-btn");
+    const indicator = document.getElementById("tabIndicator");
+
+    function moveIndicator(el) {
+        indicator.style.width = el.offsetWidth + "px";
+        indicator.style.left = el.offsetLeft + "px";
+    }
+
+    // chạy lần đầu
+    moveIndicator(document.getElementById("tabDesc"));
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+
+            // đổi màu tab
+            tabs.forEach(t => {
+                t.classList.remove("text-primary", "font-bold");
+                t.classList.add("text-slate-500");
+            });
+
+            tab.classList.add("text-primary", "font-bold");
+
+            // di chuyển thanh underline mượt
+            moveIndicator(tab);
+        });
+    });
+
 
 </script>

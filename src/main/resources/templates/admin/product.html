@@ -1,0 +1,233 @@
+<main class="flex-1 ml-64 p-8" th:fragment="product">
+
+    <div class="flex-1 overflow-y-auto p-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-box text-primary text-2xl"></i>
+
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 leading-tight">
+                        Quản lý sản phẩm
+                    </h2>
+                    <p class="text-slate-500 text-sm">
+                        Danh sách tất cả sản phẩm trong kho hàng
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="flex items-center gap-2 mb-8 border-b border-slate-200 pb-px">
+
+            <button id="tabProductList"
+                    class="px-6 py-2.5 text-sm font-semibold text-primary border-b-2 border-primary transition-all bg-primary/5 rounded-t-lg">
+                Danh sách sản phẩm
+            </button>
+
+            <button id="tabProductForm"
+                    class="px-6 py-2.5 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition-all rounded-t-lg">
+                Thêm sản phẩm mới
+            </button>
+
+        </div>
+        <div class="block" id="productListContent">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex flex-wrap items-center gap-4">
+                    <div class="relative flex-1 min-w-[300px]">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                        <input class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                               placeholder="Tìm kiếm tên sản phẩm, mã SKU..." type="text"/>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <select class="appearance-none pl-4 pr-10 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none cursor-pointer">
+                                <option>Thương hiệu</option>
+                                <option>Nike</option>
+                                <option>Adidas</option>
+                                <option>Puma</option>
+                            </select>
+
+                        </div>
+                        <div class="relative">
+                            <select class="appearance-none pl-4 pr-10 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none cursor-pointer">
+                                <option>Danh mục</option>
+                                <option>Sneaker</option>
+                                <option>Chạy bộ</option>
+                                <option>Bóng rổ</option>
+                            </select>
+
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50/50 border-b border-slate-100">
+                        <tr>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-20 text-center">
+                                Hình ảnh
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tên sản
+                                phẩm
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Danh
+                                mục
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Giá niêm
+                                yết
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Kho</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Trạng
+                                thái
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">
+                                Thao tác
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                        <!-- Table Rows (Omitted for brevity, assuming standard population) -->
+                        <tr class="hover:bg-slate-50/80 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="size-14 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center mx-auto">
+                                    <div class="w-full h-full bg-center bg-cover"
+                                         style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBGq2xBFUwgqE-bC09DxjJBBfylV_WW5m_5U8wJs4yoYX46AZkHt4jl-Tc44fDwGYyQKgW0OiJ5uhhmK8nvGmuKoFz7jqjOG9m49JwKCBN7cQYWOPXBHRtaxDwjNFYETtAe1XKwQvcwu6T-wh9KcDNHVobUNFg-Wjui_jGRNKAa7RdQ8sotFpzB0slZGd8ZW5fgycdF3IB_kTDPRrgfWjpyN5SvxBT5E7cZbigWbQnqgEGH4AYspKyzutrDJX3zZUMBy-eIcEtbeSE')"></div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-semibold text-slate-900 group-hover:text-primary transition-colors">Nike Air Force 1 '07</span>
+                                    <span class="text-[11px] text-slate-400">SKU: NK-AF1-001</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4"><span class="text-sm text-slate-600">Sneaker</span></td>
+                            <td class="px-6 py-4 font-medium text-slate-900">2.900.000đ</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">45</td>
+                            <td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">
+<span class="size-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                                Đang bán
+                            </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex items-center justify-end gap-2">
+                                    <button class="p-1.5 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-xl">edit_square</span>
+                                    </button>
+                                    <button class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                    <p class="text-xs text-slate-500 font-medium">Hiển thị 1 - 4 trong tổng số 24 sản phẩm</p>
+                    <div class="flex gap-1">
+                        <button class="size-8 rounded border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all">
+                            <span class="material-symbols-outlined text-lg">chevron_left</span></button>
+                        <button class="size-8 rounded border border-primary bg-primary text-white text-xs font-bold shadow-sm">
+                            1
+                        </button>
+                        <button class="size-8 rounded border border-slate-200 bg-white text-xs font-medium text-slate-600 hover:border-primary hover:text-primary transition-all">
+                            2
+                        </button>
+                        <button class="size-8 rounded border border-slate-200 bg-white text-xs font-medium text-slate-600 hover:border-primary hover:text-primary transition-all">
+                            3
+                        </button>
+                        <button class="size-8 rounded border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all">
+                            <span class="material-symbols-outlined text-lg">chevron_right</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hidden" id="productFormContent">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+                <form class="space-y-8">
+                    <section class="mb-8">
+                        <label class="block text-sm font-semibold text-slate-700 mb-4">Hình ảnh sản phẩm</label>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="md:col-span-2 md:row-span-2">
+                                <div class="border-2 border-dashed border-slate-200 rounded-2xl h-[300px] flex flex-col items-center justify-center bg-slate-50 hover:bg-slate-100/50 hover:border-primary transition-all cursor-pointer">
+                                    <span class="material-symbols-outlined text-3xl text-primary mb-2">add_a_photo</span>
+                                    <p class="text-sm font-medium text-slate-900">Tải lên ảnh chính</p>
+                                    <p class="text-xs text-slate-400 mt-1">Dung lượng tối đa 5MB</p>
+                                </div>
+                            </div>
+                            <div class="border-2 border-dashed border-slate-200 rounded-2xl h-36 flex items-center justify-center bg-slate-50 hover:border-primary cursor-pointer transition-all">
+                                <span class="material-symbols-outlined text-slate-400">add</span>
+                            </div>
+                            <div class="border-2 border-dashed border-slate-200 rounded-2xl h-36 flex items-center justify-center bg-slate-50 hover:border-primary cursor-pointer transition-all">
+                                <span class="material-symbols-outlined text-slate-400">add</span>
+                            </div>
+                            <div class="border-2 border-dashed border-slate-200 rounded-2xl h-36 flex items-center justify-center bg-slate-50 hover:border-primary cursor-pointer transition-all">
+                                <span class="material-symbols-outlined text-slate-400">add</span>
+                            </div>
+                            <div class="border-2 border-dashed border-slate-200 rounded-2xl h-36 flex items-center justify-center bg-slate-50 hover:border-primary cursor-pointer transition-all">
+                                <span class="material-symbols-outlined text-slate-400">add</span>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Tên sản phẩm</label>
+                            <input class="w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:ring-primary focus:border-primary"
+                                   placeholder="Ví dụ: Nike Air Force 1 '07" type="text"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Mã sản phẩm (SKU)</label>
+                            <input class="w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:ring-primary focus:border-primary"
+                                   placeholder="NK-AF1-07" type="text"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Thương hiệu</label>
+                            <select class="w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:ring-primary focus:border-primary">
+                                <option>Chọn thương hiệu</option>
+                                <option>Nike</option>
+                                <option>Adidas</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Giá niêm yết (VNĐ)</label>
+                            <div class="relative">
+                                <input class="w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:ring-primary focus:border-primary"
+                                       placeholder="3,500,000" type="text"/>
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">₫</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Trạng thái đơn hàng</label>
+                            <div class="flex gap-4 p-3 bg-slate-50 rounded-xl">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input checked="" class="text-primary focus:ring-primary border-slate-300"
+                                           name="status" type="radio"/>
+                                    <span class="text-sm text-slate-700">Hoạt động</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input class="text-primary focus:ring-primary border-slate-300" name="status"
+                                           type="radio"/>
+                                    <span class="text-sm text-slate-700">Tạm dừng </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Mô tả sản phẩm</label>
+                            <textarea
+                                    class="w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:ring-primary focus:border-primary resize-none"
+                                    placeholder="Chia sẻ câu chuyện về đôi giày này..." rows="4"></textarea>
+                        </div>
+                    </section>
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button class="px-6 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+                                type="button">Hủy bỏ
+                        </button>
+                        <button class="px-8 py-2.5 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
+                                type="submit">Lưu sản phẩm
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

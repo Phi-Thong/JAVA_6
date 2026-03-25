@@ -12,35 +12,37 @@
     <nav class="flex-1 px-4 space-y-1">
 
         <!-- Thống kê -->
-        <a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg" href="/admin/dashboard">
+        <a class="nav-link flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors"
+           th:href="@{/admin/dashboard}">
             <span class="material-symbols-outlined">analytics</span>
             <span class="text-sm font-medium">Thống kê</span>
         </a>
 
+
         <!-- Sản phẩm -->
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-           href="#">
+        <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+           th:href="@{/admin/product}">
             <span class="material-symbols-outlined">inventory_2</span>
             <span class="text-sm font-medium">Sản phẩm</span>
         </a>
 
         <!-- Đơn hàng -->
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-           href="#">
+        <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+           th:href="@{/admin/order}">
             <span class="material-symbols-outlined">receipt_long</span>
             <span class="text-sm font-medium">Đơn hàng</span>
         </a>
 
         <!-- Loại đơn hàng -->
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+        <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
            th:href="@{/admin/producttype}">
             <span class="material-symbols-outlined">category</span>
             <span class="text-sm font-medium">Loại sản phẩm</span>
         </a>
 
         <!-- Khách hàng -->
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-           href="#">
+        <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+           th:href="@{/admin/user}">
             <span class="material-symbols-outlined">group</span>
             <span class="text-sm font-medium">Khách hàng</span>
         </a>

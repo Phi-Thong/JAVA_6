@@ -6,6 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>ShoeStore Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -57,87 +58,321 @@
 <body class="bg-background-light dark:bg-background-dark font-display">
 <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <div th:replace="admin/layout/aside :: aside"></div>
+    <div th:replace="~{admin/layout/aside :: aside}"></div>
     <!-- Main Content -->
-    <div th:replace="admin/dashboard :: dashboard"></div>
+    <div id="main-content" class="flex-1 p-6">
+        <div th:replace="~{__${content}__}"></div>
+    </div>
+
 </div>
-<script>
+
+
+</body>
+</html>
+<script th:inline="javascript">
+
+    // ===============================
+    // 1. BIỂU ĐỒ DASHBOARD
+    // ===============================
+    function initSalesChart() {
+        const ctx = document.getElementById('salesChart');
+        if (!ctx) return;
+
+        if (window.mySalesChart instanceof Chart) {
+            window.mySalesChart.destroy();
+        }
+
+        window.mySalesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['1-5', '6-10', '11-15', '16-20', '21-25', '26-31'],
+                datasets: [{
+                    label: 'Doanh thu tháng',
+                    data: [120, 200, 150, 300, 250, 400],
+                    borderColor: '#607AFB',
+                    backgroundColor: 'rgba(96,122,251,0.2)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#607AFB'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {legend: {display: false}},
+                scales: {
+                    y: {beginAtZero: true, grid: {color: '#f1f5f9'}},
+                    x: {grid: {display: false}}
+                }
+            }
+        });
+    }
+
+
+    // ===============================
+    // 2. TAB LOẠI SẢN PHẨM
+    // ===============================
+    function initCategoryTabs() {
+
+        const tabList = document.getElementById("tabList");
+        const tabForm = document.getElementById("tabForm");
+
+        const listContent = document.getElementById("listContent");
+        const formContent = document.getElementById("formContent");
+
+        if (!tabList || !tabForm) return;
+
+        tabList.onclick = () => {
+
+            listContent.classList.remove("hidden");
+            formContent.classList.add("hidden");
+
+            tabList.classList.add("border-b-2", "border-primary", "text-primary", "font-bold");
+            tabForm.classList.remove("border-b-2", "border-primary", "text-primary", "font-bold");
+        };
+
+        tabForm.onclick = () => {
+
+            formContent.classList.remove("hidden");
+            listContent.classList.add("hidden");
+
+            tabForm.classList.add("border-b-2", "border-primary", "text-primary", "font-bold");
+            tabList.classList.remove("border-b-2", "border-primary", "text-primary", "font-bold");
+        };
+    }
+
+
+    // ===============================
+    // 3. SWITCH TAB DASHBOARD
+    // ===============================
     function switchTab(tabId) {
-        // Hide all contents
+
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
 
-        // Deactivate all buttons
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.remove('bg-white', 'dark:bg-primary', 'shadow-sm', 'text-primary', 'dark:text-white');
-            btn.classList.add('text-slate-600', 'dark:text-slate-400', 'hover:text-slate-900', 'dark:hover:text-slate-200');
+            btn.classList.add('text-slate-600', 'dark:text-slate-400');
         });
 
-        // Show active content
         document.getElementById('tab-' + tabId).classList.add('active');
 
-        // Activate current button
         const activeBtn = document.getElementById('btn-' + tabId);
+
         activeBtn.classList.add('bg-white', 'dark:bg-primary', 'shadow-sm', 'text-primary', 'dark:text-white');
-        activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:text-slate-900', 'dark:hover:text-slate-200');
     }
-</script>
 
-</body>
-</html>
-<script>
-    const ctx = document.getElementById('salesChart');
+    /// cho tab sản phẩm
+    function initProductTabs() {
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [
-                '1-5',
-                '6-10',
-                '11-15',
-                '16-20',
-                '21-25',
-                '26-31'
-            ],
-            datasets: [{
-                label: 'Doanh thu tháng',
-                data: [
-                    120,
-                    200,
-                    150,
-                    300,
-                    250,
-                    400
-                ],
-                borderColor: '#607AFB',
-                backgroundColor: 'rgba(96,122,251,0.2)',
-                tension: 0.4,
-                fill: true,
-                pointRadius: 6,
-                pointBackgroundColor: '#607AFB'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
+        const tabList = document.getElementById("tabProductList");
+        const tabForm = document.getElementById("tabProductForm");
+
+        const listContent = document.getElementById("productListContent");
+        const formContent = document.getElementById("productFormContent");
+
+        if (!tabList || !tabForm) return;
+
+        tabList.onclick = () => {
+
+            listContent.classList.remove("hidden");
+            formContent.classList.add("hidden");
+
+            tabList.classList.add("border-primary", "text-primary", "font-semibold", "bg-primary/5");
+            tabForm.classList.remove("border-primary", "text-primary", "font-semibold", "bg-primary/5");
+
+        };
+
+        tabForm.onclick = () => {
+
+            formContent.classList.remove("hidden");
+            listContent.classList.add("hidden");
+
+            tabForm.classList.add("border-primary", "text-primary", "font-semibold", "bg-primary/5");
+            tabList.classList.remove("border-primary", "text-primary", "font-semibold", "bg-primary/5");
+
+        };
+
+    }
+
+
+    // ===============================
+    // 4. LOAD CONTENT AJAX
+    // ===============================
+    function loadContent(url) {
+
+        fetch(url, {
+            headers: {'X-Requested-With': 'XMLHttpRequest'}
+        })
+            .then(response => response.text())
+            .then(html => {
+
+                const mainArea = document.getElementById('main-content');
+
+                if (mainArea) {
+
+                    mainArea.innerHTML = html;
+
+                    window.history.pushState({}, '', url);
+
+                    // chạy lại các script của từng trang
+                    initSalesChart();     // dashboard
+                    initCategoryTabs();   // category page
+                    initProductTabs();    // product page
+
                 }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: '#f1f5f9'
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    }
+
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // ===============================
+    // 5. MENU ACTIVE + EVENT
+    // ===============================
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+
+            link.addEventListener('click', function (e) {
+
+                e.preventDefault();
+
+                const url = this.getAttribute('href');
+
+                if (!url || url === '#') return;
+
+                updateActiveMenu(this);
+
+                loadContent(url);
+            });
+
+        });
+
+        function updateActiveMenu(clickedElement) {
+
+            navLinks.forEach(link => {
+
+                link.classList.remove('bg-primary/10', 'text-primary');
+
+                link.classList.add('text-slate-600', 'dark:text-slate-400');
+
+            });
+
+            clickedElement.classList.add('bg-primary/10', 'text-primary');
+
+            clickedElement.classList.remove('text-slate-600', 'dark:text-slate-400');
+        }
+
+
+        // chạy khi load trang lần đầu
+        initSalesChart();
+        initCategoryTabs();
+    });
+
+
+    // ===============================
+    // 6. BACK / FORWARD
+    // ===============================
+    window.addEventListener('popstate', function () {
+
+        const currentPath = window.location.pathname;
+
+        loadContent(currentPath);
+
+    });
+    //      chuyển tab cho đơn hàng
+
+    document.body.addEventListener("click", function (e) {
+        const tab = e.target.closest(".tab-btn");
+        if (!tab) return;
+
+        const tabs = document.querySelectorAll(".tab-btn");
+        const indicator = document.getElementById("tab-indicator");
+        const rows = document.querySelectorAll("tbody tr");
+
+        const status = tab.dataset.status;
+
+        // 🎨 reset tab
+        tabs.forEach(t => {
+            t.classList.remove("text-primary", "font-semibold");
+            t.classList.add("text-slate-500", "font-medium");
+        });
+
+        // 🎯 active tab
+        tab.classList.add("text-primary", "font-semibold");
+        tab.classList.remove("text-slate-500");
+
+        // 👉 animation underline
+        indicator.style.width = tab.offsetWidth + "px";
+        indicator.style.left = tab.offsetLeft + "px";
+
+        // 🔥 FILTER TABLE
+        rows.forEach(row => {
+            if (status === "all") {
+                row.style.display = "";
+            } else {
+                if (row.dataset.status === status) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
                 }
             }
+        });
+
+        console.log("Tab:", status);
+    });
+
+    // 🔥 set vị trí ban đầu + filter mặc định
+    window.addEventListener("load", () => {
+        const active = document.querySelector(".tab-btn.text-primary");
+        const indicator = document.getElementById("tab-indicator");
+        const rows = document.querySelectorAll("tbody tr");
+
+        if (active && indicator) {
+            indicator.style.width = active.offsetWidth + "px";
+            indicator.style.left = active.offsetLeft + "px";
+
+            // 👉 filter theo tab mặc định
+            const status = active.dataset.status;
+
+            rows.forEach(row => {
+                if (status === "all") {
+                    row.style.display = "";
+                } else {
+                    row.style.display = (row.dataset.status === status) ? "" : "none";
+                }
+            });
         }
     });
+    //      đóng mở tab update đơn hàng
+    const modal = document.getElementById("updateModal");
+    const closeBtn = document.getElementById("closeModal");
+
+    // 👉 mở modal
+    document.body.addEventListener("click", function (e) {
+        if (e.target.closest(".update-btn")) {
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+    });
+
+    // 👉 đóng modal (nút X hoặc nút đóng)
+    closeBtn.onclick = () => {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    };
+
+    // 👉 click nền để đóng
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+    });
+
+
 </script>

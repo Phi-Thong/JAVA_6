@@ -1,432 +1,343 @@
-<!DOCTYPE html>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8" th:fragment="producttype">
+    <!-- Header -->
 
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>ShoeStore Admin Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-          rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-          rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#607AFB",
-                        "background-light": "#f5f6f8",
-                        "background-dark": "#0f1323",
-                    },
-                    fontFamily: {
-                        "display": ["Inter"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
-</head>
-<body class="bg-background-light dark:bg-background-dark font-display">
-<div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <div th:replace="admin/layout/aside :: aside"></div>
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-w-0 overflow-hidden" th:fragment="producttype">
-        <!-- Header -->
-        <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
-            <div class="flex items-center gap-2 text-slate-500 text-sm">
-                <span>Trang chủ</span>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <span class="text-primary font-medium">Loại sản phẩm</span>
-            </div>
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto p-8 space-y-8">
+        <!-- Page Title -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center gap-4">
-                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
-                    <span class="material-symbols-outlined">notifications</span>
-                </button>
-                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
-                    <span class="material-symbols-outlined">settings</span>
-                </button>
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-3xl">category</span>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight">Quản lý loại sản phẩm</h2>
+                    <p class="text-slate-500 text-sm">Quản lý danh mục và phân loại các mặt hàng kinh doanh trong hệ
+                        thống.</p>
+                </div>
             </div>
-        </header>
-        <!-- Scrollable Content -->
-        <div class="flex-1 overflow-y-auto p-8 space-y-8">
-            <!-- Page Title -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-3xl">category</span>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-bold tracking-tight">Quản lý loại sản phẩm</h2>
-                        <p class="text-slate-500 text-sm">Quản lý danh mục và phân loại các mặt hàng kinh doanh trong hệ
-                            thống.</p>
+
+        </div>
+        <!-- Tabs -->
+        <div class="flex border-b border-slate-200 dark:border-slate-800 gap-8">
+            <button id="tabList"
+                    class="pb-4 text-sm font-bold border-b-2 border-primary text-primary">
+                Danh sách loại sản phẩm
+            </button>
+
+            <button id="tabForm"
+                    class="pb-4 text-sm font-medium text-slate-500">
+                Thêm / Sửa loại sản phẩm
+            </button>
+        </div>
+        <!-- Content Area: List Table -->
+        <div id="listContent" class="space-y-6">
+            <!-- Filters -->
+            <div class="flex flex-wrap items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                <div class="flex-1 min-w-[280px]">
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm"
+                               placeholder="Tìm kiếm tên loại, mô tả..." type="text"/>
                     </div>
                 </div>
-                <button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-primary/20">
-                    <span class="material-symbols-outlined text-lg">add</span>
-                    Thêm loại sản phẩm
-                </button>
-            </div>
-            <!-- Tabs -->
-            <div class="flex border-b border-slate-200 dark:border-slate-800 gap-8">
-                <button class="pb-4 text-sm font-bold border-b-2 border-primary text-primary">
-                    Danh sách loại sản phẩm
-                </button>
-                <button class="pb-4 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors">
-                    Thêm / Sửa loại sản phẩm
-                </button>
-            </div>
-            <!-- Content Area: List Table -->
-            <div class="space-y-6">
-                <!-- Filters -->
-                <div class="flex flex-wrap items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-                    <div class="flex-1 min-w-[280px]">
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                            <input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm"
-                                   placeholder="Tìm kiếm tên loại, mô tả..." type="text"/>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <select class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
-                            <option>Sắp xếp: Mới nhất</option>
-                            <option>Tên A-Z</option>
-                            <option>Tên Z-A</option>
-                        </select>
-                        <select class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
-                            <option>Trạng thái: Tất cả</option>
-                            <option>Đang sử dụng</option>
-                            <option>Ngừng sử dụng</option>
-                        </select>
-                    </div>
+                <div class="flex items-center gap-3">
+                    <select class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
+                        <option>Sắp xếp: Mới nhất</option>
+                        <option>Tên A-Z</option>
+                        <option>Tên Z-A</option>
+                    </select>
+                    <select class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
+                        <option>Trạng thái: Tất cả</option>
+                        <option>Đang sử dụng</option>
+                        <option>Ngừng sử dụng</option>
+                    </select>
                 </div>
-                <!-- Table Card -->
-                <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                            <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tên loại
-                                    sản phẩm
-                                </th>
-                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Mô tả
-                                </th>
-                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">
-                                    Số lượng
-                                </th>
-                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Trạng
-                                    thái
-                                </th>
-                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Ngày
-                                    tạo
-                                </th>
-                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">
-                                    Thao tác
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                                <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-001</td>
-                                <td class="px-6 py-4">
-                                    <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Điện thoại thông minh</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-sm text-slate-500 max-w-[200px] truncate">Các dòng smartphone cao cấp
-                                        và tầm trung</p>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span class="text-sm font-semibold">142</span>
-                                </td>
-                                <td class="px-6 py-4">
+            </div>
+            <!-- Table Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tên loại
+                                sản phẩm
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Mô tả
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">
+                                Số lượng
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Trạng
+                                thái
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Ngày
+                                tạo
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">
+                                Thao tác
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-001</td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Điện thoại thông minh</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="text-sm text-slate-500 max-w-[200px] truncate">Các dòng smartphone cao cấp
+                                    và tầm trung</p>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-sm font-semibold">142</span>
+                            </td>
+                            <td class="px-6 py-4">
 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                                                 Đang sử dụng
                                             </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-slate-500">12/10/2023</td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">edit</span>
-                                        </button>
-                                        <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">delete</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                                <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-002</td>
-                                <td class="px-6 py-4">
-                                    <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Laptop &amp; Máy tính</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-sm text-slate-500 max-w-[200px] truncate">Máy tính xách tay, Macbook,
-                                        PC đồng bộ</p>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span class="text-sm font-semibold">85</span>
-                                </td>
-                                <td class="px-6 py-4">
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-500">12/10/2023</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">edit</span>
+                                    </button>
+                                    <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-002</td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Laptop &amp; Máy tính</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="text-sm text-slate-500 max-w-[200px] truncate">Máy tính xách tay, Macbook,
+                                    PC đồng bộ</p>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-sm font-semibold">85</span>
+                            </td>
+                            <td class="px-6 py-4">
 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                                                 Đang sử dụng
                                             </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-slate-500">15/10/2023</td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">edit</span>
-                                        </button>
-                                        <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">delete</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                                <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-003</td>
-                                <td class="px-6 py-4">
-                                    <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Linh kiện cũ (Thanh lý)</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-sm text-slate-500 max-w-[200px] truncate">Các linh kiện đã qua sử
-                                        dụng ngưng nhập</p>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span class="text-sm font-semibold">0</span>
-                                </td>
-                                <td class="px-6 py-4">
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-500">15/10/2023</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">edit</span>
+                                    </button>
+                                    <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-003</td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Linh kiện cũ (Thanh lý)</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="text-sm text-slate-500 max-w-[200px] truncate">Các linh kiện đã qua sử
+                                    dụng ngưng nhập</p>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-sm font-semibold">0</span>
+                            </td>
+                            <td class="px-6 py-4">
 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
                                                 Ngừng sử dụng
                                             </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-slate-500">20/09/2023</td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">edit</span>
-                                        </button>
-                                        <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">delete</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                                <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-004</td>
-                                <td class="px-6 py-4">
-                                    <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Phụ kiện Gaming</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-sm text-slate-500 max-w-[200px] truncate">Chuột, phím, tai nghe
-                                        chuyên game</p>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span class="text-sm font-semibold">56</span>
-                                </td>
-                                <td class="px-6 py-4">
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-500">20/09/2023</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">edit</span>
+                                    </button>
+                                    <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-004</td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-bold text-slate-900 dark:text-slate-100">Phụ kiện Gaming</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="text-sm text-slate-500 max-w-[200px] truncate">Chuột, phím, tai nghe
+                                    chuyên game</p>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-sm font-semibold">56</span>
+                            </td>
+                            <td class="px-6 py-4">
 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                                                 Đang sử dụng
                                             </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-slate-500">05/11/2023</td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">edit</span>
-                                        </button>
-                                        <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined text-lg">delete</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Pagination -->
-                    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p class="text-sm text-slate-500">Hiển thị <span
-                                class="font-bold text-slate-900 dark:text-white">1 - 4</span> trong tổng số <span
-                                class="font-bold text-slate-900 dark:text-white">24</span> kết quả</p>
-                        <div class="flex items-center gap-1">
-                            <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                                <span class="material-symbols-outlined text-lg">chevron_left</span>
-                            </button>
-                            <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm shadow-sm">
-                                1
-                            </button>
-                            <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                                2
-                            </button>
-                            <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                                3
-                            </button>
-                            <span class="px-1 text-slate-400">...</span>
-                            <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                                6
-                            </button>
-                            <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                                <span class="material-symbols-outlined text-lg">chevron_right</span>
-                            </button>
-                        </div>
-                    </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-500">05/11/2023</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">edit</span>
+                                    </button>
+                                    <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-lg">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <!-- Form Section (Hidden by default or in another tab) -->
-            <div class="hidden space-y-6">
-                <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 max-w-2xl mx-auto">
-                    <div class="p-6 border-b border-slate-100 dark:border-slate-800">
-                        <h3 class="text-lg font-bold">Thêm mới loại sản phẩm</h3>
-                        <p class="text-sm text-slate-500">Vui lòng điền đầy đủ thông tin bên dưới để tạo loại sản phẩm
-                            mới.</p>
-                    </div>
-                    <div class="p-8 space-y-6">
-                        <div class="grid grid-cols-1 gap-6">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Tên loại sản phẩm
-                                    <span class="text-rose-500">*</span></label>
-                                <input class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary/30 transition-shadow"
-                                       placeholder="Nhập tên loại sản phẩm" type="text"/>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Mô tả chi
-                                    tiết</label>
-                                <textarea
-                                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary/30 transition-shadow"
-                                        placeholder="Nhập mô tả về danh mục này..." rows="4"></textarea>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Trạng thái khởi
-                                    tạo</label>
-                                <select class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary/30 cursor-pointer">
-                                    <option>Đang sử dụng</option>
-                                    <option>Ngừng sử dụng</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
-                        <button class="px-6 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors">
-                            Hủy bỏ
+                <!-- Pagination -->
+                <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-sm text-slate-500">Hiển thị <span
+                            class="font-bold text-slate-900 dark:text-white">1 - 4</span> trong tổng số <span
+                            class="font-bold text-slate-900 dark:text-white">24</span> kết quả</p>
+                    <div class="flex items-center gap-1">
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-800 transition-colors">
+                            <span class="material-symbols-outlined text-lg">chevron_left</span>
                         </button>
-                        <button class="px-8 py-2.5 text-sm font-bold bg-primary text-white rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
-                            Lưu thông tin
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm shadow-sm">
+                            1
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
+                            2
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
+                            3
+                        </button>
+                        <span class="px-1 text-slate-400">...</span>
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
+                            6
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-800 transition-colors">
+                            <span class="material-symbols-outlined text-lg">chevron_right</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+        <!-- Form Section (Hidden by default or in another tab) -->
+        <div id="formContent" class="hidden space-y-8">
 
-</div>
-<script>
-    function switchTab(tabId) {
-        // Hide all contents
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
 
-        // Deactivate all buttons
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('bg-white', 'dark:bg-primary', 'shadow-sm', 'text-primary', 'dark:text-white');
-            btn.classList.add('text-slate-600', 'dark:text-slate-400', 'hover:text-slate-900', 'dark:hover:text-slate-200');
-        });
+            <div class="max-w-3xl mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
 
-        // Show active content
-        document.getElementById('tab-' + tabId).classList.add('active');
+                <!-- Header -->
+                <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">category</span>
+                    </div>
 
-        // Activate current button
-        const activeBtn = document.getElementById('btn-' + tabId);
-        activeBtn.classList.add('bg-white', 'dark:bg-primary', 'shadow-sm', 'text-primary', 'dark:text-white');
-        activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:text-slate-900', 'dark:hover:text-slate-200');
-    }
-</script>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-white">
+                            Thêm loại sản phẩm
+                        </h3>
+                        <p class="text-sm text-slate-500">
+                            Nhập thông tin để tạo danh mục sản phẩm mới
+                        </p>
+                    </div>
+                </div>
 
-</body>
-</html>
-<script>
-    const ctx = document.getElementById('salesChart');
+                <!-- Body -->
+                <div class="p-8 space-y-6">
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [
-                '1-5',
-                '6-10',
-                '11-15',
-                '16-20',
-                '21-25',
-                '26-31'
-            ],
-            datasets: [{
-                label: 'Doanh thu tháng',
-                data: [
-                    120,
-                    200,
-                    150,
-                    300,
-                    250,
-                    400
-                ],
-                borderColor: '#607AFB',
-                backgroundColor: 'rgba(96,122,251,0.2)',
-                tension: 0.4,
-                fill: true,
-                pointRadius: 6,
-                pointBackgroundColor: '#607AFB'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: '#f1f5f9'
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    }
-                }
-            }
-        }
-    });
-</script>
+                    <!-- Tên loại -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                            Tên loại sản phẩm
+                            <span class="text-rose-500">*</span>
+                        </label>
+
+                        <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                </span>
+
+                            <input
+                                    type="text"
+                                    placeholder="Ví dụ: Giày Sneaker"
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/40 outline-none transition"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Mô tả -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                            Mô tả loại sản phẩm
+                        </label>
+
+                        <textarea
+                                rows="4"
+                                placeholder="Nhập mô tả chi tiết về loại sản phẩm..."
+                                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/40 outline-none resize-none transition"
+                        ></textarea>
+                    </div>
+
+                    <!-- Trạng thái -->
+                    <div class="space-y-3">
+
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                            Trạng thái
+                        </label>
+
+                        <div class="flex items-center gap-6">
+
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="status" checked
+                                       class="text-primary focus:ring-primary">
+                                <span class="text-sm text-slate-700 dark:text-slate-300">
+                        Đang sử dụng
+                    </span>
+                            </label>
+
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="status"
+                                       class="text-primary focus:ring-primary">
+                                <span class="text-sm text-slate-700 dark:text-slate-300">
+                        Ngừng sử dụng
+                    </span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="p-6 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3 border-t border-slate-200 dark:border-slate-800">
+
+                    <button
+                            class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition">
+                        Hủy
+                    </button>
+
+                    <button
+                            class="px-8 py-2.5 text-sm font-semibold bg-primary text-white rounded-xl shadow-lg shadow-primary/30 hover:bg-primary/90 transition">
+                        Lưu loại sản phẩm
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</main>
+

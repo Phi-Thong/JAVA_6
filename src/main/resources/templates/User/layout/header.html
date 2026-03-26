@@ -62,8 +62,9 @@
                             class="flex items-center gap-2 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
 
                         <!-- Avatar -->
-                        <img th:src="${picture != null ? picture : '/img/default.jpg'}"
-                             class="w-8 h-8 rounded-full object-cover border">
+                        <img th:src="${picture != null && #strings.startsWith(picture, 'http')} ? ${picture} : '/img/default.jpg'"
+                             class="w-8 h-8 rounded-full object-cover border"
+                             referrerpolicy="no-referrer">
 
                         <!-- Text -->
                         <div class="text-left leading-tight">

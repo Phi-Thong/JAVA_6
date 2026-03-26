@@ -22,30 +22,63 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private UsersRepository usersRepository;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        Authentication authentication)
+            throws IOException, ServletException {
+
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
-        String avatar = (String) attributes.get("picture"); // Google avatar
+        String avatar = null;
 
-        // Kiểm tra user đã tồn tại chưa
+        // 🔥 Lấy avatar Facebook đúng chuẩn
+        if (attributes.containsKey("picture")) {
+            // attributes.get("picture") trả về Map data
+            Map<String, Object> pictureObj = (Map<String, Object>) attributes.get("picture");
+            if (pictureObj != null && pictureObj.containsKey("data")) {
+                Map<String, Object> data = (Map<String, Object>) pictureObj.get("data");
+                if (data != null && data.containsKey("url")) {
+                    avatar = (String) data.get("url"); // URL avatar public
+                }
+            }
+        }
+
+        // Nếu vẫn null → fallback default hoặc kiểu URL cũ
+        if (avatar == null) {
+            if (attributes.containsKey("id")) {
+                String id = (String) attributes.get("id");
+                avatar = "https://graph.facebook.com/" + id + "/picture?type=large";
+            } else {
+                avatar = "/img/default.jpg"; // fallback default
+            }
+        }
+
+        // 🔥 Fix trường hợp Facebook không có email
+        if (email == null) {
+            String id = (String) attributes.get("id");
+            email = id + "@facebook.com";
+        }
+
+        // 👉 Kiểm tra user tồn tại
         users user = usersRepository.findByEmail(email);
+
         if (user == null) {
             user = new users();
             user.setEmail(email);
             user.setHoTen(name);
-            user.setMatKhau(""); // Không có mật khẩu
+            user.setMatKhau(""); // KHÔNG để null
             user.setAvatar(avatar);
-            user.setTrangThai(false); // Hoạt động
+            user.setTrangThai(false); // hoạt động
             user.setVaiTro(false); // USER
             user.setCreatedAt(new java.util.Date());
+
             usersRepository.save(user);
         }
 
-        // Chuyển hướng về home
+        // 👉 Redirect sau login
         response.sendRedirect("/home");
     }
 }

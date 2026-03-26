@@ -4,51 +4,68 @@ import asm.poly.asm_java6.enity.users;
 import asm.poly.asm_java6.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.ui.Model;
 
-import java.util.Map;
-
-@ControllerAdvice // Áp dụng cho tất cả controller, giúp chia sẻ dữ liệu chung
+@ControllerAdvice
 public class GlobalControllerAdvice {
 
     @Autowired
-    UsersRepository usersRepository; // Repository để truy vấn user từ CSDL
+    UsersRepository usersRepository;
 
-    // Thêm biến "name" vào model cho tất cả view
-    @ModelAttribute("name")
-    public String getName() {
-        // Lấy thông tin đăng nhập hiện tại
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // Nếu chưa đăng nhập hoặc là anonymousUser thì trả về null
-        if (auth == null || !auth.isAuthenticated() || auth.getName().equals("anonymousUser")) {
-            return null;
+    @ModelAttribute
+    public void addUserInfo(Model model, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()
+                || "anonymousUser".equals(authentication.getName())) {
+            // Không đăng nhập => không thêm attribute
+            return;
         }
 
-        // Tìm user trong CSDL theo email (tên đăng nhập)
-        users user = usersRepository.findByEmail(auth.getName());
+        Object principal = authentication.getPrincipal();
 
-        // Trả về họ tên nếu có, không thì null
-        return user != null ? user.getHoTen() : null;
-    }
-
-    // Thêm biến "picture" vào model cho tất cả view
-    @ModelAttribute("picture")
-    public String getPicture() {
-        // Lấy thông tin đăng nhập hiện tại
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // Nếu chưa đăng nhập hoặc là anonymousUser thì trả về null
-        if (auth == null || !auth.isAuthenticated() || auth.getName().equals("anonymousUser")) {
-            return null;
+        // Trường hợp login bằng form (UserDetails)
+        if (principal instanceof UserDetails) {
+            String email = ((UserDetails) principal).getUsername();
+            users user = usersRepository.findByEmail(email);
+            if (user != null) {
+                model.addAttribute("name", user.getHoTen());
+                model.addAttribute("picture", user.getAvatar());
+            }
+            return;
         }
 
-        // Tìm user trong CSDL theo email
-        users user = usersRepository.findByEmail(auth.getName());
+        // Trường hợp OAuth2 (Google, Facebook, ...)
+        if (principal instanceof OAuth2User) {
+            OAuth2User oauth = (OAuth2User) principal;
 
-        // Trả về URL avatar nếu có, không thì null
-        return user != null ? user.getAvatar() : null;
+            // Ưu tiên lấy email để tìm DB (nếu OAuth2User có email)
+            String email = oauth.getAttribute("email");
+            if (email != null) {
+                users user = usersRepository.findByEmail(email);
+                if (user != null) {
+                    model.addAttribute("name", user.getHoTen());
+                    model.addAttribute("picture", user.getAvatar());
+                    return;
+                }
+            }
+
+            // Fallback: lấy thẳng từ attribute OAuth2
+            String name = oauth.getAttribute("name");
+            String picture = oauth.getAttribute("picture");
+
+            // Fix Facebook: nếu picture == null, dùng graph url với id
+            if (picture == null) {
+                String id = oauth.getAttribute("id");
+                if (id != null) {
+                    picture = "https://graph.facebook.com/" + id + "/picture?type=large";
+                }
+            }
+
+            model.addAttribute("name", name);
+            model.addAttribute("picture", picture);
+        }
     }
 }

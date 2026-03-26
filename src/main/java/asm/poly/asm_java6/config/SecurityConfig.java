@@ -21,50 +21,47 @@ public class SecurityConfig {
 
                 .csrf(csrf -> csrf.disable())
 
-
                 .authorizeHttpRequests(auth -> auth
-                        // Cho phép tất cả mọi người truy cập các trang sau
                         .requestMatchers("/", "/home", "/login", "/css/**", "/js/**", "/img/**").permitAll()
-                        // Chỉ ADMIN mới truy cập /admin/**
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // Chỉ USER mới truy cập /user/**
                         .requestMatchers("/user/**").hasRole("USER")
-                        // Các request khác mặc định cho phép
                         .anyRequest().permitAll()
                 )
 
-                // Xử lý khi không đủ quyền truy cập
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            // Nếu user không có quyền, redirect về login với param error
                             response.sendRedirect("/login?error=forbidden");
                         })
                 )
 
-                // Cấu hình login truyền thống
                 .formLogin(form -> form
-                        .loginPage("/login") // Trang login tùy chỉnh
-                        .defaultSuccessUrl("/home", true) // Sau login thành công, chuyển về /home
-                        .permitAll() // Cho phép mọi người truy cập trang login
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
                 )
 
-                // Cấu hình login bằng OAuth2 (Google, FB…)
+               
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecret") // Đặt chuỗi bất kỳ
+                        .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 ngày
+                        .rememberMeParameter("remember-me")
+                )
+
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/login") // Trang login chung cho OAuth2
-                        .successHandler(oAuth2LoginSuccessHandler) // Xử lý khi login OAuth2 thành công
+                        .loginPage("/login")
+                        .successHandler(oAuth2LoginSuccessHandler)
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService) // Lấy thông tin user từ Google
+                                .userService(customOAuth2UserService)
                         )
                 )
 
-                // Cấu hình logout
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // URL logout
-                        .logoutSuccessUrl("/home") // Sau logout, chuyển về /home
-                        .invalidateHttpSession(true) // Xóa session
-                        .deleteCookies("JSESSIONID") // Xóa cookie session
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/home")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                 );
 
-        return http.build(); // Build SecurityFilterChain
+        return http.build();
     }
 }

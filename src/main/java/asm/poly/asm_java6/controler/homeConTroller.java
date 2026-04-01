@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 
 import asm.poly.asm_java6.enity.Product;
 import asm.poly.asm_java6.service.ProductService;
+import jakarta.servlet.http.HttpSession;
+
+import java.util.Map;
 
 @Controller
 public class homeConTroller {
@@ -21,12 +24,31 @@ public class homeConTroller {
     @GetMapping("/home")
     public String home(Model model,
                        @AuthenticationPrincipal OAuth2User user,
-                       @RequestParam(defaultValue = "0") int page) {
+                       @RequestParam(defaultValue = "0") int page,
+                       HttpSession session) {
+
+        // 👤 User info
         if (user != null) {
             model.addAttribute("name", user.getAttribute("name"));
             model.addAttribute("picture", user.getAttribute("picture"));
         }
 
+        // 🛒 CART COUNT
+        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+
+        int totalQuantity = 0;
+
+        if (cart != null) {
+            for (int qty : cart.values()) {
+                totalQuantity += qty;
+            }
+        }
+
+        model.addAttribute("cartCount", totalQuantity);
+
+        System.out.println("Cart count = " + totalQuantity); // debug
+
+        // 📦 Product paging
         int pageSize = 8;
         Page<Product> productPage = productService.findPaginated(page, pageSize);
 
@@ -36,4 +58,5 @@ public class homeConTroller {
 
         return "home";
     }
+
 }

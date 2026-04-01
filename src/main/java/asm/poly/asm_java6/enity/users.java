@@ -1,10 +1,19 @@
 package asm.poly.asm_java6.enity;
 
-import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import lombok.*;
-
 import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
@@ -51,4 +60,6 @@ public class users {
 
     @Column(name = "vai_tro")
     private Boolean vaiTro; // true: ADMIN, false: USER
+    @Column(name = "token")
+private String token;
 }

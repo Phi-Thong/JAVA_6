@@ -1,19 +1,19 @@
 package asm.poly.asm_java6.config;
 
-import asm.poly.asm_java6.enity.users;
-import asm.poly.asm_java6.repository.UsersRepository;
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import asm.poly.asm_java6.enity.users;
+import asm.poly.asm_java6.repository.UsersRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -34,17 +34,23 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String name = (String) attributes.get("name");
         String avatar = null;
 
-        // 🔥 Lấy avatar Facebook đúng chuẩn
-        if (attributes.containsKey("picture")) {
-            // attributes.get("picture") trả về Map data
-            Map<String, Object> pictureObj = (Map<String, Object>) attributes.get("picture");
-            if (pictureObj != null && pictureObj.containsKey("data")) {
-                Map<String, Object> data = (Map<String, Object>) pictureObj.get("data");
-                if (data != null && data.containsKey("url")) {
-                    avatar = (String) data.get("url"); // URL avatar public
-                }
+      
+       if (attributes.containsKey("picture")) {
+    Object pictureAttr = attributes.get("picture");
+    if (pictureAttr instanceof Map) {
+        // Facebook: picture là Map
+        Map<String, Object> pictureObj = (Map<String, Object>) pictureAttr;
+        if (pictureObj != null && pictureObj.containsKey("data")) {
+            Map<String, Object> data = (Map<String, Object>) pictureObj.get("data");
+            if (data != null && data.containsKey("url")) {
+                avatar = (String) data.get("url");
             }
         }
+    } else if (pictureAttr instanceof String) {
+        // Google/GitHub: picture là String (URL)
+        avatar = (String) pictureAttr;
+    }
+}
 
         // Nếu vẫn null → fallback default hoặc kiểu URL cũ
         if (avatar == null) {

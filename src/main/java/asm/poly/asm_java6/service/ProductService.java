@@ -15,7 +15,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    // Lấy tất cả sản phẩm (nếu cần)
+    // Lấy tất cả sản phẩm
     public List<Product> findAll() {
         return productRepository.findAll();
     }
@@ -23,5 +23,22 @@ public class ProductService {
     // Lấy sản phẩm theo phân trang
     public Page<Product> findPaginated(int page, int size) {
         return productRepository.findAll(PageRequest.of(page, size));
+    }
+
+    // Lấy chi tiết sản phẩm theo id (kèm brand, images, sizes)
+    public Product findProductDetailById(Long id) {
+        return productRepository.findProductDetailById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với id: " + id));
+    }
+
+    // Lấy tổng số lượng tồn kho của sản phẩm
+    public Integer getTotalStock(Long productId) {
+        Integer total = productRepository.getTotalStock(productId);
+        return total != null ? total : 0;
+    }
+
+    // Lấy danh sách size còn hàng của sản phẩm
+    public List<Integer> getAvailableSizes(Long productId) {
+        return productRepository.getAvailableSizes(productId);
     }
 }

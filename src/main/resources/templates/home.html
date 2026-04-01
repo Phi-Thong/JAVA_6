@@ -1,704 +1,722 @@
 <!doctype html>
 
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+            rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+            rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+            rel="stylesheet"
     />
     <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#0056b2",
-              "background-light": "#f5f7f8",
-              "background-dark": "#0f1923",
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#0056b2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1923",
+                    },
+                    fontFamily: {
+                        display: ["Inter"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
             },
-            fontFamily: {
-              display: ["Inter"],
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-          },
-        },
-      };
+        };
     </script>
     <title>Sneaker Store - Shop</title>
-  </head>
-  <body
-    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 tracking-tight leading-relaxed"
-  >
-    <div th:replace="User/layout/header :: header"></div>
-    <main class="max-w-7xl mx-auto px-4 py-8 flex gap-8">
-      <aside
-        class="w-[250px] shrink-0 hidden md:block border-r border-slate-100 dark:border-slate-800 pr-8"
-      >
+</head>
+<body
+        class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 tracking-tight leading-relaxed"
+>
+<div th:replace="User/layout/header :: header"></div>
+<main class="max-w-7xl mx-auto px-4 py-8 flex gap-8">
+    <aside
+            class="w-[250px] shrink-0 hidden md:block border-r border-slate-100 dark:border-slate-800 pr-8"
+    >
         <div class="sticky top-24 space-y-8">
-          <div
-            class="border-b border-slate-100 dark:border-slate-800 last:border-0"
-          >
-            <h3
-              class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
-            >
-              <span class="material-symbols-outlined text-base">search</span>
-              Tìm kiếm
-            </h3>
-            <div class="relative">
-              <input
-                class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary"
-                placeholder="Tên sản phẩm..."
-                type="text"
-              />
-            </div>
-          </div>
-          <div
-            class="border-b border-slate-100 dark:border-slate-800 last:border-0"
-          >
-            <h3
-              class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
-            >
-              <span class="material-symbols-outlined text-base">sell</span>
-              Thương hiệu
-            </h3>
-            <div class="space-y-2">
-              <label class="flex items-center gap-2 cursor-pointer group">
-                <input
-                  class="rounded border-slate-300 text-primary focus:ring-primary"
-                  type="checkbox"
-                />
-                <span class="text-sm group-hover:text-primary transition-colors"
-                  >Nike</span
-                >
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer group">
-                <input
-                  class="rounded border-slate-300 text-primary focus:ring-primary"
-                  type="checkbox"
-                />
-                <span class="text-sm group-hover:text-primary transition-colors"
-                  >Adidas</span
-                >
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer group">
-                <input
-                  class="rounded border-slate-300 text-primary focus:ring-primary"
-                  type="checkbox"
-                />
-                <span class="text-sm group-hover:text-primary transition-colors"
-                  >Puma</span
-                >
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer group">
-                <input
-                  class="rounded border-slate-300 text-primary focus:ring-primary"
-                  type="checkbox"
-                />
-                <span class="text-sm group-hover:text-primary transition-colors"
-                  >Converse</span
-                >
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer group">
-                <input
-                  class="rounded border-slate-300 text-primary focus:ring-primary"
-                  type="checkbox"
-                />
-                <span class="text-sm group-hover:text-primary transition-colors"
-                  >New Balance</span
-                >
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer group">
-                <input
-                  class="rounded border-slate-300 text-primary focus:ring-primary"
-                  type="checkbox"
-                />
-                <span class="text-sm group-hover:text-primary transition-colors"
-                  >Vans</span
-                >
-              </label>
-            </div>
-          </div>
-          <div
-            class="border-b border-slate-100 dark:border-slate-800 last:border-0"
-          >
-            <h3
-              class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
-            >
-              <span class="material-symbols-outlined text-base"
-                >straighten</span
-              >
-              Kích thước
-            </h3>
-            <div class="grid grid-cols-4 gap-2">
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
-              >
-                38
-              </button>
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
-              >
-                39
-              </button>
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all bg-primary text-white border-primary"
-              >
-                40
-              </button>
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
-              >
-                41
-              </button>
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
-              >
-                42
-              </button>
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
-              >
-                43
-              </button>
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
-              >
-                44
-              </button>
-              <button
-                class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
-              >
-                45
-              </button>
-            </div>
-          </div>
-          <div
-            class="border-b border-slate-100 dark:border-slate-800 last:border-0"
-          >
-            <h3
-              class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
-            >
-              <span class="material-symbols-outlined text-base">payments</span>
-              Khoảng giá
-            </h3>
-            <input
-              class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
-              max="5000000"
-              min="500000"
-              step="100000"
-              type="range"
-            />
             <div
-              class="flex justify-between mt-2 text-xs font-medium text-slate-500"
+                    class="border-b border-slate-100 dark:border-slate-800 last:border-0"
             >
-              <span>500k VNĐ</span>
-              <span>5tr VNĐ</span>
+                <h3
+                        class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
+                >
+                    <span class="material-symbols-outlined text-base">search</span>
+                    Tìm kiếm
+                </h3>
+                <div class="relative">
+                    <input
+                            class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary"
+                            placeholder="Tên sản phẩm..."
+                            type="text"
+                    />
+                </div>
             </div>
-          </div>
-        </div>
-      </aside>
-      <section class="flex-1 space-y-16">
-        <div id="all-products">
-          <div
-            class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
-          >
-            <h2 class="flex items-center gap-2 text-2xl font-bold">
-              <span class="material-symbols-outlined text-3xl"
-                >inventory_2</span
+            <div
+                    class="border-b border-slate-100 dark:border-slate-800 last:border-0"
+            >
+                <h3
+                        class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
+                >
+                    <span class="material-symbols-outlined text-base">sell</span>
+                    Thương hiệu
+                </h3>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input
+                                class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox"
+                        />
+                        <span class="text-sm group-hover:text-primary transition-colors"
+                        >Nike</span
+                        >
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input
+                                class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox"
+                        />
+                        <span class="text-sm group-hover:text-primary transition-colors"
+                        >Adidas</span
+                        >
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input
+                                class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox"
+                        />
+                        <span class="text-sm group-hover:text-primary transition-colors"
+                        >Puma</span
+                        >
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input
+                                class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox"
+                        />
+                        <span class="text-sm group-hover:text-primary transition-colors"
+                        >Converse</span
+                        >
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input
+                                class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox"
+                        />
+                        <span class="text-sm group-hover:text-primary transition-colors"
+                        >New Balance</span
+                        >
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input
+                                class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox"
+                        />
+                        <span class="text-sm group-hover:text-primary transition-colors"
+                        >Vans</span
+                        >
+                    </label>
+                </div>
+            </div>
+            <div
+                    class="border-b border-slate-100 dark:border-slate-800 last:border-0"
+            >
+                <h3
+                        class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
+                >
+              <span class="material-symbols-outlined text-base"
+              >straighten</span
               >
-              Tất cả sản phẩm
-            </h2>
-            <div class="flex items-center gap-2">
+                    Kích thước
+                </h3>
+                <div class="grid grid-cols-4 gap-2">
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
+                    >
+                        38
+                    </button>
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
+                    >
+                        39
+                    </button>
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all bg-primary text-white border-primary"
+                    >
+                        40
+                    </button>
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
+                    >
+                        41
+                    </button>
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
+                    >
+                        42
+                    </button>
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
+                    >
+                        43
+                    </button>
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
+                    >
+                        44
+                    </button>
+                    <button
+                            class="border border-slate-200 dark:border-slate-700 py-2 rounded text-xs font-medium hover:border-primary hover:text-primary transition-all"
+                    >
+                        45
+                    </button>
+                </div>
+            </div>
+            <div
+                    class="border-b border-slate-100 dark:border-slate-800 last:border-0"
+            >
+                <h3
+                        class="flex items-center gap-2 text-sm font-bold mb-4 uppercase tracking-wider text-slate-500"
+                >
+                    <span class="material-symbols-outlined text-base">payments</span>
+                    Khoảng giá
+                </h3>
+                <input
+                        class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                        max="5000000"
+                        min="500000"
+                        step="100000"
+                        type="range"
+                />
+                <div
+                        class="flex justify-between mt-2 text-xs font-medium text-slate-500"
+                >
+                    <span>500k VNĐ</span>
+                    <span>5tr VNĐ</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <section class="flex-1 space-y-16">
+        <div id="all-products">
+            <div
+                    class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
+            >
+                <h2 class="flex items-center gap-2 text-2xl font-bold">
+              <span class="material-symbols-outlined text-3xl"
+              >inventory_2</span
+              >
+                    Tất cả sản phẩm
+                </h2>
+                <div class="flex items-center gap-2">
               <span class="flex items-center gap-1 text-sm text-slate-500">
                 <span class="material-symbols-outlined text-base">sort</span>
                 Sắp xếp:
               </span>
-              <select
-                class="bg-transparent border-none text-sm font-medium focus:ring-0 cursor-pointer"
-              >
-                <option>Mới nhất</option>
-                <option>Giá: Thấp đến Cao</option>
-                <option>Giá: Cao đến Thấp</option>
-              </select>
+                    <select
+                            class="bg-transparent border-none text-sm font-medium focus:ring-0 cursor-pointer"
+                    >
+                        <option>Mới nhất</option>
+                        <option>Giá: Thấp đến Cao</option>
+                        <option>Giá: Cao đến Thấp</option>
+                    </select>
+                </div>
             </div>
-          </div>
-          <div
-            id="product-list"
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-opacity duration-300"
-          ></div>
+            <div
+                    id="product-list"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-opacity duration-300"
+            ></div>
 
-          <!--  phân trang  -->
-          <div id="pagination" class="flex justify-center mt-12 gap-2"></div>
+            <!--  phân trang  -->
+            <div id="pagination" class="flex justify-center mt-12 gap-2"></div>
         </div>
         <div id="featured-products">
-          <div
-            class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
-          >
-            <h2
-              class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight"
-            >
-              <span class="material-symbols-outlined text-3xl">star</span>
-              Sản phẩm nổi bật
-            </h2>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Nike Air Max 90 -->
             <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
+                    class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
             >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMWYi9DJQaSfq_NscNRHzVaAIvZX58lyPAXRkdfckIRRF1cstWJkdUXRkaPy_zvhPYn8ORjt6c5rQj4JQr_Wtu_HQumGTrW4bmUkctXf6TNRldTniLLNbn_08dHlHZR9GTGTy3SvoOHxfD7N8NC4gSPkEmCVkRDy1MqOW-NisaUk53NXeKXYIN_hZDyi4el6Bz6PYo30oE_aQes3RulniM5S6T6-wmkulq07b0Slm7DkpHJVEx9w_GASaD2PE8EsrKDtCmIMt1gB4"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Hot</span
+                <h2
+                        class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight"
                 >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    Nike
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    Nike Air Max 90
-                  </h3>
-                </div>
-                <p class="font-bold text-primary text-base">3.800.000₫</p>
-                <div class="flex gap-2 pt-3">
-                  <!-- Thêm vào giỏ -->
-                  <button
-                    class="flex-[1.6] flex items-center justify-center gap-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
-                  >
-                    <span class="material-symbols-outlined text-xs"
-                      >shopping_cart</span
+                    <span class="material-symbols-outlined text-3xl">star</span>
+                    Sản phẩm nổi bật
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Nike Air Max 90 -->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
+                >
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
                     >
-                    Thêm vào giỏ
-                  </button>
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMWYi9DJQaSfq_NscNRHzVaAIvZX58lyPAXRkdfckIRRF1cstWJkdUXRkaPy_zvhPYn8ORjt6c5rQj4JQr_Wtu_HQumGTrW4bmUkctXf6TNRldTniLLNbn_08dHlHZR9GTGTy3SvoOHxfD7N8NC4gSPkEmCVkRDy1MqOW-NisaUk53NXeKXYIN_hZDyi4el6Bz6PYo30oE_aQes3RulniM5S6T6-wmkulq07b0Slm7DkpHJVEx9w_GASaD2PE8EsrKDtCmIMt1gB4"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Hot</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                Nike
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                Nike Air Max 90
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">3.800.000₫</p>
+                        <div class="flex gap-2 pt-3">
+                            <!-- Thêm vào giỏ -->
+                            <button
+                                    class="flex-[1.6] flex items-center justify-center gap-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
+                            >
+                    <span class="material-symbols-outlined text-xs"
+                    >shopping_cart</span
+                    >
+                                Thêm vào giỏ
+                            </button>
 
-                  <!-- Chi tiết -->
-                  <button
-                    class="flex-[1] flex items-center justify-center gap-1 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
-                  >
+                            <!-- Chi tiết -->
+                            <button
+                                    class="flex-[1] flex items-center justify-center gap-1 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
+                            >
                     <span class="material-symbols-outlined text-xs"
-                      >visibility</span
+                    >visibility</span
                     >
-                    Chi tiết
-                  </button>
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <!-- Adidas Forum Low -->
-            <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Hot</span
+                <!-- Adidas Forum Low -->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
                 >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    Adidas
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    Adidas Forum Low
-                  </h3>
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
+                    >
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Hot</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                Adidas
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                Adidas Forum Low
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">2.800.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button
+                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button
+                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <p class="font-bold text-primary text-base">2.800.000₫</p>
-                <div class="flex gap-2 pt-2">
-                  <button
-                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    THÊM VÀO GIỎ
-                  </button>
-                  <button
-                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    Chi tiết
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!--         -------------->
-            <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Hot</span
+                <!--         -------------->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
                 >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    Adidas
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    Adidas Forum Low
-                  </h3>
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
+                    >
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Hot</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                Adidas
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                Adidas Forum Low
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">2.800.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button
+                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button
+                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <p class="font-bold text-primary text-base">2.800.000₫</p>
-                <div class="flex gap-2 pt-2">
-                  <button
-                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    THÊM VÀO GIỎ
-                  </button>
-                  <button
-                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    Chi tiết
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!--        -------------------->
-            <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Hot</span
+                <!--        -------------------->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
                 >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    Adidas
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    Adidas Forum Low
-                  </h3>
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
+                    >
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-primary text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Hot</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                Adidas
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                Adidas Forum Low
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">2.800.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button
+                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button
+                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <p class="font-bold text-primary text-base">2.800.000₫</p>
-                <div class="flex gap-2 pt-2">
-                  <button
-                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    THÊM VÀO GIỎ
-                  </button>
-                  <button
-                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    Chi tiết
-                  </button>
-                </div>
-              </div>
             </div>
-          </div>
-          <div class="flex justify-center mt-12 gap-2">
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            >
-              1
-            </button>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            >
-              2
-            </button>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            >
+            <div class="flex justify-center mt-12 gap-2">
+                <button
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                >
+                    1
+                </button>
+                <button
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                >
+                    2
+                </button>
+                <button
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                >
               <span class="material-symbols-outlined text-sm"
-                >chevron_right</span
+              >chevron_right</span
               >
-            </button>
-          </div>
+                </button>
+            </div>
         </div>
         <div id="best-sellers">
-          <div
-            class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
-          >
-            <h2
-              class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight text-red-600"
+            <div
+                    class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
             >
+                <h2
+                        class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight text-red-600"
+                >
               <span class="material-symbols-outlined text-3xl"
-                >local_fire_department</span
+              >local_fire_department</span
               >
-              Sản phẩm bán chạy
-            </h2>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- New Balance 550 -->
-            <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Bestseller</span
-                >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    New Balance
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    New Balance 550
-                  </h3>
-                </div>
-                <p class="font-bold text-primary text-base">3.400.000₫</p>
-                <div class="flex gap-2 pt-2">
-                  <button
-                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    THÊM VÀO GIỎ
-                  </button>
-                  <button
-                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    Chi tiết
-                  </button>
-                </div>
-              </div>
+                    Sản phẩm bán chạy
+                </h2>
             </div>
-            <!-- New Balance 550 -->
-            <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Bestseller</span
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- New Balance 550 -->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
                 >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    New Balance
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    New Balance 550
-                  </h3>
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
+                    >
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Bestseller</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                New Balance
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                New Balance 550
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">3.400.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button
+                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button
+                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <p class="font-bold text-primary text-base">3.400.000₫</p>
-                <div class="flex gap-2 pt-2">
-                  <button
-                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    THÊM VÀO GIỎ
-                  </button>
-                  <button
-                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    Chi tiết
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- New Balance 550 -->
-            <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Bestseller</span
+                <!-- New Balance 550 -->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
                 >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    New Balance
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    New Balance 550
-                  </h3>
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
+                    >
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Bestseller</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                New Balance
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                New Balance 550
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">3.400.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button
+                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button
+                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <p class="font-bold text-primary text-base">3.400.000₫</p>
-                <div class="flex gap-2 pt-2">
-                  <button
-                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    THÊM VÀO GIỎ
-                  </button>
-                  <button
-                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    Chi tiết
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- Vans Old Skool -->
-            <div
-              class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div
-                class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-              >
-                <img
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1U1qRAuryY-qj9i94ALnp3upVkF089Haqc51sE_pnhxw1R7gN_a7ZqUfB8k4rHWft4Go-Uex8tKD9-jMrYhSXrinlMni6xcJLFp4nMbMj_otYfzudjcUry7JhcU4cSx-697nPzvKF3tD-OmUch70FWG3OiwAFR0gNc7NJk98v5ZYugPVRd4uF-vPk1r-4ZVnt8X4CAzoJjEGXldkv63tj4HBTIC0xikxLB5Tb199J4fe1Axk6MvipgvjRQ9khbWW1eqo-HOBAd4I"
-                />
-                <span
-                  class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                  >Bestseller</span
+                <!-- New Balance 550 -->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
                 >
-              </div>
-              <div class="p-4 space-y-2">
-                <div>
-                  <p
-                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                  >
-                    Vans
-                  </p>
-                  <h3
-                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                  >
-                    Vans Old Skool
-                  </h3>
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
+                    >
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Bestseller</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                New Balance
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                New Balance 550
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">3.400.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button
+                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button
+                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <p class="font-bold text-primary text-base">1.850.000₫</p>
-                <div class="flex gap-2 pt-2">
-                  <button
-                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    THÊM VÀO GIỎ
-                  </button>
-                  <button
-                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                  >
-                    Chi tiết
-                  </button>
+                <!-- Vans Old Skool -->
+                <div
+                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
+                >
+                    <div
+                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
+                    >
+                        <img
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1U1qRAuryY-qj9i94ALnp3upVkF089Haqc51sE_pnhxw1R7gN_a7ZqUfB8k4rHWft4Go-Uex8tKD9-jMrYhSXrinlMni6xcJLFp4nMbMj_otYfzudjcUry7JhcU4cSx-697nPzvKF3tD-OmUch70FWG3OiwAFR0gNc7NJk98v5ZYugPVRd4uF-vPk1r-4ZVnt8X4CAzoJjEGXldkv63tj4HBTIC0xikxLB5Tb199J4fe1Axk6MvipgvjRQ9khbWW1eqo-HOBAd4I"
+                        />
+                        <span
+                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
+                        >Bestseller</span
+                        >
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <div>
+                            <p
+                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+                            >
+                                Vans
+                            </p>
+                            <h3
+                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
+                            >
+                                Vans Old Skool
+                            </h3>
+                        </div>
+                        <p class="font-bold text-primary text-base">1.850.000₫</p>
+                        <div class="flex gap-2 pt-2">
+                            <button
+                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                THÊM VÀO GIỎ
+                            </button>
+                            <button
+                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
+                            >
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <div class="flex justify-center mt-12 gap-2">
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            >
-              1
-            </button>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            >
-              2
-            </button>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            >
+            <div class="flex justify-center mt-12 gap-2">
+                <button
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                >
+                    1
+                </button>
+                <button
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                >
+                    2
+                </button>
+                <button
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                >
               <span class="material-symbols-outlined text-sm"
-                >chevron_right</span
+              >chevron_right</span
               >
-            </button>
-          </div>
+                </button>
+            </div>
         </div>
-      </section>
-    </main>
-    <div th:replace="User/layout/footer :: footer"></div>
-  </body>
-  <script>
+    </section>
+</main>
+<div th:replace="User/layout/footer :: footer"></div>
+<div
+        id="toast"
+        style="
+        display: none;
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        z-index: 9999;
+        background: #8074dd;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: opacity 0.3s;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        font-weight: 600;
+        font-size: 16px;
+      "
+></div>
+</body>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
-      function loadProducts(page = 0) {
-        fetch(`/api/products?page=${page}&size=8`)
-          .then((response) => response.json())
-          .then((data) => {
-            renderProducts(data.content);
-            renderPagination(data.totalPages, data.number);
-          });
-      }
+        function loadProducts(page = 0) {
+            fetch(`/api/products?page=${page}&size=8`)
+                .then((response) => response.json())
+                .then((data) => {
+                    renderProducts(data.content);
+                    renderPagination(data.totalPages, data.number);
+                });
+        }
 
-      function renderProducts(products) {
-        const list = document.getElementById("product-list");
-        list.innerHTML = products
-          .map(
-            (p) => `
+        function renderProducts(products) {
+            const list = document.getElementById("product-list");
+            list.innerHTML = products
+                .map(
+                    (p) => `
         <div
             class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
         >
-            <a href="/detail?id=${p.id}">
+           <a href="/detail/${p.id}">
                 <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl">
                     <img
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -720,11 +738,16 @@
                     </p>
                     <div class="flex gap-2 pt-3">
                         <button
-                            class="flex-[1.6] flex items-center justify-center gap-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
-                        >
-                            <span class="material-symbols-outlined text-xs">shopping_cart</span>
-                            Thêm vào giỏ
-                        </button>
+  class="add-to-cart-home flex-[1.6] flex items-center justify-center gap-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
+  data-id="${p.id}"
+  data-name="${p.tenSanPham}"
+  data-price="${p.gia}"
+  data-image="${p.anhChinh}"
+  type="button"
+>
+  <span class="material-symbols-outlined text-xs">shopping_cart</span>
+  Thêm vào giỏ
+</button>
                         <button
                             class="flex-[1] flex items-center justify-center gap-1 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
                         >
@@ -736,46 +759,87 @@
             </a>
         </div>
     `,
-          )
-          .join("");
-      }
-
-      function renderPagination(totalPages, currentPage) {
-        const pagination = document.getElementById("pagination");
-        let html = "";
-        for (let i = 0; i < totalPages; i++) {
-          html += `<a href="#" class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 page-link${i === currentPage ? " bg-primary text-white border-primary" : ""}" data-page="${i}">${i + 1}</a> `;
+                )
+                .join("");
         }
-        // Nút next
-        if (currentPage < totalPages - 1) {
-          html += `<a href="#" class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 page-link" data-page="${currentPage + 1}">
+
+        function renderPagination(totalPages, currentPage) {
+            const pagination = document.getElementById("pagination");
+            let html = "";
+            for (let i = 0; i < totalPages; i++) {
+                html += `<a href="#" class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 page-link${i === currentPage ? " bg-primary text-white border-primary" : ""}" data-page="${i}">${i + 1}</a> `;
+            }
+            // Nút next
+            if (currentPage < totalPages - 1) {
+                html += `<a href="#" class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 page-link" data-page="${currentPage + 1}">
                         <span class="material-symbols-outlined text-sm">chevron_right</span>
                     </a>`;
+            }
+            pagination.innerHTML = html;
+            document.querySelectorAll(".page-link").forEach((link) => {
+                link.onclick = function (e) {
+                    e.preventDefault();
+                    loadProducts(Number(this.dataset.page));
+                };
+            });
         }
-        pagination.innerHTML = html;
-        document.querySelectorAll(".page-link").forEach((link) => {
-          link.onclick = function (e) {
-            e.preventDefault();
-            loadProducts(Number(this.dataset.page));
-          };
-        });
-      }
 
-      loadProducts();
+        loadProducts();
     });
+
     function loadProducts(page = 0) {
-      const list = document.getElementById("product-list");
-      list.style.opacity = 0; // Fade out
-      fetch(`/api/products?page=${page}&size=8`)
-        .then((response) => response.json())
-        .then((data) => {
-          setTimeout(() => {
-            // Đợi hiệu ứng fade out xong rồi render
-            renderProducts(data.content);
-            list.style.opacity = 1; // Fade in
-            renderPagination(data.totalPages, data.number);
-          }, 200); // 200ms cho hiệu ứng mượt
-        });
+        const list = document.getElementById("product-list");
+        list.style.opacity = 0; // Fade out
+        fetch(`/api/products?page=${page}&size=8`)
+            .then((response) => response.json())
+            .then((data) => {
+                setTimeout(() => {
+                    // Đợi hiệu ứng fade out xong rồi render
+                    renderProducts(data.content);
+                    list.style.opacity = 1; // Fade in
+                    renderPagination(data.totalPages, data.number);
+                }, 200); // 200ms cho hiệu ứng mượt
+            });
     }
-  </script>
+
+    // thêm vào giỏ hàng
+    document
+        .getElementById("product-list")
+        .addEventListener("click", function (e) {
+            const btn = e.target.closest(".add-to-cart-home");
+            if (btn) {
+                e.preventDefault();
+                const product = {
+                    id: btn.getAttribute("data-id"),
+                    name: btn.getAttribute("data-name"),
+                    price: btn.getAttribute("data-price"),
+                    image: btn.getAttribute("data-image"),
+                    quantity: 1,
+                };
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                const index = cart.findIndex((item) => item.id == product.id);
+                if (index >= 0) {
+                    cart[index].quantity += 1;
+                } else {
+                    cart.push(product);
+                }
+                localStorage.setItem("cart", JSON.stringify(cart));
+                updateCartCount();
+                showToast("Đã thêm vào giỏ hàng!");
+            }
+        });
+
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.style.display = "block";
+        toast.style.opacity = "1";
+        setTimeout(() => {
+            toast.style.opacity = "0";
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 300);
+        }, 1000);
+    }
+</script>
 </html>

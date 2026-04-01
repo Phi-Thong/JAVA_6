@@ -18,10 +18,14 @@ import asm.poly.asm_java6.repository.UsersRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 public class loginConTroller {
 
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UsersRepository usersRepository;
 
@@ -39,7 +43,7 @@ public class loginConTroller {
                           Model model,
                           HttpServletRequest request,
                           HttpServletResponse response) {
-                            System.out.println("rememberMe = " + rememberMe);
+        System.out.println("rememberMe = " + rememberMe);
 
         // 1️⃣ Check rỗng
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
@@ -55,17 +59,11 @@ public class loginConTroller {
             return "User/login";
         }
 
-        // 2a️⃣ Xử lý mật khẩu {noop} nếu có
-        String dbPassword = user.getMatKhau();
-        if (dbPassword.startsWith("{noop}")) {
-            dbPassword = dbPassword.substring(6); // loại bỏ {noop}
-        }
-
-        // 2b️⃣ So sánh mật khẩu
-        if (!dbPassword.equals(password)) {
+        if (!passwordEncoder.matches(password, user.getMatKhau())) {
             model.addAttribute("errorMessage", "Email hoặc mật khẩu không đúng!");
             return "User/login";
         }
+
 
         // 3️⃣ Check trạng thái (true = bị khóa)
         if (Boolean.TRUE.equals(user.getTrangThai())) {
@@ -85,7 +83,7 @@ public class loginConTroller {
         org.springframework.security.core.userdetails.UserDetails userDetails =
                 org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
-                        .password(dbPassword)
+                        .password(user.getMatKhau())
                         .authorities(authorities)
                         .build();
 
@@ -104,9 +102,9 @@ public class loginConTroller {
 
         // 8.1️⃣ Nếu có tick "Ghi nhớ đăng nhập", set cookie remember-me
         if (rememberMe != null) {
-            String token = user.getEmail() + ":" + dbPassword;
+            String token = user.getEmail() + ":" + user.getMatKhau();
             String encoded = java.util.Base64.getEncoder().encodeToString(token.getBytes());
-             System.out.println("Set remember-me cookie");
+            System.out.println("Set remember-me cookie");
             Cookie cookie = new Cookie("remember-me", encoded);
             cookie.setPath("/");
             cookie.setMaxAge(7 * 24 * 60 * 60); // 7 ngày

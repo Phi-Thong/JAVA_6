@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfig {
@@ -22,7 +24,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/login", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/verify", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .anyRequest().permitAll()
@@ -40,7 +42,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
 
-               
+
                 .rememberMe(remember -> remember
                         .key("uniqueAndSecret") // Đặt chuỗi bất kỳ
                         .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 ngày
@@ -63,5 +65,10 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

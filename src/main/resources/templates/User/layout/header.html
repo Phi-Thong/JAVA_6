@@ -28,14 +28,14 @@
                        placeholder="Tìm kiếm sản phẩm..." type="text"/>
             </div>
 
-            <a th:href="@{/user/shoppingCart}"
+            <a href="/shoppingCart"
                class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative inline-block">
 
                 <span class="material-symbols-outlined">shopping_cart</span>
 
-                <span class="absolute top-1 right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                    2
-                </span>
+                <span id="cart-count"
+                      class="absolute top-1 right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">
+    </span>
 
             </a>
             <button onclick="toggleDarkMode()"
@@ -141,5 +141,35 @@
                 document.documentElement.classList.add('dark');
             }
         })();
+
+
+    </script>
+    <script>
+        function updateCartCount() {
+            // Lấy cart từ localStorage (dạng array)
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Tính tổng số lượng sản phẩm
+            let total = cart.reduce((sum, item) => {
+                return sum + (item.quantity || 1);
+            }, 0);
+
+            const badge = document.getElementById("cart-count");
+            if (!badge) return;
+
+            // Nếu có sản phẩm thì hiện badge
+            if (total > 0) {
+                badge.innerText = total > 99 ? "99+" : total;
+                badge.classList.remove("hidden");
+            } else {
+                // Không có thì ẩn
+                badge.classList.add("hidden");
+            }
+        }
+
+        // Chạy khi load trang
+        document.addEventListener("DOMContentLoaded", function () {
+            updateCartCount();
+        });
     </script>
 </header>

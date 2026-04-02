@@ -2,6 +2,7 @@ package asm.poly.asm_java6.enity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "product_sizes")
@@ -15,6 +16,7 @@ public class ProductSize {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private Product product;
 
     @Column(name = "size")

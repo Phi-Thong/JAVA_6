@@ -3,6 +3,7 @@ package asm.poly.asm_java6.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,21 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // Danh sách size còn hàng (nếu trường là 'size', nếu không hãy sửa lại)
     @Query("SELECT s.size FROM ProductSize s WHERE s.product.id = :productId AND s.soLuong > 0")
     List<Integer> getAvailableSizes(@Param("productId") Long productId);
+
+    //
+    Page<Product> findByBrandId(Integer brandId, Pageable pageable);
+
+    Page<Product> findByBrandIdIn(List<Integer> brandIds, Pageable pageable);
+
+    @Query("""
+                SELECT DISTINCT p FROM Product p
+                JOIN p.productSizes ps
+                WHERE (:size IS NULL OR ps.size = :size)
+                AND (:brandIds IS NULL OR p.brand.id IN :brandIds)
+            """)
+    Page<Product> findByFilters(
+            @Param("size") Integer size,
+            @Param("brandIds") List<Long> brandIds,
+            Pageable pageable
+    );
 }

@@ -6,24 +6,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import asm.poly.asm_java6.config.JwtUtils;
 import asm.poly.asm_java6.enity.users;
 import asm.poly.asm_java6.repository.UsersRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 public class loginConTroller {
 
-
+@Autowired
+private JwtUtils jwtUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -45,13 +46,13 @@ public class loginConTroller {
                           HttpServletResponse response) {
         System.out.println("rememberMe = " + rememberMe);
 
-        // 1️⃣ Check rỗng
+        // 1️ Check rỗng
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             model.addAttribute("errorMessage", "Vui lòng nhập đầy đủ thông tin");
             return "User/login";
         }
 
-        // 2️⃣ Tìm user theo email
+        // 2️ Tìm user theo email
         users user = usersRepository.findByEmail(email);
 
         if (user == null) {
@@ -91,25 +92,16 @@ public class loginConTroller {
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
-        // 7️⃣ Lưu Authentication vào SecurityContext
-        SecurityContextHolder.getContext().setAuthentication(auth);
+       // Sau khi xác thực thành công:
+        List<String> roles = new ArrayList<>();
+        roles.add(user.getVaiTro() ? "ROLE_ADMIN" : "ROLE_USER");
+        String token = jwtUtils.generateToken(user.getEmail(), roles, user.getHoTen(), null);
 
-        // 8️⃣ Lưu vào session để các request sau nhận biết user đã login
-        request.getSession().setAttribute(
-                "SPRING_SECURITY_CONTEXT",
-                SecurityContextHolder.getContext()
-        );
-
-        // 8.1️⃣ Nếu có tick "Ghi nhớ đăng nhập", set cookie remember-me
-        if (rememberMe != null) {
-            String token = user.getEmail() + ":" + user.getMatKhau();
-            String encoded = java.util.Base64.getEncoder().encodeToString(token.getBytes());
-            System.out.println("Set remember-me cookie");
-            Cookie cookie = new Cookie("remember-me", encoded);
-            cookie.setPath("/");
-            cookie.setMaxAge(7 * 24 * 60 * 60); // 7 ngày
-            response.addCookie(cookie);
-        }
+        Cookie cookie = new Cookie("jwt", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(7 * 24 * 60 * 60); // 7 ngày
+        response.addCookie(cookie);
 
         // 9️⃣ Redirect theo role
         if (Boolean.TRUE.equals(user.getVaiTro())) {

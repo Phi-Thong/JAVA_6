@@ -2,43 +2,32 @@ package asm.poly.asm_java6.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import asm.poly.asm_java6.enity.Product;
-import asm.poly.asm_java6.repository.ProductRepository;
 
-@Service
-public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
+public interface ProductService {
+    List<Product> findAll();
 
-    // Lấy tất cả sản phẩm
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
+    Page<Product> findPaginated(int page, int size);
 
-    // Lấy sản phẩm theo phân trang
-    public Page<Product> findPaginated(int page, int size) {
-        return productRepository.findAll(PageRequest.of(page, size));
-    }
+    Product findProductDetailById(Long id);
 
-    // Lấy chi tiết sản phẩm theo id (kèm brand, images, sizes)
-    public Product findProductDetailById(Long id) {
-        return productRepository.findProductDetailById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với id: " + id));
-    }
+    Integer getTotalStock(Long productId);
 
-    // Lấy tổng số lượng tồn kho của sản phẩm
-    public Integer getTotalStock(Long productId) {
-        Integer total = productRepository.getTotalStock(productId);
-        return total != null ? total : 0;
-    }
+    List<Integer> getAvailableSizes(Long productId);
 
-    // Lấy danh sách size còn hàng của sản phẩm
-    public List<Integer> getAvailableSizes(Long productId) {
-        return productRepository.getAvailableSizes(productId);
-    }
+    Page<Product> findByBrandId(Integer brandId, int page, int size);
+
+    Page<Product> findPaginated(Pageable pageable);
+
+    Page<Product> findByBrandIds(List<Integer> brandIds, Pageable pageable);
+
+    List<Integer> getAllSizes();
+
+    // lọc theo size
+  
+
+    Page<Product> findByFilters(Integer size, List<Long> brandIds, Pageable pageable);
 }

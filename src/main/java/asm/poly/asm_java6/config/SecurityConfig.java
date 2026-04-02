@@ -1,16 +1,20 @@
 package asm.poly.asm_java6.config;
 
-import asm.poly.asm_java6.config.OAuth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler; // Xử lý khi login OAuth2 thành công
@@ -59,10 +63,25 @@ public class SecurityConfig {
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/home")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                );
+                        .logoutSuccessHandler((jakarta.servlet.http.HttpServletRequest request,
+                                               jakarta.servlet.http.HttpServletResponse response,
+                                               org.springframework.security.core.Authentication authentication) -> {
+                            // Xóa JWT
+                            jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("jwt", null);
+                            cookie.setHttpOnly(true);
+                            cookie.setPath("/");
+                            cookie.setMaxAge(0);
+                            response.addCookie(cookie);
+
+                            // Xóa session Spring
+                            if (request.getSession(false) != null) {
+                                request.getSession().invalidate();
+                            }
+
+                            response.sendRedirect("/login");
+                        })
+                )
+                .addFilterBefore(jwtAuthenticationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

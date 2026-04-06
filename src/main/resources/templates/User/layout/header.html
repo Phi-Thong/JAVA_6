@@ -30,6 +30,7 @@
           >search</span
         >
         <input
+          id="header-search"
           class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-64"
           placeholder="Tìm kiếm sản phẩm..."
           type="text"
@@ -139,7 +140,7 @@
       menu.classList.toggle("hidden");
     }
 
-    // 🔥 DARK MODE FUNCTION (THÊM)
+    //  DARK MODE FUNCTION (THÊM)
     function toggleDarkMode() {
       const html = document.documentElement;
       html.classList.toggle("dark");
@@ -151,7 +152,7 @@
       }
     }
 
-    // 🔥 LOAD LẠI TRẠNG THÁI (THÊM)
+    //  LOAD LẠI TRẠNG THÁI (THÊM)
     (function () {
       const theme = localStorage.getItem("theme");
       if (theme === "dark") {
@@ -185,6 +186,21 @@
     // Chạy khi load trang
     document.addEventListener("DOMContentLoaded", function () {
       updateCartCount();
+    });
+    // tìm kiếm
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("header-search");
+      if (searchInput) {
+        searchInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            const keyword = this.value.trim();
+            if (keyword) {
+              window.location.href =
+                "/home?keyword=" + encodeURIComponent(keyword);
+            }
+          }
+        });
+      }
     });
   </script>
 </header>

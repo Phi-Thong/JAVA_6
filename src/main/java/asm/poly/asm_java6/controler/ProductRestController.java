@@ -28,13 +28,14 @@ public class ProductRestController {
     public Page<ProductDto> getProducts(
             @RequestParam(required = false) List<Long> brandId,
             @RequestParam(required = false) Integer productSize,
+            @RequestParam(required = false) String keyword, // Thêm tham số keyword
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        // 🔥 LUÔN gọi filter chung
-        Page<Product> products = productService.findByFilters(productSize, brandId, pageable);
+        // Gọi filter chung, truyền thêm keyword
+        Page<Product> products = productService.findByFilters(productSize, brandId, keyword, pageable);
 
         return products.map(product -> {
             ProductDto dto = new ProductDto();

@@ -73,20 +73,26 @@ public class ProductServiceImpl implements ProductService {
     // lọc theo size
 
     @Override
-    @Transactional
-    public Page<Product> findByFilters(Integer size, List<Long> brandIds, Pageable pageable) {
-        Page<Product> page = productRepository.findByFilters(size, brandIds, pageable);
+@Transactional
+public Page<Product> findByFilters(Integer size, List<Long> brandIds, String keyword, Pageable pageable) {
+    Page<Product> page = productRepository.findByFilters(size, brandIds, keyword, pageable);
 
-        // Nếu có lọc size, chỉ giữ lại productSizes đúng size đó
-        if (size != null) {
-            page.getContent().forEach(product -> {
-                product.setProductSizes(
-                        product.getProductSizes().stream()
-                                .filter(ps -> ps.getSize().equals(size))
-                                .toList());
-            });
-        }
-        return page;
+    // Nếu có lọc size, chỉ giữ lại productSizes đúng size đó
+    if (size != null) {
+        page.getContent().forEach(product -> {
+            product.setProductSizes(
+                product.getProductSizes().stream()
+                    .filter(ps -> ps.getSize().equals(size))
+                    .toList());
+        });
     }
+    return page;
+}
+    // 
+     @Override
+    public List<Product> findRelatedProducts(Long brandId, Long excludeProductId) {
+        return productRepository.findTop4ByBrandIdAndIdNot(brandId, excludeProductId);
+    }
+
 
 }

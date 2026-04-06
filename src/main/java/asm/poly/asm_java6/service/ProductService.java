@@ -27,7 +27,7 @@ public interface ProductService {
     List<Integer> getAllSizes();
 
     // lọc theo size
-  
-
-    Page<Product> findByFilters(Integer size, List<Long> brandIds, Pageable pageable);
+    
+    Page<Product> findByFilters(Integer productSize, List<Long> brandId, String keyword, Pageable pageable);
+     List<Product> findRelatedProducts(Long brandId, Long excludeProductId);
 }

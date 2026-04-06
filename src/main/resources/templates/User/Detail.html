@@ -1,606 +1,561 @@
 <!doctype html>
 
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
-            rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
     />
     <link
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
-            rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
     />
     <link
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-            rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
     />
     <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#0056b2",
-                        "background-light": "#f5f7f8",
-                        "background-dark": "#0f1923",
-                    },
-                    fontFamily: {
-                        display: ["Inter"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.25rem",
-                        lg: "0.5rem",
-                        xl: "0.75rem",
-                        full: "9999px",
-                    },
-                },
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0056b2",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1923",
             },
-        };
+            fontFamily: {
+              display: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
     </script>
     <style>
-        .tab-animate-enter {
-            opacity: 0;
-            transform: scale(0.98);
-            filter: blur(6px);
-        }
+      .tab-animate-enter {
+        opacity: 0;
+        transform: scale(0.98);
+        filter: blur(6px);
+      }
 
-        .tab-animate-enter-active {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+      .tab-animate-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+        transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      }
 
-        .tab-animate-exit {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-        }
+      .tab-animate-exit {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
 
-        .tab-animate-exit-active {
-            opacity: 0;
-            transform: scale(0.98);
-            filter: blur(6px);
-            transition: all 0.3s ease;
-        }
+      .tab-animate-exit-active {
+        opacity: 0;
+        transform: scale(0.98);
+        filter: blur(6px);
+        transition: all 0.3s ease;
+      }
     </style>
     <title>Nike Air Force 1 - Detail</title>
-</head>
-<body
-        class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100"
->
-<!-- Header Navigation -->
-<div th:replace="User/layout/header :: header"></div>
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Breadcrumbs -->
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100"
+  >
+    <!-- Header Navigation -->
+    <div th:replace="User/layout/header :: header"></div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Breadcrumbs -->
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <!-- Left: Gallery -->
         <div class="space-y-4">
-            <!-- ẢNH CHÍNH -->
-            <div
-                    class="aspect-square bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800"
+          <!-- ẢNH CHÍNH -->
+          <div
+            class="aspect-square bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800"
+          >
+            <img
+              id="mainImage"
+              class="w-full h-full object-cover"
+              th:src="${product.anhChinh}"
+              th:alt="${product.tenSanPham}"
+            />
+          </div>
+          <!-- ẢNH PHỤ -->
+          <div class="grid grid-cols-4 gap-4">
+            <button
+              th:each="img,iterStat : ${anhPhu}"
+              th:class="'thumb rounded-lg overflow-hidden ' + (${iterStat.index == 0} ? 'border-2 border-primary' : 'border hover:border-primary transition')"
             >
-                <img
-                        id="mainImage"
-                        class="w-full h-full object-cover"
-                        th:src="${product.anhChinh}"
-                        th:alt="${product.tenSanPham}"
-                />
-            </div>
-            <!-- ẢNH PHỤ -->
-            <div class="grid grid-cols-4 gap-4">
-                <button
-                        th:each="img,iterStat : ${anhPhu}"
-                        th:class="'thumb rounded-lg overflow-hidden ' + (${iterStat.index == 0} ? 'border-2 border-primary' : 'border hover:border-primary transition')"
-                >
-                    <img
-                            class="w-full h-full object-cover"
-                            th:src="${img}"
-                            th:alt="${product.tenSanPham}"
-                    />
-                </button>
-            </div>
+              <img
+                class="w-full h-full object-cover"
+                th:src="${img}"
+                th:alt="${product.tenSanPham}"
+              />
+            </button>
+          </div>
         </div>
         <!-- Right: Product Info -->
         <div class="flex flex-col">
-            <div class="mb-6">
+          <div class="mb-6">
             <span
-                    class="text-primary font-semibold text-sm uppercase tracking-wider"
-                    th:text="${product.brand.tenThuongHieu}"
-            >Nike</span
+              class="text-primary font-semibold text-sm uppercase tracking-wider"
+              th:text="${product.brand.tenThuongHieu}"
+              >Nike</span
             >
-                <h2
-                        class="text-4xl font-extrabold text-slate-900 dark:text-white mt-1"
-                        th:text="${product.tenSanPham}"
+            <h2
+              class="text-4xl font-extrabold text-slate-900 dark:text-white mt-1"
+              th:text="${product.tenSanPham}"
+            >
+              Nike Air Force 1 '07
+            </h2>
+            <div class="flex items-center gap-4 mt-3">
+              <div class="flex items-center">
+                <span
+                  th:each="i : ${#numbers.sequence(1, 5)}"
+                  class="material-symbols-outlined text-yellow-400"
+                  th:text="${i <= T(java.lang.Math).floor(averageRating) ? 'star' : (i - averageRating <= 0.5 && i - averageRating > 0 ? 'star_half' : 'star_border')}"
                 >
-                    Nike Air Force 1 '07
-                </h2>
-                <div class="flex items-center gap-4 mt-3">
-                    <div class="flex items-center text-amber-400">
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined">star_half</span>
-                        <span class="ml-2 text-sm text-slate-500">(128 đánh giá)</span>
-                    </div>
-                    <span class="h-4 w-px bg-slate-300 dark:bg-slate-700"></span>
-                    <span class="text-sm text-emerald-600 font-medium"
-                    >Còn 12 sản phẩm</span
-                    >
-                </div>
-            </div>
-            <div class="mb-8">
-                <p
-                        class="text-3xl font-bold text-primary"
-                        th:text="${#numbers.formatDecimal(product.gia, 0, 'POINT', 0, 'COMMA')} + 'VND'"
-                >
-                    2.900.000đ
-                </p>
-                <p
-                        class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed"
-                        th:text="${product.moTa}"
-                >
-                    Thiết kế cổ điển kết hợp phong cách hiện đại, phù hợp cho cả thời
-                    trang đường phố và hoạt động hàng ngày. Đôi giày biểu tượng với
-                    lớp đệm Air êm ái.
-                </p>
-            </div>
-            <div class="space-y-6">
-                <!-- Size Selection -->
-                <div>
-                    <div class="flex justify-between items-center mb-3">
-                <span class="font-bold text-sm uppercase tracking-wide"
-                >Chọn Size (EU)</span
-                >
-                        <button
-                                id="openSizeChart"
-                                class="text-sm text-primary hover:underline"
-                        >
-                            Bảng quy đổi size
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-4 gap-2">
-                        <button
-                                th:each="size : ${sizes}"
-                                class="py-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-primary font-medium text-sm"
-                                th:text="${size}"
-                        >
-                            40
-                        </button>
-                    </div>
-                </div>
-                <!-- Quantity & Actions -->
-                <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <div
-                            class="flex items-center border border-slate-200 dark:border-slate-700 rounded-lg h-12"
-                    >
-                        <button
-                                class="px-4 h-full flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800"
-                        >
-                            <span class="material-symbols-outlined text-xl">remove</span>
-                        </button>
-                        <span class="px-6 font-bold">1</span>
-                        <button
-                                class="px-4 h-full flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800"
-                        >
-                            <span class="material-symbols-outlined text-xl">add</span>
-                        </button>
-                    </div>
-                    <button
-                            id="addToCartBtn"
-                            type="button"
-                            class="flex-1 bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-white h-12 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors"
-                            th:data-id="${product.id}"
-                            th:data-name="${product.tenSanPham}"
-                            th:data-price="${product.gia}"
-                            th:data-image="${product.anhChinh}"
-                    >
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                        Thêm vào giỏ hàng
-                    </button>
-                </div>
-                <a
-                        th:href="@{/user/order}"
-                        class="w-full flex items-center justify-center bg-primary text-white h-14 rounded-lg font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
-                >
-                    Mua ngay
-                </a>
-                <!-- Shipping Info -->
-                <div
-                        class="flex items-center gap-3 p-4 bg-primary/5 rounded-xl border border-primary/10"
-                >
-              <span class="material-symbols-outlined text-primary"
-              >local_shipping</span
+                  star
+                </span>
+                <span class="ml-2 text-sm text-slate-500">
+                  (<span th:text="${reviewCount}">0</span> đánh giá)
+                </span>
+              </div>
+              <span class="h-4 w-px bg-slate-300 dark:bg-slate-700"></span>
+              <span
+                class="text-sm text-emerald-600 font-medium"
+                th:text="'Còn ' + ${totalStock} + ' sản phẩm'"
               >
-                    <p class="text-sm text-slate-700 dark:text-slate-300">
-                        <span class="font-bold">Miễn phí giao hàng</span> cho đơn hàng
-                        trên 1.000.000đ. Nhận hàng sau 2-3 ngày làm việc.
-                    </p>
-                </div>
+                Còn 0 sản phẩm
+              </span>
             </div>
+          </div>
+          <div class="mb-8">
+            <p
+              class="text-3xl font-bold text-primary"
+              th:text="${#numbers.formatDecimal(product.gia, 0, 'POINT', 0, 'COMMA')} + 'VND'"
+            >
+              2.900.000đ
+            </p>
+            <p
+              class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed"
+              th:text="${product.moTa}"
+            >
+              Thiết kế cổ điển kết hợp phong cách hiện đại, phù hợp cho cả thời
+              trang đường phố và hoạt động hàng ngày. Đôi giày biểu tượng với
+              lớp đệm Air êm ái.
+            </p>
+          </div>
+          <div class="space-y-6">
+            <!-- Size Selection -->
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <span class="font-bold text-sm uppercase tracking-wide"
+                  >Chọn Size (EU)</span
+                >
+                <button
+                  id="openSizeChart"
+                  class="text-sm text-primary hover:underline"
+                >
+                  Bảng quy đổi size
+                </button>
+              </div>
+              <div class="grid grid-cols-4 gap-2">
+                <button
+                  th:each="size : ${sizes}"
+                  class="py-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-primary font-medium text-sm"
+                  th:text="${size}"
+                >
+                  40
+                </button>
+              </div>
+            </div>
+            <!-- Quantity & Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
+              <div
+                class="flex items-center border border-slate-200 dark:border-slate-700 rounded-lg h-12"
+              >
+                <button
+                  id="decreaseQty"
+                  class="px-4 h-full flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800"
+                >
+                  <span class="material-symbols-outlined text-xl">remove</span>
+                </button>
+                <span id="quantity" class="px-6 font-bold">1</span>
+                <button
+                  id="increaseQty"
+                  class="px-4 h-full flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800"
+                >
+                  <span class="material-symbols-outlined text-xl">add</span>
+                </button>
+              </div>
+              <button
+                id="addToCartBtn"
+                type="button"
+                class="flex-1 bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-white h-12 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors"
+                th:data-id="${product.id}"
+                th:data-name="${product.tenSanPham}"
+                th:data-price="${product.gia}"
+                th:data-image="${product.anhChinh}"
+                th:data-brand="${product.brand.tenThuongHieu}"
+              >
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Thêm vào giỏ hàng
+              </button>
+            </div>
+            <a
+              th:href="@{/user/order}"
+              class="w-full flex items-center justify-center bg-primary text-white h-14 rounded-lg font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+            >
+              Mua ngay
+            </a>
+            <!-- Shipping Info -->
+            <div
+              class="flex items-center gap-3 p-4 bg-primary/5 rounded-xl border border-primary/10"
+            >
+              <span class="material-symbols-outlined text-primary"
+                >local_shipping</span
+              >
+              <p class="text-sm text-slate-700 dark:text-slate-300">
+                <span class="font-bold">Miễn phí giao hàng</span> cho đơn hàng
+                trên 1.000.000đ. Nhận hàng sau 2-3 ngày làm việc.
+              </p>
+            </div>
+          </div>
         </div>
-    </div>
-    <!-- Tabs Section -->
-    <div class="border-t border-slate-200 dark:border-slate-800 py-12">
+      </div>
+      <!-- Tabs Section -->
+      <div class="border-t border-slate-200 dark:border-slate-800 py-12">
         <!-- TAB BUTTON -->
         <div
-                class="flex border-b border-slate-200 dark:border-slate-800 mb-8 relative"
+          class="flex border-b border-slate-200 dark:border-slate-800 mb-8 relative"
         >
-            <!-- Thanh underline chạy -->
-            <div
-                    id="tabIndicator"
-                    class="absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-in-out"
-            ></div>
+          <!-- Thanh underline chạy -->
+          <div
+            id="tabIndicator"
+            class="absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-in-out"
+          ></div>
 
-            <button
-                    id="tabDesc"
-                    class="tab-btn px-8 py-4 font-bold text-primary transition-all duration-300"
-            >
-                Mô tả sản phẩm
-            </button>
+          <button
+            id="tabDesc"
+            class="tab-btn px-8 py-4 font-bold text-primary transition-all duration-300"
+          >
+            Mô tả sản phẩm
+          </button>
 
-            <button
-                    id="tabReview"
-                    class="tab-btn px-8 py-4 text-slate-500 font-medium hover:text-slate-900 dark:hover:text-white transition-all duration-300"
-            >
-                Đánh giá sản phẩm
-            </button>
+          <button
+            id="tabReview"
+            class="tab-btn px-8 py-4 text-slate-500 font-medium hover:text-slate-900 dark:hover:text-white transition-all duration-300"
+          >
+            Đánh giá sản phẩm
+          </button>
         </div>
 
         <!-- TAB CONTENT 1 -->
         <!-- TAB CONTENT 1 -->
         <div
-                id="contentDescWrapper"
-                class="transition-opacity duration-700 ease-in-out opacity-100"
+          id="contentDescWrapper"
+          class="transition-opacity duration-700 ease-in-out opacity-100"
         >
-            <div
-                    id="contentDesc"
-                    class="tab-content grid grid-cols-1 md:grid-cols-3 gap-12"
-            >
-                <div class="md:col-span-2 space-y-6">
-                    <h3 class="text-xl font-bold">Chi tiết sản phẩm</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Nike Air Force 1 '07 mang đến sự kết hợp hoàn hảo giữa thiết kế
-                        mang tính biểu tượng và sự thoải mái hiện đại.
-                    </p>
-
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
+          <div
+            id="contentDesc"
+            class="tab-content grid grid-cols-1 md:grid-cols-3 gap-12"
+          >
+            <div class="md:col-span-2 space-y-6">
+              <h3 class="text-xl font-bold">Chi tiết sản phẩm</h3>
+              <p
+                class="text-slate-600 dark:text-slate-400 leading-relaxed"
+                th:text="${product.moTa}"
+              ></p>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-primary text-lg"
-                  >check_circle</span
+                    >check_circle</span
                   >
-                            <span>Chất liệu da thật và da tổng hợp.</span>
-                        </li>
+                  <span>Chất liệu da thật và da tổng hợp.</span>
+                </li>
 
-                        <li class="flex items-start gap-3">
+                <li class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-primary text-lg"
-                  >check_circle</span
+                    >check_circle</span
                   >
-                            <span>Đệm Nike Air êm ái.</span>
-                        </li>
+                  <span>Đệm Nike Air êm ái.</span>
+                </li>
 
-                        <li class="flex items-start gap-3">
+                <li class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-primary text-lg"
-                  >check_circle</span
+                    >check_circle</span
                   >
-                            <span>Đế cao su chống trượt.</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="space-y-6">
-                    <h3 class="text-xl font-bold">Thông tin chi tiết</h3>
-
-                    <div class="space-y-4">
-                        <div class="flex justify-between py-2 border-b">
-                            <span class="text-slate-500">Mã sản phẩm</span>
-                            <span class="font-medium">CW2288-111</span>
-                        </div>
-
-                        <div class="flex justify-between py-2 border-b">
-                            <span class="text-slate-500">Màu sắc</span>
-                            <span class="font-medium">White</span>
-                        </div>
-
-                        <div class="flex justify-between py-2 border-b">
-                            <span class="text-slate-500">Chất liệu</span>
-                            <span class="font-medium">Da & Cao su</span>
-                        </div>
-
-                        <div class="flex justify-between py-2 border-b">
-                            <span class="text-slate-500">Xuất xứ</span>
-                            <span class="font-medium">Vietnam</span>
-                        </div>
-                    </div>
-                </div>
+                  <span>Đế cao su chống trượt.</span>
+                </li>
+              </ul>
             </div>
+
+            <div class="space-y-6">
+              <h3 class="text-xl font-bold">Thông tin chi tiết</h3>
+
+              <div class="space-y-4">
+                <div class="flex justify-between py-2 border-b">
+                  <span class="text-slate-500">Mã sản phẩm</span>
+                  <span class="font-medium">CW2288-111</span>
+                </div>
+
+                <div class="flex justify-between py-2 border-b">
+                  <span class="text-slate-500">Màu sắc</span>
+                  <span class="font-medium">White</span>
+                </div>
+
+                <div class="flex justify-between py-2 border-b">
+                  <span class="text-slate-500">Chất liệu</span>
+                  <span class="font-medium">Da & Cao su</span>
+                </div>
+
+                <div class="flex justify-between py-2 border-b">
+                  <span class="text-slate-500">Xuất xứ</span>
+                  <span class="font-medium">Vietnam</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- TAB CONTENT 2 -->
         <div
-                id="contentReviewWrapper"
-                class="hidden transition-opacity duration-700 ease-in-out opacity-0"
+          id="contentReviewWrapper"
+          class="hidden transition-opacity duration-700 ease-in-out opacity-0"
         >
-            <div id="contentReview" class="tab-content">
-                <h3 class="text-xl font-bold mb-6">Đánh giá sản phẩm</h3>
+          <div id="contentReview" class="tab-content">
+            <h3 class="text-xl font-bold mb-6">Đánh giá sản phẩm</h3>
 
-                <div class="space-y-6">
-                    <div class="border-b pb-4">
-                        <div class="flex items-center gap-3 mb-2">
-                            <img src="/img/default.jpg" class="w-10 h-10 rounded-full"/>
-                            <div>
-                                <p class="font-semibold">Nguyễn Văn A</p>
-                                <div class="text-yellow-400 text-sm">★★★★☆</div>
-                            </div>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400">
-                            Giày rất đẹp, mang êm chân và đúng size.
-                        </p>
-                    </div>
+            <div class="space-y-6">
+              <!-- Nếu KHÔNG có bình luận -->
+              <div
+                th:if="${reviews == null || #lists.isEmpty(reviews)}"
+                class="text-center text-slate-500 py-6"
+              >
+                Im ắng quá… để lại một bình luận cho ấm áp hơn nhé 💖
+              </div>
 
-                    <div class="border-b pb-4">
-                        <div class="flex items-center gap-3 mb-2">
-                            <img src="/img/default.jpg" class="w-10 h-10 rounded-full"/>
-                            <div>
-                                <p class="font-semibold">Trần Minh</p>
-                                <div class="text-yellow-400 text-sm">★★★★★</div>
-                            </div>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400">
-                            Giao hàng nhanh, giày chuẩn Nike.
-                        </p>
+              <!-- Nếu CÓ bình luận -->
+              <div
+                th:unless="${reviews == null || #lists.isEmpty(reviews)}"
+                class="max-h-[280px] overflow-y-auto pr-2"
+              >
+                <div th:each="review : ${reviews}" class="border-b pb-4">
+                  <div class="flex items-center gap-3 mb-2">
+                    <img
+                      th:src="${review.user.avatar != null && !#strings.isEmpty(review.user.avatar) ? review.user.avatar : '/img/default.jpg'}"
+                      class="w-10 h-10 rounded-full"
+                    />
+                    <div>
+                      <p class="font-semibold" th:text="${review.user.hoTen}">
+                        Tên người dùng
+                      </p>
+                      <div class="text-yellow-400 text-sm">
+                        <span
+                          th:each="star : ${#numbers.sequence(1, review.rating)}"
+                          >★</span
+                        >
+                        <span
+                          th:each="star : ${#numbers.sequence(review.rating + 1, 5)}"
+                          class="text-slate-300"
+                          >★</span
+                        >
+                      </div>
                     </div>
+                  </div>
+                  <p
+                    class="text-slate-600 dark:text-slate-400"
+                    th:text="${review.comment}"
+                  >
+                    Nội dung bình luận
+                  </p>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-    <!-- Related Products -->
-    <div class="py-16 border-t border-slate-200 dark:border-slate-800">
+      </div>
+      <!-- Related Products -->
+      <div class="py-16 border-t border-slate-200 dark:border-slate-800">
         <div class="flex justify-between items-end mb-8">
-            <div>
-                <h2 class="text-2xl font-bold">Sản phẩm liên quan</h2>
-                <p class="text-slate-500 mt-1 text-sm">
-                    Có thể bạn cũng thích những mẫu giày này
-                </p>
-            </div>
-            <a
-                    class="text-primary font-bold flex items-center gap-1 group"
-                    href="/home"
+          <div>
+            <h2 class="text-2xl font-bold">Sản phẩm liên quan</h2>
+            <p class="text-slate-500 mt-1 text-sm">
+              Có thể bạn cũng thích những mẫu giày này
+            </p>
+          </div>
+          <a
+            class="text-primary font-bold flex items-center gap-1 group"
+            href="/home"
+          >
+            Xem tất cả
+            <span
+              class="material-symbols-outlined group-hover:translate-x-1 transition-transform"
+              >arrow_forward</span
             >
-                Xem tất cả
-                <span
-                        class="material-symbols-outlined group-hover:translate-x-1 transition-transform"
-                >arrow_forward</span
-                >
-            </a>
+          </a>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Adidas Ultraboost -->
-            <div
-                    class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all"
-            >
-                <div class="aspect-square relative overflow-hidden">
-                    <img
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            data-alt="Adidas Ultraboost sneaker"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1P-iPyuvOYNaRMDvnXt2ZY7-1k2B-GwjXUku30KXwCMXbKFiZHCwk_zZK-qvDTGnyeAf3qP_doC_7Ut4bbZKpURmL4TxMLTCDomw35NsNGJAZx3hfKSjoYo7pr1PR9dFj91P2PrUiYhIBARuxPGcb6CktGtfZVKxAOOUmLTs_3qqZIdx2ZdLf2JmJb279UlN0QhcflATaoIAd4S7EkXBnJqseJ7KbtjWA7h9lGRVCbLpQTelUpNWYmHT3N8r1O-bbRTgVCndzkYc"
-                    />
-                    <button
-                            class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                <span class="material-symbols-outlined text-slate-900"
-                >favorite</span
+          <div
+            th:each="sp : ${relatedProducts}"
+            class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all"
+          >
+            <a th:href="@{'/detail/' + ${sp.id}}" class="block h-full">
+              <div class="aspect-square relative overflow-hidden">
+                <img
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  th:src="${sp.anhChinh}"
+                  th:alt="${sp.tenSanPham}"
+                />
+                <button
+                  class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                    </button>
-                </div>
-                <div class="p-4">
-                    <p class="text-xs text-slate-400 font-bold uppercase">Adidas</p>
-                    <h4
-                            class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors"
-                    >
-                        Ultraboost 22
-                    </h4>
-                    <p class="text-primary font-bold mt-2">4.500.000đ</p>
-                </div>
-            </div>
-            <!-- Puma RS-X -->
-            <div
-                    class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all"
-            >
-                <div class="aspect-square relative overflow-hidden">
-                    <img
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            data-alt="Puma RS-X chunky sneaker"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWt_y191E5XWal5dxeyR7Ropx3kzQfd0DUE0sVlJfoZCXQaMXekO5FAeMKcchKffNvsL4K4GbpFX_m-jqUNbHfzDF1ZO3-8aKy7Ioe5WkE8soDP8hq46hNG4WAh9U-SHMcxzAYUsD1qDztUibL1bgQUU5Hl_yDqowC49klHYyTcF1PqtpMQ9ipYAfx9O1LafofBdIzMdW3Fe4WFokzkYbIm2aRYxeIr6hSatDxTlbJ5QROaWaMlVVfrNHPnpokL_fHyJ14VRP9UUE"
-                    />
-                    <button
-                            class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                <span class="material-symbols-outlined text-slate-900"
-                >favorite</span
+                  <span class="material-symbols-outlined text-slate-900"
+                    >favorite</span
+                  >
+                </button>
+              </div>
+              <div class="p-4">
+                <p
+                  class="text-xs text-slate-400 font-bold uppercase"
+                  th:text="${sp.brand.tenThuongHieu}"
                 >
-                    </button>
-                </div>
-                <div class="p-4">
-                    <p class="text-xs text-slate-400 font-bold uppercase">Puma</p>
-                    <h4
-                            class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors"
-                    >
-                        RS-X Triple White
-                    </h4>
-                    <p class="text-primary font-bold mt-2">3.200.000đ</p>
-                </div>
-            </div>
-            <!-- Converse Chuck Taylor -->
-            <div
-                    class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all"
-            >
-                <div class="aspect-square relative overflow-hidden">
-                    <img
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            data-alt="Converse Chuck Taylor High Top"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHyAOPYZgAvjy3r-_AGSUZKSK3mzDwgd0lFFWp1pCT8qawyOikHNHotMi0jvPB9P9sMb2o8I9sYnVvdsGGhANNgzsINE2pTni7hf0fwyI_QOlNRu--hZ2PqHi21mgabMvmX22efLUjWTEzBNaMSuuCQUplHqOiNu5nx8bogB0O6A9A_U-MfuZ6HGY5bT2N-p-CQx6eD7rlXlSXV73v2ZSdc3CPVpgRDz1e8dqNb1LIkIORJBUu-w8BOIx5d5cpMIzfGEOuGhhJUtE"
-                    />
-                    <button
-                            class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                <span class="material-symbols-outlined text-slate-900"
-                >favorite</span
+                  Brand
+                </p>
+                <h4
+                  class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors"
+                  th:text="${sp.tenSanPham}"
                 >
-                    </button>
-                </div>
-                <div class="p-4">
-                    <p class="text-xs text-slate-400 font-bold uppercase">Converse</p>
-                    <h4
-                            class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors"
-                    >
-                        Chuck Taylor All Star
-                    </h4>
-                    <p class="text-primary font-bold mt-2">1.800.000đ</p>
-                </div>
-            </div>
-            <!-- New Balance 550 -->
-            <div
-                    class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all"
-            >
-                <div class="aspect-square relative overflow-hidden">
-                    <img
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            data-alt="New Balance 550 vintage basketball sneaker"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuALSV6H_j9gflLFozY4eq80mhAVYW6Bg7WnJWSDU-KsQzw0RaavxKLnCB0WIZmeWYn8pNe3mloHl1cOPjbpdTiWRKZiqnBDOvnI5e-R8oMci9ersqrtiS5G1OSqhPtTzu2jSo5vYfrFuAfz8Ye_oJPzoMPjxdPNuAswdxz-LSTumRHuudv2XweaZbnpLKZqnE7cml2GzaWPwFkPD5QHLAHs8A9nRlW5rZ9gzfmvTT5KGVdjRahhoxuLNJzlFgVcvsgJ-ZLrEBynRz4"
-                    />
-                    <button
-                            class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                <span class="material-symbols-outlined text-slate-900"
-                >favorite</span
+                  Tên sản phẩm
+                </h4>
+                <p
+                  class="text-primary font-bold mt-2"
+                  th:text="${#numbers.formatDecimal(sp.gia, 0, 'POINT', 0, 'COMMA')} + 'đ'"
                 >
-                    </button>
-                </div>
-                <div class="p-4">
-                    <p class="text-xs text-slate-400 font-bold uppercase">
-                        New Balance
-                    </p>
-                    <h4
-                            class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors"
-                    >
-                        NB 550 'White Grey'
-                    </h4>
-                    <p class="text-primary font-bold mt-2">3.800.000đ</p>
-                </div>
-            </div>
+                  0đ
+                </p>
+              </div>
+            </a>
+          </div>
         </div>
-    </div>
-</main>
-<!--modal của bảng quy đổi-->
-<div
-        id="sizeModal"
-        class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50"
->
+      </div>
+    </main>
+    <!--modal của bảng quy đổi-->
     <div
-            class="bg-white dark:bg-slate-900 rounded-2xl w-[560px] max-w-[92%] p-7 shadow-2xl border border-slate-200 dark:border-slate-700"
+      id="sizeModal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50"
     >
+      <div
+        class="bg-white dark:bg-slate-900 rounded-2xl w-[560px] max-w-[92%] p-7 shadow-2xl border border-slate-200 dark:border-slate-700"
+      >
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
-            <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-primary text-2xl">
               straight
             </span>
 
-                <h2 class="text-xl font-bold tracking-tight">
-                    Bảng quy đổi size giày
-                </h2>
-            </div>
+            <h2 class="text-xl font-bold tracking-tight">
+              Bảng quy đổi size giày
+            </h2>
+          </div>
 
-            <button
-                    id="closeSizeChart"
-                    class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-red-50 hover:text-red-500 dark:hover:bg-slate-800 transition"
-            >
-                <span class="material-symbols-outlined">close</span>
-            </button>
+          <button
+            id="closeSizeChart"
+            class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-red-50 hover:text-red-500 dark:hover:bg-slate-800 transition"
+          >
+            <span class="material-symbols-outlined">close</span>
+          </button>
         </div>
 
         <!-- bảng -->
         <div
-                class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700"
+          class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700"
         >
-            <table class="w-full text-sm text-center">
-                <thead
-                        class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200"
-                >
-                <tr>
-                    <th class="py-3">EU</th>
-                    <th class="py-3">US</th>
-                    <th class="py-3">UK</th>
-                    <th class="py-3">CM</th>
-                </tr>
-                </thead>
+          <table class="w-full text-sm text-center">
+            <thead
+              class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200"
+            >
+              <tr>
+                <th class="py-3">EU</th>
+                <th class="py-3">US</th>
+                <th class="py-3">UK</th>
+                <th class="py-3">CM</th>
+              </tr>
+            </thead>
 
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <td class="py-3 font-semibold">39</td>
-                    <td>6</td>
-                    <td>5</td>
-                    <td>24.5</td>
-                </tr>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                <td class="py-3 font-semibold">39</td>
+                <td>6</td>
+                <td>5</td>
+                <td>24.5</td>
+              </tr>
 
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <td class="py-3 font-semibold">40</td>
-                    <td>7</td>
-                    <td>6</td>
-                    <td>25</td>
-                </tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                <td class="py-3 font-semibold">40</td>
+                <td>7</td>
+                <td>6</td>
+                <td>25</td>
+              </tr>
 
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <td class="py-3 font-semibold">41</td>
-                    <td>8</td>
-                    <td>7</td>
-                    <td>26</td>
-                </tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                <td class="py-3 font-semibold">41</td>
+                <td>8</td>
+                <td>7</td>
+                <td>26</td>
+              </tr>
 
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <td class="py-3 font-semibold">42</td>
-                    <td>9</td>
-                    <td>8</td>
-                    <td>27</td>
-                </tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                <td class="py-3 font-semibold">42</td>
+                <td>9</td>
+                <td>8</td>
+                <td>27</td>
+              </tr>
 
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <td class="py-3 font-semibold">43</td>
-                    <td>10</td>
-                    <td>9</td>
-                    <td>28</td>
-                </tr>
-                </tbody>
-            </table>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                <td class="py-3 font-semibold">43</td>
+                <td>10</td>
+                <td>9</td>
+                <td>28</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- hướng dẫn -->
         <div
-                class="mt-6 bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-sm text-slate-600 dark:text-slate-400"
+          class="mt-6 bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-sm text-slate-600 dark:text-slate-400"
         >
-            <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary"> info </span>
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary"> info </span>
 
-                <p>
-                    Đặt bàn chân lên tờ giấy, đánh dấu điểm dài nhất của ngón chân và
-                    đo bằng thước (cm). Sau đó đối chiếu với bảng size để chọn kích
-                    thước phù hợp.
-                </p>
-            </div>
+            <p>
+              Đặt bàn chân lên tờ giấy, đánh dấu điểm dài nhất của ngón chân và
+              đo bằng thước (cm). Sau đó đối chiếu với bảng size để chọn kích
+              thước phù hợp.
+            </p>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<!-- Footer -->
-<div th:replace="User/layout/footer :: footer"></div>
-<div
-        id="toast"
-        style="
+    <!-- Footer -->
+    <div th:replace="User/layout/footer :: footer"></div>
+    <div
+      id="toast"
+      style="
         display: none;
         position: fixed;
         top: 32px;
@@ -614,151 +569,203 @@
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         transition: opacity 0.3s;
       "
-></div>
-</body>
+    ></div>
+  </body>
 </html>
-<script>
-    const tabDesc = document.getElementById("tabDesc");
-    const tabReview = document.getElementById("tabReview");
+<script th:inline="javascript">
+  // ==== Tabs chuyển đổi mô tả/đánh giá ====
+  const tabDesc = document.getElementById("tabDesc");
+  const tabReview = document.getElementById("tabReview");
+  const descWrap = document.getElementById("contentDescWrapper");
+  const reviewWrap = document.getElementById("contentReviewWrapper");
 
-    const descWrap = document.getElementById("contentDescWrapper");
-    const reviewWrap = document.getElementById("contentReviewWrapper");
+  function fadeSwitch(showEl, hideEl) {
+    hideEl.classList.remove("opacity-100");
+    hideEl.classList.add("opacity-0");
+    setTimeout(() => {
+      hideEl.classList.add("hidden");
+      showEl.classList.remove("hidden");
+      showEl.classList.remove("opacity-0");
+      setTimeout(() => {
+        showEl.classList.add("opacity-100");
+      }, 10);
+    }, 200);
+  }
 
-    function fadeSwitch(showEl, hideEl) {
-        // fade out
-        hideEl.classList.remove("opacity-100");
-        hideEl.classList.add("opacity-0");
+  tabDesc.onclick = function () {
+    fadeSwitch(descWrap, reviewWrap);
+    tabDesc.classList.add("border-primary", "text-primary", "font-bold");
+    tabReview.classList.remove("border-primary", "text-primary", "font-bold");
+  };
 
-        setTimeout(() => {
-            hideEl.classList.add("hidden");
+  tabReview.onclick = function () {
+    fadeSwitch(reviewWrap, descWrap);
+    tabReview.classList.add("border-primary", "text-primary", "font-bold");
+    tabDesc.classList.remove("border-primary", "text-primary", "font-bold");
+  };
 
-            // show
-            showEl.classList.remove("hidden");
+  // ==== Modal bảng quy đổi size ====
+  const openBtn = document.getElementById("openSizeChart");
+  const modal = document.getElementById("sizeModal");
+  const closeBtn = document.getElementById("closeSizeChart");
 
-            // reset fade
-            showEl.classList.remove("opacity-0");
+  openBtn.onclick = function () {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  };
 
-            setTimeout(() => {
-                showEl.classList.add("opacity-100");
-            }, 10);
-        }, 200);
+  closeBtn.onclick = function () {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  };
+
+  modal.onclick = function (e) {
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
     }
+  };
 
-    tabDesc.onclick = function () {
-        fadeSwitch(descWrap, reviewWrap);
+  // ==== Đổi ảnh chính khi click ảnh phụ ====
+  const mainImage = document.getElementById("mainImage");
+  const thumbnails = document.querySelectorAll(".thumb img");
 
-        tabDesc.classList.add("border-primary", "text-primary", "font-bold");
-        tabReview.classList.remove("border-primary", "text-primary");
-    };
-
-    tabReview.onclick = function () {
-        fadeSwitch(reviewWrap, descWrap);
-
-        tabReview.classList.add("border-primary", "text-primary", "font-bold");
-        tabDesc.classList.remove("border-primary", "text-primary");
-    };
-    // cua bảng quy đổi size
-    const openBtn = document.getElementById("openSizeChart");
-    const modal = document.getElementById("sizeModal");
-    const closeBtn = document.getElementById("closeSizeChart");
-
-    openBtn.onclick = function () {
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-    };
-
-    closeBtn.onclick = function () {
-        modal.classList.add("hidden");
-    };
-
-    modal.onclick = function (e) {
-        if (e.target === modal) {
-            modal.classList.add("hidden");
-        }
-    };
-    // Thay đổi ảnh chính khi click vào ảnh phụ
-    const mainImage = document.getElementById("mainImage");
-    const thumbnails = document.querySelectorAll(".thumb img");
-
-    thumbnails.forEach((img) => {
-        img.addEventListener("click", function () {
-            // đổi ảnh chính
-            mainImage.src = this.src;
-
-            // đổi border active
-            document.querySelectorAll(".thumb").forEach((btn) => {
-                btn.classList.remove("border-primary", "border-2");
-                btn.classList.add("border");
-            });
-
-            this.parentElement.classList.add("border-primary", "border-2");
-        });
+  thumbnails.forEach((img) => {
+    img.addEventListener("click", function () {
+      mainImage.src = this.src;
+      document.querySelectorAll(".thumb").forEach((btn) => {
+        btn.classList.remove("border-primary", "border-2");
+        btn.classList.add("border");
+      });
+      this.parentElement.classList.add("border-primary", "border-2");
+      this.parentElement.classList.remove("border");
     });
-    // chuyển động mượt hơn
-    const tabs = document.querySelectorAll(".tab-btn");
-    const indicator = document.getElementById("tabIndicator");
+  });
 
-    function moveIndicator(el) {
-        indicator.style.width = el.offsetWidth + "px";
-        indicator.style.left = el.offsetLeft + "px";
-    }
+  // ==== Tab underline chuyển động mượt ====
+  const tabs = document.querySelectorAll(".tab-btn");
+  const indicator = document.getElementById("tabIndicator");
 
-    // chạy lần đầu
-    moveIndicator(document.getElementById("tabDesc"));
+  function moveIndicator(el) {
+    indicator.style.width = el.offsetWidth + "px";
+    indicator.style.left = el.offsetLeft + "px";
+  }
 
-    tabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-            // đổi màu tab
-            tabs.forEach((t) => {
-                t.classList.remove("text-primary", "font-bold");
-                t.classList.add("text-slate-500");
-            });
+  // chạy lần đầu
+  moveIndicator(tabDesc);
 
-            tab.classList.add("text-primary", "font-bold");
-
-            // di chuyển thanh underline mượt
-            moveIndicator(tab);
-        });
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => {
+        t.classList.remove("text-primary", "font-bold");
+        t.classList.add("text-slate-500");
+      });
+      tab.classList.add("text-primary", "font-bold");
+      moveIndicator(tab);
     });
+  });
 
-    document.getElementById("addToCartBtn").onclick = function () {
-        // Lấy thông tin sản phẩm từ thuộc tính data
-        const btn = this;
-        const product = {
-            id: btn.getAttribute("data-id"),
-            name: btn.getAttribute("data-name"),
-            price: btn.getAttribute("data-price"),
-            image: btn.getAttribute("data-image"),
-            quantity: 1,
-        };
+  // ==== Selector số lượng sản phẩm ====
+  // Lấy số lượng tồn kho từ Thymeleaf
+  const totalStock = /*[[${totalStock}]]*/ 0;
+  let quantity = 1;
 
-        // Lấy giỏ hàng hiện tại từ localStorage (nếu có)
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const decreaseBtn = document.getElementById("decreaseQty");
+  const increaseBtn = document.getElementById("increaseQty");
+  const quantityDisplay = document.getElementById("quantity");
 
-        // Kiểm tra sản phẩm đã có trong giỏ chưa
-        const index = cart.findIndex((item) => item.id == product.id);
-        if (index >= 0) {
-            cart[index].quantity += 1;
-        } else {
-            cart.push(product);
-        }
+  function updateQuantityDisplay() {
+    quantityDisplay.textContent = quantity;
+    decreaseBtn.disabled = quantity <= 1;
+    increaseBtn.disabled = quantity >= totalStock;
+  }
 
-        // Lưu lại vào localStorage
-        localStorage.setItem("cart", JSON.stringify(cart));
-        updateCartCount();
-        showToast("Đã thêm vào giỏ hàng!");
+  // Khi bấm nút tăng/giảm
+  decreaseBtn.addEventListener("click", function () {
+    if (quantity > 1) {
+      quantity--;
+      updateQuantityDisplay();
+    }
+  });
+
+  increaseBtn.addEventListener("click", function () {
+    if (quantity < totalStock) {
+      quantity++;
+      updateQuantityDisplay();
+    }
+  });
+
+  updateQuantityDisplay();
+
+  // ==== Thêm vào giỏ hàng ====
+  addToCartBtn.addEventListener("click", function () {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const id = addToCartBtn.getAttribute("data-id");
+    const product = {
+      id: id,
+      name: addToCartBtn.getAttribute("data-name"),
+      price: addToCartBtn.getAttribute("data-price"),
+      image: addToCartBtn.getAttribute("data-image"),
+      brand: addToCartBtn.getAttribute("data-brand"),
+      quantity: quantity,
     };
 
-    function showToast(message) {
-        const toast = document.getElementById("toast");
-        toast.textContent = message;
-        toast.style.display = "block";
-        toast.style.opacity = "1";
-        setTimeout(() => {
-            toast.style.opacity = "0";
-            setTimeout(() => {
-                toast.style.display = "none";
-            }, 300);
-        }, 1000);
+    // Kiểm tra sản phẩm đã có trong giỏ chưa
+    const index = cart.findIndex((item) => item.id == id);
+    let currentCartQty = 0;
+    if (index >= 0) {
+      currentCartQty = cart[index].quantity;
     }
+
+    // Nếu tổng số lượng sau khi thêm vượt quá tồn kho, chỉ cho phép tối đa là tồn kho
+    let newQty = currentCartQty + quantity;
+    if (newQty > totalStock) {
+      showToast("Bạn chỉ có thể mua tối đa " + totalStock + " sản phẩm này!");
+      // Nếu đã đủ số lượng tồn kho thì không cho thêm nữa
+      if (currentCartQty >= totalStock) return;
+      // Nếu chưa đủ thì chỉ cộng thêm phần còn lại
+      quantity = totalStock - currentCartQty;
+      if (quantity < 1) quantity = 1;
+      if (index >= 0) {
+        cart[index].quantity = totalStock;
+      } else {
+        product.quantity = quantity;
+        cart.push(product);
+      }
+    } else {
+      if (index >= 0) {
+        cart[index].quantity = newQty;
+      } else {
+        cart.push(product);
+      }
+      showToast("Đã thêm vào giỏ hàng!");
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    if (typeof window.updateCartCount === "function") {
+      window.updateCartCount();
+    }
+    updateQuantityDisplay();
+  });
+
+  // ==== Toast thông báo ====
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.style.display = "block";
+    toast.style.opacity = "1";
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 300);
+    }, 1000);
+  }
+
+  // ==== Cập nhật số lượng giỏ hàng  ====
+  //   function updateCartCount() {
+  //     if (typeof window.updateCartCount === "function") {
+  //       window.updateCartCount();
+  //     }
+  //   }
 </script>

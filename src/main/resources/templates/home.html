@@ -2,6 +2,9 @@
 
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <script th:inline="javascript">
+      var isLoggedIn = /*[[${#authorization.expression('isAuthenticated()')}]]*/ false;
+    </script>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -792,16 +795,38 @@
             brand: btn.getAttribute("data-brand"),
             quantity: 1,
           };
-          let cart = JSON.parse(localStorage.getItem("cart")) || [];
-          const index = cart.findIndex((item) => item.id == product.id);
-          if (index >= 0) {
-            cart[index].quantity += 1;
+
+          if (isLoggedIn) {
+            // Gọi API thêm vào giỏ hàng trên server
+            fetch("/api/cart/add", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({
+                productId: product.id,
+                quantity: 1,
+              }),
+            })
+              .then((res) => res.json())
+              .then((cart) => {
+                // Xóa cache cart cũ nếu có
+                if (window.currentCart) window.currentCart = null;
+                updateCartCount && updateCartCount();
+                showToast("Đã thêm vào giỏ hàng!");
+              });
           } else {
-            cart.push(product);
+            // Lưu vào localStorage như cũ
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const index = cart.findIndex((item) => item.id == product.id);
+            if (index >= 0) {
+              cart[index].quantity += 1;
+            } else {
+              cart.push(product);
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount && updateCartCount();
+            showToast("Đã thêm vào giỏ hàng!");
           }
-          localStorage.setItem("cart", JSON.stringify(cart));
-          updateCartCount && updateCartCount();
-          showToast("Đã thêm vào giỏ hàng!");
         }
       });
 

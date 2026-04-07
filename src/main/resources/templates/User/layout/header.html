@@ -162,24 +162,38 @@
   </script>
   <script>
     function updateCartCount() {
-      // Lấy cart từ localStorage (dạng array)
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      // Tính tổng số lượng sản phẩm
-      let total = cart.reduce((sum, item) => {
-        return sum + (item.quantity || 1);
-      }, 0);
-
-      const badge = document.getElementById("cart-count");
+      let badge = document.getElementById("cart-count");
       if (!badge) return;
 
-      // Nếu có sản phẩm thì hiện badge
-      if (total > 0) {
-        badge.innerText = total > 99 ? "99+" : total;
-        badge.classList.remove("hidden");
+      if (typeof isLoggedIn !== "undefined" && isLoggedIn) {
+        // Đã đăng nhập: lấy từ window.currentCart nếu có, hoặc gọi API
+        if (window.currentCart) {
+          let total = window.currentCart.reduce(
+            (sum, item) => sum + (item.quantity || 1),
+            0,
+          );
+          badge.innerText = total > 99 ? "99+" : total;
+          badge.classList.toggle("hidden", total === 0);
+        } else {
+          // Nếu chưa có dữ liệu, gọi API lấy cart
+          fetch("/api/cart")
+            .then((res) => res.json())
+            .then((cart) => {
+              window.currentCart = cart;
+              let total = cart.reduce(
+                (sum, item) => sum + (item.quantity || 1),
+                0,
+              );
+              badge.innerText = total > 99 ? "99+" : total;
+              badge.classList.toggle("hidden", total === 0);
+            });
+        }
       } else {
-        // Không có thì ẩn
-        badge.classList.add("hidden");
+        // Chưa đăng nhập: lấy từ localStorage
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        badge.innerText = total > 99 ? "99+" : total;
+        badge.classList.toggle("hidden", total === 0);
       }
     }
 

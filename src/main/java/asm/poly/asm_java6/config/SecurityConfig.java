@@ -29,8 +29,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/home", "/login", "/verify", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/api/products/**", "/api/brands/**", "/api/sizes/**").permitAll() // <-- Thêm dòng này
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
 

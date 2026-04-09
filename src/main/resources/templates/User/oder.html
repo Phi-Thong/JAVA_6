@@ -1,40 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script th:inline="javascript">
+        var isLoggedIn = [[${#authorization.expression('isAuthenticated()')}]];
+    </script>
+
+    <script src="/js/user/header.js"></script>
+    <script src="/js/home.js"></script>
+    <script src="/js/user/detail.js"></script>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
-          rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-          rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-          rel="stylesheet"/>
-    <script id="tailwind-config">tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                colors: {primary: "#607AFB", "background-light": "#f5f6f8", "background-dark": "#0f1323"},
-                fontFamily: {display: "Inter"},
-                borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}
-            }
-        }
-    };</script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+            rel="stylesheet"
+    />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#607AFB",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1323",
+                    },
+                    fontFamily: { display: "Inter" },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: "Inter", sans-serif;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .animate-scaleIn {
+            animation: scaleIn 0.3s ease;
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<body
+        class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased"
+>
 <!-- Header / Nav -->
 
 <div th:replace="User/layout/header :: header"></div>
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Breadcrumb -->
 
-   
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <!-- Left Column: Forms -->
         <div class="lg:col-span-7 space-y-10">
@@ -44,195 +83,246 @@
                     <span class="material-symbols-outlined text-primary">person</span>
                     <h3 class="text-xl font-bold">Thông tin người nhận</h3>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form
+                        id="orderForm"
+                        class="grid grid-cols-1 md:grid-cols-2 gap-4"
+                        autocomplete="off"
+                >
                     <div class="col-span-2">
-                        <label class="block text-sm font-semibold mb-2">Họ và tên</label>
-                        <input class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
-                               placeholder="Nguyễn Văn A" type="text"/>
+                        <label class="block text-sm font-semibold mb-2"
+                        >Họ và tên</label
+                        >
+                        <input
+                                id="hoTen"
+                                name="hoTen"
+                                class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
+                                placeholder="Nguyễn Văn A"
+                                type="text"
+                        />
+                        <span class="text-red-500 text-xs hidden" id="errHoTen"
+                        >Vui lòng nhập họ tên</span
+                        >
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-2">Số điện thoại</label>
-                        <input class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
-                               placeholder="0901 234 567" type="tel"/>
+                        <label class="block text-sm font-semibold mb-2"
+                        >Số điện thoại</label
+                        >
+                        <input
+                                id="sdt"
+                                name="sdt"
+                                class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
+                                placeholder="0901 234 567"
+                                type="tel"
+                        />
+                        <span class="text-red-500 text-xs hidden" id="errSdt"
+                        >Số điện thoại không hợp lệ</span
+                        >
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-2">Email</label>
-                        <input class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
-                               placeholder="email@vi-du.com" type="email"/>
-                    </div>
-                    <div class="col-span-2">
-                        <label class="block text-sm font-semibold mb-2">Địa chỉ giao hàng</label>
-                        <input class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
-                               placeholder="Số nhà, tên đường, phường/xã..." type="text"/>
-                    </div>
-                    <div class="col-span-2">
-                        <label class="block text-sm font-semibold mb-2">Ghi chú (tùy chọn)</label>
-                        <textarea
+                        <input
+                                id="email"
+                                name="email"
                                 class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
-                                placeholder="Lưu ý cho người giao hàng..." rows="3"></textarea>
+                                placeholder="email@vi-du.com"
+                                type="email"
+                        />
+                        <span class="text-red-500 text-xs hidden" id="errEmail"
+                        >Email không hợp lệ</span
+                        >
                     </div>
-                </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-semibold mb-2"
+                        >Địa chỉ giao hàng</label
+                        >
+                        <input
+                                id="diaChi"
+                                name="diaChi"
+                                class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
+                                placeholder="Số nhà, tên đường, phường/xã..."
+                                type="text"
+                        />
+                        <span class="text-red-500 text-xs hidden" id="errDiaChi"
+                        >Vui lòng nhập địa chỉ giao hàng</span
+                        >
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-semibold mb-2"
+                        >Ghi chú (tùy chọn)</label
+                        >
+                        <textarea
+                                id="ghiChu"
+                                name="ghiChu"
+                                class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:border-primary focus:ring-primary/20 p-3"
+                                placeholder="Lưu ý cho người giao hàng..."
+                                rows="3"
+                        ></textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <button
+                                type="button"
+                                id="validateBtn"
+                                class="mt-4 w-full bg-primary text-white font-bold py-3 rounded-lg"
+                        >
+                            Xác nhận thông tin
+                        </button>
+                    </div>
+                </form>
             </section>
             <!-- Payment Methods -->
             <section>
                 <div class="flex items-center gap-2 mb-6">
-                    <span class="material-symbols-outlined text-primary">payments</span>
+              <span class="material-symbols-outlined text-primary"
+              >payments</span
+              >
                     <h3 class="text-xl font-bold">Phương thức thanh toán</h3>
                 </div>
 
                 <div class="space-y-3">
-
                     <!-- COD -->
-                    <label class="flex items-center p-4 border rounded-xl cursor-pointer
-                      hover:border-primary transition-all
-                      has-[:checked]:border-primary
-                      has-[:checked]:bg-primary/5">
-
-                        <input type="radio" name="payment" checked
-                               class="text-primary focus:ring-primary mr-4">
+                    <label
+                            class="flex items-center p-4 border rounded-xl cursor-pointer hover:border-primary transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5"
+                    >
+                        <input
+                                type="radio"
+                                name="payment"
+                                checked
+                                class="text-primary focus:ring-primary mr-4"
+                        />
 
                         <div class="flex-1">
-                            <span class="block font-bold">Thanh toán khi nhận hàng (COD)</span>
+                  <span class="block font-bold"
+                  >Thanh toán khi nhận hàng (COD)</span
+                  >
                             <span class="text-xs text-slate-500">
                     Thanh toán bằng tiền mặt khi shipper giao hàng
-                        </span>
+                  </span>
                         </div>
 
                         <span class="material-symbols-outlined text-slate-400">
-                        local_shipping
-                    </span>
-
+                  local_shipping
+                </span>
                     </label>
 
                     <!-- BANK -->
-                    <label class="flex items-center p-4 border rounded-xl cursor-pointer
-                      hover:border-primary transition-all
-                      has-[:checked]:border-primary
-                      has-[:checked]:bg-primary/5">
-
-                        <input type="radio" name="payment" id="bankPayment"
-                               class="text-primary focus:ring-primary mr-4">
+                    <label
+                            class="flex items-center p-4 border rounded-xl cursor-pointer hover:border-primary transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5"
+                    >
+                        <input
+                                type="radio"
+                                name="payment"
+                                id="bankPayment"
+                                class="text-primary focus:ring-primary mr-4"
+                        />
 
                         <div class="flex-1">
                             <span class="block font-bold">Chuyển khoản ngân hàng</span>
                             <span class="text-xs text-slate-500">
-                            Chuyển khoản qua ứng dụng ngân hàng hoặc ATM
-                        </span>
+                    Chuyển khoản qua ứng dụng ngân hàng hoặc ATM
+                  </span>
                         </div>
 
                         <span class="material-symbols-outlined text-slate-400">
-                        account_balance
-                    </span>
-
+                  account_balance
+                </span>
                     </label>
-
                 </div>
             </section>
         </div>
         <!-- Right Column: Order Summary -->
         <div class="lg:col-span-5">
-            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 p-6 sticky top-24">
-
+            <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 p-6 sticky top-24"
+            >
                 <h3 class="text-xl font-bold mb-6">Thông tin đơn hàng</h3>
 
                 <!-- Product List Scroll -->
                 <div class="max-h-72 overflow-y-auto pr-2">
-
-                    <!-- Product 1 -->
-                    <div class="flex gap-4 pb-6 border-b border-slate-100 dark:border-slate-800 mb-6">
-                        <div class="w-24 h-24 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV9fIpHAasSAGKm7K8fQHgdPCg9W7ZLQr8ocIVPMEqXCL2tupK7GYOyJMbqBgyiy5Q8h-_YBHkh-D1fb3DFBV-sJiGEY9ZvjNpv6tjTpXaKXUrygG63vrUH__zAPLDEPmltvLmv53POc6me-H78SF13CxhuyRVrtEcVwYyKy2FVym3dfrdnq75Q3BbSkX2l9_8orRM5R8GeVvlqQNDb4B-XhWtYyamueC_knZcykkkZhauJXnb-cHpHxxOX2nF5z8aBpNGXZXAHuo"
-                                 class="w-full h-full object-cover">
+                    <div
+                            th:each="item : ${cartItems}"
+                            class="flex gap-4 pb-6 border-b border-slate-100 dark:border-slate-800 mb-6"
+                    >
+                        <div
+                                class="w-24 h-24 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0"
+                        >
+                            <img
+                                    th:src="@{${item.product.anhChinh}}"
+                                    class="w-full h-full object-cover"
+                            />
                         </div>
-
                         <div class="flex-1">
-                            <h4 class="font-bold text-slate-900 dark:text-slate-100">Nike Air Force 1 '07</h4>
-                            <p class="text-sm text-slate-500 mt-1">Size: 42</p>
-
+                            <h4
+                                    class="font-bold text-slate-900 dark:text-slate-100"
+                                    th:text="${item.product.tenSanPham}"
+                            ></h4>
+                            <!--                            <p class="text-sm text-slate-500 mt-1">-->
+                            <!--                                Size: <span th:text="${item.}"></span>-->
+                            <!--                            </p>-->
                             <div class="flex justify-between items-end mt-2">
-                                <span class="text-sm font-medium">SL: 1</span>
-                                <span class="font-bold text-lg">2.900.000₫</span>
+                    <span class="text-sm font-medium"
+                    >SL: <span th:text="${item.quantity}"></span
+                    ></span>
+                                <span
+                                        class="font-bold text-lg"
+                                        th:text="${#numbers.formatDecimal(item.product.gia, 0, 'COMMA', 0, 'POINT')} + '₫'"
+                                ></span>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Product 2 -->
-                    <div class="flex gap-4 pb-6 border-b border-slate-100 dark:border-slate-800 mb-6">
-                        <div class="w-24 h-24 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
-                            <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/air-jordan-1.jpg"
-                                 class="w-full h-full object-cover">
-                        </div>
-
-                        <div class="flex-1">
-                            <h4 class="font-bold text-slate-900 dark:text-slate-100">Air Jordan 1 Retro</h4>
-                            <p class="text-sm text-slate-500 mt-1">Size: 42</p>
-
-                            <div class="flex justify-between items-end mt-2">
-                                <span class="text-sm font-medium">SL: 1</span>
-                                <span class="font-bold text-lg">3.200.000₫</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!--                     33333-->
-                    <div class="flex gap-4 pb-6 border-b border-slate-100 dark:border-slate-800 mb-6">
-                        <div class="w-24 h-24 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV9fIpHAasSAGKm7K8fQHgdPCg9W7ZLQr8ocIVPMEqXCL2tupK7GYOyJMbqBgyiy5Q8h-_YBHkh-D1fb3DFBV-sJiGEY9ZvjNpv6tjTpXaKXUrygG63vrUH__zAPLDEPmltvLmv53POc6me-H78SF13CxhuyRVrtEcVwYyKy2FVym3dfrdnq75Q3BbSkX2l9_8orRM5R8GeVvlqQNDb4B-XhWtYyamueC_knZcykkkZhauJXnb-cHpHxxOX2nF5z8aBpNGXZXAHuo"
-                                 class="w-full h-full object-cover">
-                        </div>
-
-                        <div class="flex-1">
-                            <h4 class="font-bold text-slate-900 dark:text-slate-100">Nike Air Force 1 '07</h4>
-                            <p class="text-sm text-slate-500 mt-1">Size: 42</p>
-
-                            <div class="flex justify-between items-end mt-2">
-                                <span class="text-sm font-medium">SL: 1</span>
-                                <span class="font-bold text-lg">2.900.000₫</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
                 <!-- Price Breakdown -->
                 <div class="space-y-4 mb-8">
                     <div class="flex justify-between text-slate-500">
                         <span>Tạm tính</span>
-                        <span>6.100.000₫</span>
+                        <span
+                                th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')} + '₫'"
+                        ></span>
                     </div>
-
                     <div class="flex justify-between text-slate-500">
                         <span>Phí vận chuyển</span>
-                        <span>30.000₫</span>
+                        <span
+                                th:text="${#numbers.formatDecimal(shippingFee, 0, 'COMMA', 0, 'POINT')} + '₫'"
+                        ></span>
                     </div>
-
-                    <div class="pt-4 border-t border-dashed border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                    <div
+                            class="pt-4 border-t border-dashed border-slate-200 dark:border-slate-700 flex justify-between items-center"
+                    >
                         <span class="text-lg font-bold">Tổng cộng</span>
-                        <span class="text-2xl font-black text-primary">6.130.000₫</span>
+                        <span
+                                class="text-2xl font-black text-primary"
+                                th:text="${#numbers.formatDecimal(grandTotal, 0, 'COMMA', 0, 'POINT')} + '₫'"
+                        ></span>
                     </div>
                 </div>
 
                 <!-- Confirm Button -->
-                <button class="w-full bg-primary hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition-all transform active:scale-[0.98] shadow-lg shadow-primary/20">
+                <button
+                        id="orderBtn"
+                        class="w-full bg-primary hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition-all transform active:scale-[0.98] shadow-lg shadow-primary/20"
+                >
                     XÁC NHẬN ĐẶT HÀNG
                 </button>
 
                 <p class="text-center text-xs text-slate-400 mt-4">
-                    Bằng cách đặt hàng, bạn đồng ý với Điều khoản dịch vụ của chúng tôi.
+                    Bằng cách đặt hàng, bạn đồng ý với Điều khoản dịch vụ của chúng
+                    tôi.
                 </p>
-
             </div>
         </div>
     </div>
 </main>
 <!-- modal chuyênr khoản-->
-<div id="bankModal"
-     class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
-
+<div
+        id="bankModal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50"
+>
     <div class="bg-white w-[440px] rounded-3xl shadow-2xl p-7 relative">
-
         <!-- Close -->
-        <button onclick="closeBankModal()"
-                class="absolute top-4 right-4 text-slate-400 hover:text-red-500 text-lg transition">
+        <button
+                onclick="closeBankModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-red-500 text-lg transition"
+        >
             ✕
         </button>
 
@@ -249,14 +339,17 @@
         <!-- QR -->
         <div class="flex justify-center mb-5">
             <div class="p-3 bg-slate-50 border rounded-xl shadow-sm">
-                <img src="/img/MaQr.jpg"
-                     class="w-60 h-72 object-contain rounded-lg">
+                <img
+                        src="/img/MaQr.jpg"
+                        class="w-60 h-72 object-contain rounded-lg"
+                />
             </div>
         </div>
 
         <!-- Bank info -->
-        <div class="bg-slate-50 border rounded-xl p-4 text-sm text-slate-700 space-y-2">
-
+        <div
+                class="bg-slate-50 border rounded-xl p-4 text-sm text-slate-700 space-y-2"
+        >
             <div class="flex justify-between">
                 <span class="font-medium text-slate-500">Ngân hàng</span>
                 <span class="font-semibold">MB BANK</span>
@@ -271,34 +364,211 @@
                 <span class="font-medium text-slate-500">Chủ tài khoản</span>
                 <span class="font-semibold">Nguyễn Phi Thông</span>
             </div>
-
         </div>
 
         <!-- Note -->
         <p class="text-xs text-red-500 text-center mt-4">
             Nội dung chuyển khoản: Mã đơn hàng của bạn
         </p>
-
     </div>
 </div>
+<div
+        id="toast"
+        style="
+        display: none;
+        position: fixed;
+        top: 32px;
+        right: 32px;
+        z-index: 9999;
+        min-width: 220px;
+        max-width: 320px;
+        padding: 16px 24px;
+        background: #607afb;
+        color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        font-weight: bold;
+        transition: opacity 0.3s;
+      "
+></div>
+// modal nha
+<div
+        id="successModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[99999]"
+>
+    <div
+            class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 w-[380px] text-center animate-scaleIn"
+    >
+        <!-- Icon -->
+        <div class="flex justify-center mb-4">
+            <div
+                    class="w-16 h-16 flex items-center justify-center rounded-full bg-green-100"
+            >
+            <span class="material-symbols-outlined text-green-500 text-4xl">
+              check_circle
+            </span>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-2">
+            Đặt hàng thành công 🎉
+        </h2>
+
+        <!-- Content -->
+        <p
+                class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6"
+        >
+            Cảm ơn bạn đã tin tưởng và mua sắm tại
+            <span class="font-semibold text-primary">SneakerStore</span>.
+            <br />
+            Đơn hàng của bạn đang được xử lý và sẽ sớm được giao đến bạn 🚚
+        </p>
+
+        <!-- Button -->
+        <button
+                id="successOkBtn"
+                class="w-full bg-primary hover:bg-indigo-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-primary/30 active:scale-[0.97]"
+        >
+            Tiếp tục mua sắm
+        </button>
+    </div>
+</div>
+
 <div th:replace="User/layout/footer :: footer"></div>
-</body>
-</html>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const bankRadio = document.getElementById("bankPayment");
+        const modal = document.getElementById("bankModal");
 
-    const bankRadio = document.getElementById("bankPayment");
-    const modal = document.getElementById("bankModal");
-
-    bankRadio.addEventListener("change", function () {
-        if (this.checked) {
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
+        if (bankRadio) {
+            bankRadio.addEventListener("change", function () {
+                if (this.checked) {
+                    modal.classList.remove("hidden");
+                    modal.classList.add("flex");
+                }
+            });
         }
-    });
 
-    function closeBankModal() {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
+        window.closeBankModal = function () {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        };
+    });
+</script>
+<script>
+    function validateInfo() {
+        let hoTen = document.getElementById("hoTen").value.trim();
+        let sdt = document.getElementById("sdt").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let diaChi = document.getElementById("diaChi").value.trim();
+        let valid = true;
+
+        if (!hoTen) {
+            document.getElementById("errHoTen").classList.remove("hidden");
+            valid = false;
+        } else {
+            document.getElementById("errHoTen").classList.add("hidden");
+        }
+
+        if (!/^0\d{9}$/.test(sdt)) {
+            document.getElementById("errSdt").classList.remove("hidden");
+            valid = false;
+        } else {
+            document.getElementById("errSdt").classList.add("hidden");
+        }
+
+        if (!/^[\w\-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+            document.getElementById("errEmail").classList.remove("hidden");
+            valid = false;
+        } else {
+            document.getElementById("errEmail").classList.add("hidden");
+        }
+
+        if (!diaChi) {
+            document.getElementById("errDiaChi").classList.remove("hidden");
+            valid = false;
+        } else {
+            document.getElementById("errDiaChi").classList.add("hidden");
+        }
+
+        return valid;
     }
 
+    // Nút "Xác nhận thông tin"
+    document
+        .getElementById("validateBtn")
+        .addEventListener("click", function () {
+            if (validateInfo()) {
+                showToast("Thông tin của bạn đã hợp lệ");
+            }
+        });
+
+    // Nút "XÁC NHẬN ĐẶT HÀNG"
+    document
+        .getElementById("orderBtn")
+        .addEventListener("click", function () {
+            if (!validateInfo()) {
+                showToast(
+                    "Vui lòng nhập đầy đủ thông tin hợp lệ trước khi đặt hàng!",
+                );
+                return;
+            }
+            // Lấy giá trị
+            let hoTen = document.getElementById("hoTen").value.trim();
+            let sdt = document.getElementById("sdt").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let diaChi = document.getElementById("diaChi").value.trim();
+            let ghiChu = document.getElementById("ghiChu").value.trim();
+
+            fetch("/user/order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    hoTen: hoTen,
+                    sdt: sdt,
+                    email: email,
+                    diaChi: diaChi,
+                    ghiChu: ghiChu,
+                }),
+            })
+                .then((res) => {
+                    if (res.redirected) {
+                        window.location.href = res.url;
+                    } else if (res.ok) {
+                        return res.text();
+                    } else {
+                        throw new Error("Có lỗi xảy ra!");
+                    }
+                })
+                .then((msg) => {
+                    if (msg) showSuccessModal();
+                    if (typeof updateCartCount === "function") updateCartCount();
+                })
+                .catch((err) => showToast(err.message));
+        });
+    function showToast(message) {
+        var toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.style.display = "block";
+        toast.style.opacity = "1";
+        setTimeout(function () {
+            toast.style.opacity = "0";
+            setTimeout(function () {
+                toast.style.display = "none";
+            }, 300);
+        }, 2000);
+    }
+    // chuyển về home
+    function showSuccessModal() {
+        var modal = document.getElementById("successModal");
+        modal.style.display = "flex";
+        document.getElementById("successOkBtn").onclick = function () {
+            window.location.href = "/home";
+        };
+    }
 </script>
+</body>
+</html>

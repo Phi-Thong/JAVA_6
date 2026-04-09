@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="vi">
 <head>
@@ -8,7 +8,10 @@
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+            rel="stylesheet"
+    />
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
@@ -16,19 +19,19 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ["Inter", "sans-serif"],
                     },
                     colors: {
                         brand: {
-                            blue: '#2563eb',
-                            'blue-hover': '#1d4ed8',
-                            dark: '#111827',
-                            gray: '#6b7280',
-                        }
-                    }
-                }
-            }
-        }
+                            blue: "#2563eb",
+                            "blue-hover": "#1d4ed8",
+                            dark: "#111827",
+                            gray: "#6b7280",
+                        },
+                    },
+                },
+            },
+        };
     </script>
     <style data-purpose="custom-animations">
         /* Subtle hover scale for the main button */
@@ -42,94 +45,128 @@
 
         /* Input focus border transition */
         .input-transition {
-            transition: border-color 0.2s ease, ring 0.2s ease;
+            transition: border-color 0.2s ease,
+            ring 0.2s ease;
         }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
 <!-- BEGIN: Forgot Password Card -->
-<main class="w-full max-w-md bg-white rounded-3xl shadow-xl overflow-hidden p-8 md:p-10 border border-gray-100"
-      data-purpose="forgot-password-container">
+<main
+        class="w-full max-w-md bg-white rounded-3xl shadow-xl overflow-hidden p-8 md:p-10 border border-gray-100"
+        data-purpose="forgot-password-container"
+>
     <!-- BEGIN: Header Section -->
-    <div class="flex flex-col items-center mb-8" data-purpose="header-section">
-
+    <div
+            class="flex flex-col items-center mb-8"
+            data-purpose="header-section"
+    >
         <!-- Logo Container -->
-        <div class="w-16 h-16
-            bg-gradient-to-br from-blue-400 to-blue-600
-            rounded-2xl flex items-center justify-center mb-6
-            shadow-lg shadow-blue-400/30
-            transition duration-300 hover:scale-110 hover:shadow-blue-400/50"
-             data-purpose="logo">
-
-            <svg class="w-10 h-10 text-white opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
-                      stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-                <path d="M7 11.5c1.5 2 4.5 2 6 0M12 22V12"
-                      stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        <div
+                class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-400/30 transition duration-300 hover:scale-110 hover:shadow-blue-400/50"
+                data-purpose="logo"
+        >
+            <svg
+                    class="w-10 h-10 text-white opacity-90"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+            >
+                <path
+                        d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                />
+                <path
+                        d="M7 11.5c1.5 2 4.5 2 6 0M12 22V12"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                />
             </svg>
         </div>
 
         <!-- Title -->
-        <h1 class="text-2xl md:text-3xl font-bold text-blue-500 mb-3 tracking-tight">
+        <h1
+                class="text-2xl md:text-3xl font-bold text-blue-500 mb-3 tracking-tight"
+        >
             Quên mật khẩu?
         </h1>
 
-        <p class="text-blue-300 text-center text-sm md:text-base leading-relaxed max-w-sm">
-            Nhập email của bạn để nhận liên kết đặt lại mật khẩu một cách nhanh chóng và an toàn.
+        <p
+                class="text-blue-300 text-center text-sm md:text-base leading-relaxed max-w-sm"
+        >
+            Nhập email của bạn để nhận liên kết đặt lại mật khẩu một cách nhanh
+            chóng và an toàn.
         </p>
     </div>
     <!-- END: Header Section -->
     <!-- BEGIN: Form Section -->
-    <form action="#" class="space-y-6" data-purpose="reset-password-form" method="POST">
-
+    <form
+            id="resetPasswordForm"
+            class="space-y-6"
+            data-purpose="reset-password-form"
+            method="POST"
+    >
         <!-- Email Input Field -->
         <div class="relative">
             <label class="sr-only" for="email">Địa chỉ Email</label>
-
             <!-- Icon -->
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            <div
+                    class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+            >
+                <svg
+                        class="h-5 w-5 text-blue-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                >
+                    <path
+                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                    />
                 </svg>
             </div>
-
             <!-- Input -->
             <input
-                    class="block w-full pl-11 pr-4 py-4
-                   border border-blue-100 rounded-xl
-                   text-blue-500 placeholder-blue-300
-                   focus:outline-none focus:ring-2 focus:ring-blue-300
-                   focus:border-blue-200 input-transition text-sm
-                   bg-blue-50/40"
-                    id="email" name="email" placeholder="email@example.com" required type="email"/>
+                    class="block w-full pl-11 pr-4 py-4 border border-blue-100 rounded-xl text-blue-500 placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-200 input-transition text-sm bg-blue-50/40"
+                    id="email"
+                    name="email"
+                    placeholder="Hãy nhập email của bạn"
+            />
         </div>
-
+        <!-- Thông báo động -->
+        <div id="resetMessage" class="text-center text-sm"></div>
         <!-- Submit Button -->
         <button
-                class="w-full bg-blue-400 text-white font-bold py-4 rounded-xl
-               shadow-md shadow-blue-300/30
-               hover:bg-blue-500
-               focus:outline-none focus:ring-4 focus:ring-blue-200
-               transition-all text-sm uppercase tracking-wide btn-hover-effect">
+                class="w-full bg-blue-400 text-white font-bold py-4 rounded-xl shadow-md shadow-blue-300/30 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-all text-sm uppercase tracking-wide btn-hover-effect"
+                type="submit"
+        >
             Gửi liên kết khôi phục
         </button>
-
     </form>
     <!-- END: Form Section -->
     <!-- BEGIN: Footer Section -->
     <div class="mt-10 text-center" data-purpose="footer-links">
-        <a class="inline-flex items-center gap-2
-              text-blue-400 font-semibold text-sm
-              hover:text-blue-500 hover:underline
-              transition-all duration-300"
-           href="/login">
-
-            <svg class="h-4 w-4 text-blue-300 transition group-hover:text-blue-400"
-                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                      stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2"/>
+        <a
+                class="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-500 hover:underline transition-all duration-300"
+                href="/login"
+        >
+            <svg
+                    class="h-4 w-4 text-blue-300 transition group-hover:text-blue-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+            >
+                <path
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                />
             </svg>
 
             Quay lại đăng nhập
@@ -139,4 +176,55 @@
 </main>
 <!-- END: Forgot Password Card -->
 </body>
+<script>
+    document
+        .getElementById("resetPasswordForm")
+        .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const messageDiv = document.getElementById("resetMessage");
+
+            // Kiểm tra rỗng
+            if (!email) {
+                messageDiv.textContent = "Vui lòng nhập email.";
+                messageDiv.className = "text-red-500 text-center text-sm";
+                return;
+            }
+
+            // Kiểm tra định dạng email
+            const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/;
+            if (!emailRegex.test(email)) {
+                messageDiv.textContent = "Email không đúng định dạng.";
+                messageDiv.className = "text-red-500 text-center text-sm";
+                return;
+            }
+
+            messageDiv.textContent = "Đang kiểm tra...";
+            messageDiv.className = "text-blue-500 text-center text-sm";
+
+            fetch("/api/forgot-password", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email}),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        messageDiv.textContent =
+                            "Đã gửi mã xác nhận! Vui lòng kiểm tra email.";
+                        messageDiv.className = "text-green-500 text-center text-sm";
+                        setTimeout(() => {
+                            window.location.href = "/codeEmail"; //
+                        }, 1500); // Đợi 1.5 giây cho user đọc thông báo
+                    } else {
+                        messageDiv.textContent = data.message || "Email không tồn tại!";
+                        messageDiv.className = "text-red-500 text-center text-sm";
+                    }
+                })
+                .catch(() => {
+                    messageDiv.textContent = "Có lỗi xảy ra. Vui lòng thử lại sau.";
+                    messageDiv.className = "text-red-500 text-center text-sm";
+                });
+        });
+</script>
 </html>

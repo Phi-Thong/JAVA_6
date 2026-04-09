@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 
 @Entity
@@ -24,11 +25,15 @@ public class Cart_item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // Khóa ngoại tới bảng users
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private users user;
 
     // Khóa ngoại tới bảng cart
     @ManyToOne
     @JoinColumn(name = "cart_id")
-     @JsonBackReference
+    @JsonBackReference
     private Cart cart;
 
     // Khóa ngoại tới bảng product

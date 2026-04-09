@@ -16,6 +16,8 @@ import asm.poly.asm_java6.enity.users;
 import asm.poly.asm_java6.repository.UsersRepository;
 import asm.poly.asm_java6.service.CartService;
 
+import java.util.Map;
+
 @Controller
 public class ShoppingCartController {
 
@@ -56,20 +58,50 @@ public class ShoppingCartController {
 
         return ResponseEntity.ok(cart.getItems());
     }
-    @PostMapping("/api/cart/add")
-@ResponseBody
-public ResponseEntity<?> addToCart(
-        @RequestBody AddToCartRequest request,
-        Authentication authentication) {
 
-    if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-        return ResponseEntity.status(401).body("Chưa đăng nhập");
+    @PostMapping("/api/cart/add")
+    @ResponseBody
+    public ResponseEntity<?> addToCart(
+            @RequestBody AddToCartRequest request,
+            Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(401).body("Chưa đăng nhập");
+        }
+
+        String email = authentication.getName();
+        users user = usersRepository.findByEmail(email);
+
+        Cart cart = cartService.addToCart(user, request.getProductId(), request.getQuantity());
+        return ResponseEntity.ok(cart.getItems());
     }
 
-    String email = authentication.getName();
-    users user = usersRepository.findByEmail(email);
+    @PostMapping("/api/cart/remove")
+    @ResponseBody
+    public ResponseEntity<?> removeFromCart(
+            @RequestBody Map<String, Object> payload,
+            Authentication authentication) {
 
-    Cart cart = cartService.addToCart(user, request.getProductId(), request.getQuantity());
-    return ResponseEntity.ok(cart.getItems());
-}
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(401).body("Chưa đăng nhập");
+        }
+
+        String email = authentication.getName();
+        users user = usersRepository.findByEmail(email);
+
+        // Lấy productId từ payload
+        Object productIdObj = payload.get("productId");
+        if (productIdObj == null) {
+            return ResponseEntity.badRequest().body("Thiếu productId");
+        }
+        Long productId;
+        try {
+            productId = Long.valueOf(productIdObj.toString());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("productId không hợp lệ");
+        }
+
+        Cart cart = cartService.removeFromCart(user, productId);
+        return ResponseEntity.ok(cart.getItems());
+    }
 }

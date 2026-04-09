@@ -29,7 +29,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/home", "/login", "/verify", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/api/products/**", "/api/brands/**", "/api/sizes/**").permitAll() // <-- Thêm dòng này
+                        .requestMatchers("/api/forgot-password", "/api/resend-otp", "/api/verify-otp").permitAll()
+                        .requestMatchers("/api/products/**", "/api/brands/**", "/api/sizes/**").permitAll() //
+                        .requestMatchers("/api/reset-password").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/api/**").authenticated()

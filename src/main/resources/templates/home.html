@@ -645,12 +645,12 @@
         <p class="text-slate-500 dark:text-slate-300 text-sm">
           Chúng tôi không tìm thấy sản phẩm nào phù hợp 
         </p>
-        <button 
-          onclick="window.location.reload()" 
-          class="mt-4 bg-primary text-white dark:text-slate-900 dark:bg-white py-2 px-4 rounded-xl text-sm font-semibold hover:bg-primary/80 dark:hover:bg-slate-300 transition-all"
-        >
-          Thử lại
-        </button>
+       <button
+  onclick="window.location.href='/home'"
+  class="mt-4 bg-primary text-white dark:text-slate-900 dark:bg-white py-2 px-4 rounded-xl text-sm font-semibold hover:bg-primary/80 dark:hover:bg-slate-300 transition-all"
+>
+  Thử lại
+</button>
       </div>
     </div>
   `;
@@ -783,53 +783,70 @@
     // Thêm vào giỏ hàng
     document
       .getElementById("product-list")
-      .addEventListener("click", function (e) {
+      .addEventListener("click", async function (e) {
         const btn = e.target.closest(".add-to-cart-home");
-        if (btn) {
-          e.preventDefault();
-          const product = {
-            id: btn.getAttribute("data-id"),
-            name: btn.getAttribute("data-name"),
-            price: btn.getAttribute("data-price"),
-            image: btn.getAttribute("data-image"),
-            brand: btn.getAttribute("data-brand"),
-            quantity: 1,
-          };
+        if (!btn) return;
 
-          if (isLoggedIn) {
-            // Gọi API thêm vào giỏ hàng trên server
-            fetch("/api/cart/add", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              credentials: "include",
-              body: JSON.stringify({
-                productId: product.id,
-                quantity: 1,
-              }),
-            })
-              .then((res) => res.json())
-              .then((cart) => {
-                // Xóa cache cart cũ nếu có
-                if (window.currentCart) window.currentCart = null;
-                updateCartCount && updateCartCount();
-                showToast("Đã thêm vào giỏ hàng!");
+        e.preventDefault();
+        const product = {
+          id: btn.getAttribute("data-id"),
+          name: btn.getAttribute("data-name"),
+          price: btn.getAttribute("data-price"),
+          image: btn.getAttribute("data-image"),
+          brand: btn.getAttribute("data-brand"),
+          quantity: 1,
+        };
+
+        if (isLoggedIn) {
+          // Nếu có cart localStorage, đồng bộ lên server trước
+          let localCart = JSON.parse(localStorage.getItem("cart")) || [];
+          if (localCart.length > 0) {
+            // Gửi từng sản phẩm trong localCart lên server
+            for (const item of localCart) {
+              await fetch("/api/cart/add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                  productId: item.id,
+                  quantity: item.quantity,
+                }),
               });
-          } else {
-            // Lưu vào localStorage như cũ
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const index = cart.findIndex((item) => item.id == product.id);
-            if (index >= 0) {
-              cart[index].quantity += 1;
-            } else {
-              cart.push(product);
             }
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartCount && updateCartCount();
-            showToast("Đã thêm vào giỏ hàng!");
+            // Xóa cart localStorage sau khi đồng bộ
+            localStorage.removeItem("cart");
           }
+
+          // Thêm sản phẩm hiện tại vào cart server
+          fetch("/api/cart/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              productId: product.id,
+              quantity: 1,
+            }),
+          })
+            .then((res) => res.json())
+            .then((cart) => {
+              if (window.currentCart) window.currentCart = null;
+              updateCartCount && updateCartCount(cart);
+              showToast("Đã thêm vào giỏ hàng!");
+            });
+        } else {
+          // Lưu vào localStorage như cũ
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const index = cart.findIndex((item) => item.id == product.id);
+          if (index >= 0) {
+            cart[index].quantity += 1;
+          } else {
+            cart.push(product);
+          }
+          localStorage.setItem("cart", JSON.stringify(cart));
+          updateCartCount && updateCartCount();
+          showToast("Đã thêm vào giỏ hàng!");
         }
       });
-
     // Toast thông báo
     function showToast(message) {
       const toast = document.getElementById("toast");
@@ -891,6 +908,35 @@
       const urlParams = new URLSearchParams(window.location.search);
       const keyword = urlParams.get("keyword") || "";
       loadProducts(0, keyword);
+    });
+    //
+    function updateCartCount(cart) {
+      let badge = document.getElementById("cart-count");
+      if (!badge) return;
+      let total = 0;
+      if (typeof isLoggedIn !== "undefined" && isLoggedIn) {
+        if (cart) {
+          total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+          badge.innerText = total > 99 ? "99+" : total;
+          badge.classList.toggle("hidden", total === 0);
+        } else {
+          fetch("/api/cart", { credentials: "include" })
+            .then((res) => res.json())
+            .then((cart) => {
+              total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+              badge.innerText = total > 99 ? "99+" : total;
+              badge.classList.toggle("hidden", total === 0);
+            });
+        }
+      } else {
+        let localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        total = localCart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        badge.innerText = total > 99 ? "99+" : total;
+        badge.classList.toggle("hidden", total === 0);
+      }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      updateCartCount();
     });
   </script>
 </html>

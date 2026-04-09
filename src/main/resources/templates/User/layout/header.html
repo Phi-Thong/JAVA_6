@@ -1,220 +1,303 @@
 <header
-  class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 shadow-sm transition-all"
-  th:fragment="header"
+        class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 shadow-sm transition-all"
+        th:fragment="header"
 >
-  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-    <div class="flex items-center gap-8">
-      <a href="/home" class="flex items-center gap-3 group">
-        <!-- Icon -->
-        <div
-          class="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition"
-        >
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-8">
+            <a href="/home" class="flex items-center gap-3 group">
+                <!-- Icon -->
+                <div
+                        class="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition"
+                >
           <span class="material-symbols-outlined text-primary text-3xl">
             local_mall
           </span>
-        </div>
+                </div>
 
-        <!-- Logo Text -->
-        <span
-          class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white"
-        >
+                <!-- Logo Text -->
+                <span
+                        class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white"
+                >
           SNEAKER<span class="text-primary">STORE</span>
         </span>
-      </a>
-    </div>
+            </a>
+        </div>
 
-    <div class="flex items-center gap-4">
-      <div class="relative hidden sm:block">
+        <div class="flex items-center gap-4">
+            <div class="relative hidden sm:block">
         <span
-          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
-          >search</span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+        >search</span
         >
-        <input
-          id="header-search"
-          class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-64"
-          placeholder="Tìm kiếm sản phẩm..."
-          type="text"
-        />
-      </div>
+                <input
+                        id="header-search"
+                        class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-64"
+                        placeholder="Tìm kiếm sản phẩm..."
+                        type="text"
+                />
+            </div>
 
-      <a
-        href="/shoppingCart"
-        class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative inline-block"
-      >
-        <span class="material-symbols-outlined">shopping_cart</span>
+            <a
+                    href="/shoppingCart"
+                    class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative inline-block"
+            >
+                <span class="material-symbols-outlined">shopping_cart</span>
 
-        <span
-          id="cart-count"
-          class="absolute top-1 right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden"
-        >
+                <span
+                        id="cart-count"
+                        class="absolute top-1 right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden"
+                >
         </span>
-      </a>
-      <button
-        onclick="toggleDarkMode()"
-        class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-      >
-        <!-- Light icon -->
-        <span class="material-symbols-outlined block dark:hidden">
+            </a>
+            <button
+                    onclick="toggleDarkMode()"
+                    class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+                <!-- Light icon -->
+                <span class="material-symbols-outlined block dark:hidden">
           dark_mode
         </span>
 
-        <!-- Dark icon -->
-        <span
-          class="material-symbols-outlined hidden dark:block text-yellow-400"
-        >
+                <!-- Dark icon -->
+                <span
+                        class="material-symbols-outlined hidden dark:block text-yellow-400"
+                >
           light_mode
         </span>
-      </button>
+            </button>
 
-      <div class="relative inline-block">
-        <!-- ====== CASE 1: ĐÃ ĐĂNG NHẬP ====== -->
-        <div th:if="${name != null}">
-          <button
-            onclick="toggleUserMenu()"
-            class="flex items-center gap-2 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
-          >
-            <!-- Avatar -->
-            <img
-              th:src="${picture != null && #strings.startsWith(picture, 'http')} ? ${picture} : '/img/default.jpg'"
-              class="w-8 h-8 rounded-full object-cover border"
-              referrerpolicy="no-referrer"
-            />
+            <div class="relative inline-block">
+                <!-- ====== CASE 1: ĐÃ ĐĂNG NHẬP ====== -->
+                <div th:if="${name != null}">
+                    <button
+                            onclick="toggleUserMenu()"
+                            class="flex items-center gap-2 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+                    >
+                        <!-- Avatar -->
+                        <img
+                                th:src="${picture != null && #strings.startsWith(picture, 'http')} ? ${picture} : '/img/default.jpg'"
+                                class="w-8 h-8 rounded-full object-cover border"
+                                referrerpolicy="no-referrer"
+                        />
 
-            <!-- Text -->
-            <div class="text-left leading-tight">
-              <div class="text-xs text-gray-500">Xin chào</div>
-              <span class="font-semibold" th:text="${name}"></span>
-            </div>
+                        <!-- Text -->
+                        <div class="text-left leading-tight">
+                            <div class="text-xs text-gray-500">Xin chào</div>
+                            <span class="font-semibold" th:text="${name}"></span>
+                        </div>
 
-            <span class="material-symbols-outlined text-gray-500 text-sm">
+                        <span class="material-symbols-outlined text-gray-500 text-sm">
               expand_more
             </span>
-          </button>
+                    </button>
 
-          <!-- Dropdown -->
-          <div
-            id="userMenu"
-            class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg overflow-hidden"
-          >
-            <a
-              href="/user/profile"
-              class="flex items-center gap-2 px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-            >
-              <span class="material-symbols-outlined text-lg">person</span>
-              Thông tin cá nhân
-            </a>
+                    <!-- Dropdown -->
+                    <div
+                            id="userMenu"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg overflow-hidden"
+                    >
+                        <a
+                                href="/user/profile"
+                                class="flex items-center gap-2 px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                        >
+                            <span class="material-symbols-outlined text-lg">person</span>
+                            Thông tin cá nhân
+                        </a>
 
-            <a
-              href="/logout"
-              class="flex items-center gap-2 px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition"
-            >
-              <span class="material-symbols-outlined text-lg">logout</span>
-              Đăng xuất
-            </a>
-          </div>
+                        <a
+                                href="/logout"
+                                class="flex items-center gap-2 px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition"
+                        >
+                            <span class="material-symbols-outlined text-lg">logout</span>
+                            Đăng xuất
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ====== CASE 2: CHƯA ĐĂNG NHẬP ====== -->
+                <div th:if="${name == null}" class="flex items-center gap-2">
+                    <a
+                            href="/login"
+                            class="px-4 py-2 text-sm font-medium border border-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                    >
+                        Đăng nhập
+                    </a>
+
+                    <a
+                            href="/register"
+                            class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:opacity-90 transition"
+                    >
+                        Đăng ký
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <!-- ====== CASE 2: CHƯA ĐĂNG NHẬP ====== -->
-        <div th:if="${name == null}" class="flex items-center gap-2">
-          <a
-            href="/login"
-            class="px-4 py-2 text-sm font-medium border border-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-          >
-            Đăng nhập
-          </a>
-
-          <a
-            href="/register"
-            class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:opacity-90 transition"
-          >
-            Đăng ký
-          </a>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <script>
-    function toggleUserMenu() {
-      const menu = document.getElementById("userMenu");
-      menu.classList.toggle("hidden");
-    }
-
-    //  DARK MODE FUNCTION (THÊM)
-    function toggleDarkMode() {
-      const html = document.documentElement;
-      html.classList.toggle("dark");
-
-      if (html.classList.contains("dark")) {
-        localStorage.setItem("theme", "dark");
-      } else {
-        localStorage.setItem("theme", "light");
-      }
-    }
-
-    //  LOAD LẠI TRẠNG THÁI (THÊM)
-    (function () {
-      const theme = localStorage.getItem("theme");
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      }
-    })();
-  </script>
-  <script>
-    function updateCartCount() {
-      let badge = document.getElementById("cart-count");
-      if (!badge) return;
-
-      if (typeof isLoggedIn !== "undefined" && isLoggedIn) {
-        // Đã đăng nhập: lấy từ window.currentCart nếu có, hoặc gọi API
-        if (window.currentCart) {
-          let total = window.currentCart.reduce(
-            (sum, item) => sum + (item.quantity || 1),
-            0,
-          );
-          badge.innerText = total > 99 ? "99+" : total;
-          badge.classList.toggle("hidden", total === 0);
-        } else {
-          // Nếu chưa có dữ liệu, gọi API lấy cart
-          fetch("/api/cart")
-            .then((res) => res.json())
-            .then((cart) => {
-              window.currentCart = cart;
-              let total = cart.reduce(
-                (sum, item) => sum + (item.quantity || 1),
-                0,
-              );
-              badge.innerText = total > 99 ? "99+" : total;
-              badge.classList.toggle("hidden", total === 0);
-            });
+    <script>
+        function toggleUserMenu() {
+            const menu = document.getElementById("userMenu");
+            menu.classList.toggle("hidden");
         }
-      } else {
-        // Chưa đăng nhập: lấy từ localStorage
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        let total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        badge.innerText = total > 99 ? "99+" : total;
-        badge.classList.toggle("hidden", total === 0);
-      }
-    }
 
-    // Chạy khi load trang
-    document.addEventListener("DOMContentLoaded", function () {
-      updateCartCount();
-    });
-    // tìm kiếm
-    document.addEventListener("DOMContentLoaded", function () {
-      const searchInput = document.getElementById("header-search");
-      if (searchInput) {
-        searchInput.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") {
-            const keyword = this.value.trim();
-            if (keyword) {
-              window.location.href =
-                "/home?keyword=" + encodeURIComponent(keyword);
+        //  DARK MODE FUNCTION (THÊM)
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            html.classList.toggle("dark");
+
+            if (html.classList.contains("dark")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
             }
-          }
+        }
+
+        //  LOAD LẠI TRẠNG THÁI (THÊM)
+        (function () {
+            const theme = localStorage.getItem("theme");
+            if (theme === "dark") {
+                document.documentElement.classList.add("dark");
+            }
+        })();
+    </script>
+    <script>
+        function updateCartCount() {
+            let badge = document.getElementById("cart-count");
+            if (!badge) return;
+
+            if (typeof isLoggedIn !== "undefined" && isLoggedIn) {
+                // Đã đăng nhập: lấy từ window.currentCart nếu có, hoặc gọi API
+                if (window.currentCart) {
+                    let total = window.currentCart.reduce(
+                        (sum, item) => sum + (item.quantity || 1),
+                        0,
+                    );
+                    badge.innerText = total > 99 ? "99+" : total;
+                    badge.classList.toggle("hidden", total === 0);
+                } else {
+                    // Nếu chưa có dữ liệu, gọi API lấy cart
+                    fetch("/api/cart")
+                        .then((res) => res.json())
+                        .then((cart) => {
+                            window.currentCart = cart;
+                            let total = cart.reduce(
+                                (sum, item) => sum + (item.quantity || 1),
+                                0,
+                            );
+                            badge.innerText = total > 99 ? "99+" : total;
+                            badge.classList.toggle("hidden", total === 0);
+                        });
+                }
+            } else {
+                // Chưa đăng nhập: lấy từ localStorage
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                let total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                badge.innerText = total > 99 ? "99+" : total;
+                badge.classList.toggle("hidden", total === 0);
+            }
+        }
+
+        // Chạy khi load trang
+        document.addEventListener("DOMContentLoaded", function () {
+            updateCartCount();
         });
-      }
-    });
-  </script>
+        // tìm kiếm
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("header-search");
+            if (searchInput) {
+                searchInput.addEventListener("keydown", function (e) {
+                    if (e.key === "Enter") {
+                        const keyword = this.value.trim();
+                        if (keyword) {
+                            window.location.href =
+                                "/home?keyword=" + encodeURIComponent(keyword);
+                        }
+                    }
+                });
+            }
+        });
+
+        //    chổ bổ sung thêm
+        function toggleUserMenu() {
+            const menu = document.getElementById("userMenu");
+            menu.classList.toggle("hidden");
+        }
+
+        //  DARK MODE FUNCTION (THÊM)
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            html.classList.toggle("dark");
+
+            if (html.classList.contains("dark")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        }
+
+        //  LOAD LẠI TRẠNG THÁI (THÊM)
+        (function () {
+            const theme = localStorage.getItem("theme");
+            if (theme === "dark") {
+                document.documentElement.classList.add("dark");
+            }
+        })();
+
+        function updateCartCount() {
+            let badge = document.getElementById("cart-count");
+            if (!badge) return;
+
+            if (typeof isLoggedIn !== "undefined" && isLoggedIn) {
+                // Đã đăng nhập: lấy từ window.currentCart nếu có, hoặc gọi API
+                if (window.currentCart) {
+                    let total = window.currentCart.reduce(
+                        (sum, item) => sum + (item.quantity || 1),
+                        0,
+                    );
+                    badge.innerText = total > 99 ? "99+" : total;
+                    badge.classList.toggle("hidden", total === 0);
+                } else {
+                    // Nếu chưa có dữ liệu, gọi API lấy cart
+                    fetch("/api/cart")
+                        .then((res) => res.json())
+                        .then((cart) => {
+                            window.currentCart = cart;
+                            let total = cart.reduce(
+                                (sum, item) => sum + (item.quantity || 1),
+                                0,
+                            );
+                            badge.innerText = total > 99 ? "99+" : total;
+                            badge.classList.toggle("hidden", total === 0);
+                        });
+                }
+            } else {
+                // Chưa đăng nhập: lấy từ localStorage
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                let total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                badge.innerText = total > 99 ? "99+" : total;
+                badge.classList.toggle("hidden", total === 0);
+            }
+        }
+
+        // Chạy khi load trang
+        document.addEventListener("DOMContentLoaded", function () {
+            updateCartCount();
+        });
+        // tìm kiếm
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("header-search");
+            if (searchInput) {
+                searchInput.addEventListener("keydown", function (e) {
+                    if (e.key === "Enter") {
+                        const keyword = this.value.trim();
+                        if (keyword) {
+                            window.location.href =
+                                "/home?keyword=" + encodeURIComponent(keyword);
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
 </header>

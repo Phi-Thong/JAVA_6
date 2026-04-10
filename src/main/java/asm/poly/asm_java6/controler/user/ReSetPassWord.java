@@ -19,10 +19,14 @@ public class ReSetPassWord {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // Hiển thị giao diện đổi mật khẩu
     @GetMapping("/resetPassword")
     public String resetPassWord() {
         return "User/resetPassWord";
     }
+
+    // API xác thực OTP (ví dụ, sau khi xác thực thành công thì lưu email vào session)
+   
 
     // API cập nhật mật khẩu mới
     @PostMapping("/api/reset-password")

@@ -53,6 +53,11 @@
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
+
+        #brandInput {
+            display: block !important;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display">
@@ -211,21 +216,25 @@
 
                 const mainArea = document.getElementById('main-content');
 
-                if (mainArea) {
+                if (!mainArea) return;
 
-                    mainArea.innerHTML = html;
+                mainArea.innerHTML = html;
 
-                    window.history.pushState({}, '', url);
+                window.history.pushState({}, '', url);
 
-                    // chạy lại các script của từng trang
-                    initSalesChart();     // dashboard
-                    initCategoryTabs();   // category page
-                    initProductTabs();    // product page
+                //  QUAN TRỌNG: delay re-init
+                requestAnimationFrame(() => {
 
-                }
+                    initSalesChart();
+                    initCategoryTabs();
+                    initProductTabs();
+                    initMainImageUpload();
+                    initSubImages();
+                    initBrands(); // OK sau khi DOM ổn định
+                });
 
             })
-            .catch(error => console.error('Error:', error));
+            .catch(console.error);
     }
 
     // ===============================
@@ -374,5 +383,79 @@
         }
     });
 
+    // của thêm sản phẩm
+
+    function initMainImageUpload() {
+
+        const preview = document.getElementById('mainImagePreview');
+        const input = document.getElementById('mainImageInput');
+
+        if (!preview || !input) return;
+
+        // tránh gắn nhiều lần event
+        preview.onclick = null;
+
+        preview.onclick = () => input.click();
+
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = (ev) => {
+                preview.innerHTML =
+                    `<img src="${ev.target.result}"
+                 class="object-contain h-full w-full rounded-2xl"/>`;
+            };
+
+            reader.readAsDataURL(file);
+        };
+    }
+
+    // cuủa 4 ảnh phụ
+    function initSubImages() {
+        document.querySelectorAll(".sub-thumb").forEach(box => {
+
+            const input = box.querySelector(".subInput");
+
+            box.onclick = () => input.click();
+
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+
+                reader.onload = (ev) => {
+                    box.innerHTML = `
+                    <img src="${ev.target.result}"
+                         class="w-full h-full object-cover rounded-2xl"/>
+                `;
+                };
+
+                reader.readAsDataURL(file);
+            };
+        });
+    }
+
+    // load dũ liuwj lên
+    function initBrands() {
+        const el = document.getElementById('brandInput');
+        if (!el) return;
+
+        fetch('/api/brands2')
+            .then(r => r.json())
+            .then(data => {
+                el.innerHTML = '<option>Chọn thương hiệu</option>';
+
+                data.forEach(b => {
+                    const opt = document.createElement('option');
+                    opt.value = b.id;
+                    opt.textContent = b.tenThuongHieu;
+                    el.appendChild(opt);
+                });
+            });
+    }
 
 </script>

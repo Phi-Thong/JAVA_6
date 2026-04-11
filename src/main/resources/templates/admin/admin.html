@@ -63,7 +63,22 @@
             transition: opacity 0.35s ease,
             transform 0.35s ease;
         }
-        
+
+        #main-content {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display">
@@ -221,14 +236,12 @@
             .then(html => {
 
                 const mainArea = document.getElementById('main-content');
-
                 if (!mainArea) return;
 
                 mainArea.innerHTML = html;
 
                 window.history.pushState({}, '', url);
 
-                //  QUAN TRỌNG: delay re-init
                 requestAnimationFrame(() => {
 
                     initSalesChart();
@@ -236,7 +249,13 @@
                     initProductTabs();
                     initMainImageUpload();
                     initSubImages();
-                    initBrands(); // OK sau khi DOM ổn định
+                    initBrands();
+
+                    // 🔥 THÊM DÒNG NÀY
+                    if (url.includes("/admin/product")) {
+                        initProductPage();
+                    }
+
                 });
 
             })
@@ -254,36 +273,35 @@
 
             link.addEventListener('click', function (e) {
 
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function () {
-                        window.location.href = this.href;
-                    });
-                });
+                e.preventDefault(); // 🔥 chặn reload
+
+                const url = this.getAttribute('href');
+                if (!url || url === '#') return;
+
+                updateActiveMenu(this);
                 loadContent(url);
             });
 
         });
 
-        function updateActiveMenu(clickedElement) {
-
-            navLinks.forEach(link => {
-
-                link.classList.remove('bg-primary/10', 'text-primary');
-
-                link.classList.add('text-slate-600', 'dark:text-slate-400');
-
-            });
-
-            clickedElement.classList.add('bg-primary/10', 'text-primary');
-
-            clickedElement.classList.remove('text-slate-600', 'dark:text-slate-400');
-        }
-
-
-        // chạy khi load trang lần đầu
-        initSalesChart();
-        initCategoryTabs();
     });
+
+    function updateActiveMenu(clickedElement) {
+
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            link.classList.remove('bg-primary/10', 'text-primary');
+            link.classList.add('text-slate-600', 'dark:text-slate-400');
+        });
+
+        clickedElement.classList.add('bg-primary/10', 'text-primary');
+    }
+
+
+    // chạy khi load trang lần đầu
+    initSalesChart();
+    initCategoryTabs();
 
 
     // ===============================
@@ -308,17 +326,17 @@
 
         const status = tab.dataset.status;
 
-        // 🎨 reset tab
+        //  reset tab
         tabs.forEach(t => {
             t.classList.remove("text-primary", "font-semibold");
             t.classList.add("text-slate-500", "font-medium");
         });
 
-        // 🎯 active tab
+        //  active tab
         tab.classList.add("text-primary", "font-semibold");
         tab.classList.remove("text-slate-500");
 
-        // 👉 animation underline
+        //  animation underline
         indicator.style.width = tab.offsetWidth + "px";
         indicator.style.left = tab.offsetLeft + "px";
 
@@ -460,5 +478,28 @@
                 });
             });
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const currentPath = window.location.pathname;
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+
+            const href = link.getAttribute("href");
+
+            // reset
+            link.classList.remove("bg-primary/10", "text-primary");
+            link.classList.add("text-slate-600", "dark:text-slate-400");
+
+            // nếu trùng URL → active
+            if (href === currentPath) {
+                link.classList.add("bg-primary/10", "text-primary");
+                link.classList.remove("text-slate-600", "dark:text-slate-400");
+            }
+
+        });
+
+    });
+
 
 </script>

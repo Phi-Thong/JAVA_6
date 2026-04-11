@@ -1,0 +1,430 @@
+<!-- Chat Widget Fragment -->
+<div th:fragment="chat-widget">
+    <style>
+        @keyframes ai-wiggle {
+            0% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-12deg);
+            }
+            50% {
+                transform: rotate(12deg);
+            }
+            75% {
+                transform: rotate(-8deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .chat-icon {
+            font-size: 24px;
+            color: #fff;
+            display: inline-block;
+            animation: ai-wiggle 1.6s infinite ease-in-out;
+            transform-origin: center;
+        }
+    </style>
+
+    <!-- ================= BUBBLE ================= -->
+    <div id="chat-ai-label"
+         style="
+        position: fixed;
+        bottom: 95px;
+        right: 28px;
+        background: rgba(15, 23, 42, 0.9);
+        color: #fff;
+        padding: 6px 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.3s ease;
+        z-index: 10001;
+        pointer-events: none;
+     ">
+        Bạn cần giúp gì không? 🤖
+    </div>
+
+    <!-- ================= CHAT BUBBLE ================= -->
+    <div id="chat-bubble"
+         style="
+     position: fixed;
+     bottom: 28px;
+     right: 28px;
+     width: 58px;
+     height: 58px;
+     background: linear-gradient(135deg, #93c5fd, #3b82f6);
+     border-radius: 50%;
+     box-shadow: 0 12px 30px rgba(59,130,246,0.25);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     z-index: 9999;
+     transition: 0.2s ease;
+     ">
+        <span class="chat-icon">🤖</span>
+    </div>
+
+    <!-- ================= CHAT BOX ================= -->
+    <div id="chat-box"
+         style="
+     position: fixed;
+     bottom: 100px;
+     right: 28px;
+     width: 380px;
+     height: 560px;
+     background: #ffffff;
+     border-radius: 18px;
+     box-shadow: 0 20px 50px rgba(15,23,42,0.18);
+     display: none;
+     flex-direction: column;
+     overflow: hidden;
+     z-index: 10000;
+     border: 1px solid #e5e7eb;
+     ">
+
+        <!-- HEADER -->
+        <div style="
+        background: linear-gradient(135deg, #93c5fd, #60a5fa);
+        color: #fff;
+        padding: 14px 16px;
+        font-weight: 600;
+        display:flex;
+        justify-content: space-between;
+        align-items:center;
+        font-size: 14px;
+    ">
+            <span>💬 Hỗ trợ khách hàng</span>
+            <span id="close-chat" style="cursor:pointer; font-size:18px;">✕</span>
+        </div>
+
+        <!-- INTRO -->
+        <div style="
+        padding: 12px;
+        background: #eff6ff;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 12.5px;
+        color: #334155;
+        line-height: 1.4;
+    ">
+            👋 Nhân viên của chúng tôi sẽ hỗ trợ bạn nhanh nhất có thể.<br>
+            Vui lòng nhập câu hỏi, chúng tôi sẽ phản hồi sớm nhất!
+        </div>
+
+        <!-- MESSAGES -->
+        <div id="chat-messages"
+             style="
+         flex: 1;
+         padding: 12px;
+         overflow-y: auto;
+         background: #f9fafb;
+         display: flex;
+         flex-direction: column;
+         gap: 8px;
+         ">
+        </div>
+
+        <!-- INPUT -->
+        <form id="chat-form"
+              style="
+          display: flex;
+          border-top: 1px solid #e5e7eb;
+          padding: 8px;
+          gap: 6px;
+          background: #fff;
+          ">
+
+            <input id="chat-input"
+                   type="text"
+                   placeholder="Nhập tin nhắn..."
+                   style="
+               flex: 1;
+               border: 1px solid #e5e7eb;
+               border-radius: 12px;
+               padding: 10px 12px;
+               outline: none;
+               font-size: 13px;
+               ">
+
+            <button type="submit"
+                    style="
+                background: linear-gradient(135deg, #60a5fa, #3b82f6);
+                color: #fff;
+                border: none;
+                padding: 0 14px;
+                border-radius: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                ">
+                Gửi
+            </button>
+        </form>
+    </div>
+
+    <!-- ================= SCRIPT ================= -->
+    <script>
+        const bubble = document.getElementById('chat-bubble');
+        const box = document.getElementById('chat-box');
+        const closeBtn = document.getElementById('close-chat');
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('chat-input');
+        const messages = document.getElementById('chat-messages');
+
+        let openedOnce = false;
+        let humanMode = false;
+
+        // =========================
+        // OPEN CHAT
+        // =========================
+        bubble.onclick = () => {
+            box.style.display = 'flex';
+            bubble.style.transform = 'scale(0.9)';
+            bubble.style.opacity = '0';
+
+            if (!openedOnce) {
+                appendMessage(
+                    'Hệ thống',
+                    'Xin chào, chúng tôi có thể giúp gì cho bạn?',
+                    false
+                );
+                openedOnce = true;
+            }
+        };
+
+        // =========================
+        // CLOSE CHAT
+        // =========================
+        closeBtn.onclick = () => {
+            box.style.display = 'none';
+            bubble.style.transform = 'scale(1)';
+            bubble.style.opacity = '1';
+        };
+
+        // =========================
+        // SEND MESSAGE
+        // =========================
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            appendMessage('Bạn', msg, true);
+            input.value = '';
+
+            await fetch('/api/chat/send', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: msg})
+            });
+
+            setTimeout(() => {
+                let reply;
+
+                // 👇 nếu đã chuyển sang nhân viên thật
+                if (humanMode) {
+                    reply = 'Nhân viên đang xem yêu cầu của bạn, vui lòng chờ trong giây lát';
+                } else {
+                    reply = generateAutoReply(msg);
+                }
+
+                appendMessage('Hệ thống', reply, false);
+
+                if (!humanMode) {
+                    addFeedbackUI();
+                }
+
+            }, 500);
+        };
+
+        // =========================
+        // KEYWORD BOT (UPGRADED)
+        // =========================
+        function generateAutoReply(msg) {
+            msg = msg.toLowerCase();
+
+            // ===== GREETING =====
+            if (msg.includes('xin chào') || msg.includes('hello') || msg.includes('hi')) {
+                return 'Xin chào, chúng tôi có thể hỗ trợ gì cho bạn';
+            }
+
+            // ===== PRICE =====
+            if (msg.includes('giá') || msg.includes('bao nhiêu') || msg.includes('price')) {
+                return 'Vui lòng cung cấp sản phẩm cụ thể để báo giá chính xác';
+            }
+
+            // ===== SHIPPING =====
+            if (msg.includes('ship') || msg.includes('giao hàng') || msg.includes('vận chuyển')) {
+                return 'Chúng tôi giao hàng toàn quốc từ 2 đến 5 ngày làm việc';
+            }
+
+            // ===== ORDER =====
+            if (msg.includes('đặt hàng') || msg.includes('mua') || msg.includes('order')) {
+                return 'Bạn có thể thêm sản phẩm vào giỏ hàng để tiến hành thanh toán';
+            }
+
+            // ===== SUPPORT =====
+            if (msg.includes('hỗ trợ') || msg.includes('help') || msg.includes('giúp')) {
+                return 'Vui lòng mô tả chi tiết vấn đề để chúng tôi hỗ trợ nhanh nhất';
+            }
+
+            // ===== PAYMENT =====
+            if (msg.includes('thanh toán') || msg.includes('pay')) {
+                return 'Chúng tôi hỗ trợ chuyển khoản và thanh toán khi nhận hàng';
+            }
+
+            // ===== REFUND =====
+            if (msg.includes('hoàn tiền') || msg.includes('trả hàng')) {
+                return 'Chính sách hoàn trả trong vòng 7 ngày nếu sản phẩm lỗi';
+            }
+
+            // ===== ACCOUNT =====
+            if (msg.includes('tài khoản') || msg.includes('login') || msg.includes('đăng nhập')) {
+                return 'Bạn có thể đăng nhập bằng email hoặc số điện thoại đã đăng ký';
+            }
+
+            // ❌ KHÔNG CÓ KEYWORD
+            return 'Chúng tôi sẽ liên hệ nhân viên hỗ trợ, vui lòng đợi trong giây lát';
+        }
+
+        // =========================
+        // FEEDBACK UI (LIKE / DISLIKE)
+        // =========================
+        function addFeedbackUI() {
+            const wrap = document.createElement('div');
+            wrap.style.fontSize = '12px';
+            wrap.style.margin = '6px 0 12px 0';
+            wrap.style.color = '#555';
+
+            wrap.innerHTML = `
+            <div style="margin-bottom:4px;">
+                Câu trả lời này có hữu ích không?
+            </div>
+
+           <div style="display:flex; gap:10px; margin-top:6px;">
+
+    <!-- LIKE -->
+    <div style="display:flex; gap:8px; margin-top:6px;">
+
+    <button onclick="goodFeedback()"
+        style="
+            padding:5px 12px;
+            border-radius:8px;
+            border:1px solid #e5e7eb;
+            background:#fff;
+            cursor:pointer;
+            font-size:12px;
+            color:#111827;
+            opacity:0.75;
+            transition:0.2s;
+        "
+        onmouseover="this.style.opacity='1'; this.style.background='#f0fdf4';"
+        onmouseout="this.style.opacity='0.75'; this.style.background='#fff';">
+        Có
+    </button>
+
+    <button onclick="badFeedback()"
+        style="
+            padding:5px 12px;
+            border-radius:8px;
+            border:1px solid #e5e7eb;
+            background:#fff;
+            cursor:pointer;
+            font-size:12px;
+            color:#111827;
+            opacity:0.75;
+            transition:0.2s;
+        "
+        onmouseover="this.style.opacity='1'; this.style.background='#fef2f2';"
+        onmouseout="this.style.opacity='0.75'; this.style.background='#fff';">
+        Không
+    </button>
+
+</div>
+
+</div>
+        `;
+
+            messages.appendChild(wrap);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // =========================
+        // FEEDBACK HANDLERS
+        // =========================
+        window.goodFeedback = function () {
+            appendMessage('Hệ thống', 'Cảm ơn bạn đã phản hồi', false);
+        };
+
+        window.badFeedback = function () {
+            humanMode = true;
+
+            appendMessage(
+                'Hệ thống',
+                'Chúng tôi sẽ chuyển bạn sang nhân viên hỗ trợ, vui lòng chờ trong giây lát',
+                false
+            );
+        };
+
+        // =========================
+        // UI MESSAGE
+        // =========================
+        function appendMessage(sender, text, isUser) {
+            const div = document.createElement('div');
+            div.style.display = 'flex';
+            div.style.justifyContent = isUser ? 'flex-end' : 'flex-start';
+
+            div.innerHTML = `
+            <div style="
+                max-width: 75%;
+                padding: 8px 12px;
+                border-radius: 14px;
+                font-size: 13px;
+                line-height: 1.4;
+                background: ${isUser ? '#3b82f6' : '#e5e7eb'};
+                color: ${isUser ? '#fff' : '#111827'};
+                word-break: break-word;
+            ">
+                ${text}
+            </div>
+        `;
+
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const label = document.getElementById("chat-ai-label");
+
+            function showLabel() {
+                // hiện
+                label.style.opacity = "1";
+                label.style.transform = "translateY(0)";
+
+                // sau 2 giây thì ẩn
+                setTimeout(() => {
+                    label.style.opacity = "0";
+                    label.style.transform = "translateY(10px)";
+                }, 2000);
+            }
+
+            // lần đầu: đợi 8 giây rồi hiện
+            setTimeout(() => {
+                showLabel();
+
+                // sau đó lặp: mỗi 10 giây (8s nghỉ + 2s hiện)
+                setInterval(() => {
+                    showLabel();
+                }, 10000);
+
+            }, 8000);
+        });
+    </script>
+
+</div>

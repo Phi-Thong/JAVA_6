@@ -425,14 +425,24 @@
                         <button
                                 class="px-6 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
                                 type="button"
+                                id="cancelBtn"
                         >
                             Hủy bỏ
                         </button>
                         <button
                                 class="px-8 py-2.5 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
                                 type="submit"
+                                id="addBtn"
                         >
                             Lưu sản phẩm
+                        </button>
+                        <button
+                                class="px-8 py-2.5 bg-yellow-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-yellow-400/20 hover:bg-yellow-600 transition-all"
+                                type="button"
+                                id="updateBtn"
+                                style="display:none"
+                        >
+                            Cập nhật
                         </button>
                     </div>
                 </form>
@@ -504,6 +514,8 @@
         </div>
     </div>
     <script>
+
+        const subImageCache = new Map();
         document.addEventListener("DOMContentLoaded", () => {
             console.log("🔥 Product form system ready");
 
@@ -572,8 +584,10 @@
                 let error = null;
 
                 // ===== VALIDATION =====
+                const isEdit = !!window.editingProductId; // true nếu đang chỉnh sửa, false nếu thêm mới
+
                 if (!name) error = "Vui lòng nhập tên sản phẩm!";
-                // else if (!sku) error = "Vui lòng nhập mã sản phẩm!"; // BỎ QUA
+// else if (!sku) error = "Vui lòng nhập mã sản phẩm!"; // BỎ QUA
                 else if (!brand) error = "Vui lòng chọn thương hiệu!";
                 else if (!price) error = "Vui lòng nhập giá!";
                 else if (!/^\d+([.,]\d+)?$/.test(price.replace(/,/g, "")))
@@ -581,8 +595,10 @@
                 else if (parseFloat(price.replace(/,/g, "")) <= 0)
                     error = "Giá phải lớn hơn 0!";
                 else if (!desc) error = "Vui lòng nhập mô tả!";
-                else if (!mainImage) error = "Vui lòng chọn ảnh chính!";
-                else if (subImages.length < 4) error = "Vui lòng chọn đủ 4 ảnh phụ!";
+// CHỈ bắt buộc chọn ảnh chính khi THÊM MỚI
+                else if (!isEdit && !mainImage) error = "Vui lòng chọn ảnh chính!";
+// CHỈ bắt buộc chọn đủ 4 ảnh phụ khi THÊM MỚI
+                else if (!isEdit && subImages.length < 4) error = "Vui lòng chọn đủ 4 ảnh phụ!";
 
                 // ===== ERROR HANDLING =====
                 if (error) {
@@ -606,7 +622,9 @@
                 formData.append("brandId", brand);
                 formData.append("price", price);
                 formData.append("desc", desc);
-                formData.append("mainImage", mainImage);
+                if (mainImage) {
+                    formData.append("mainImage", mainImage);
+                }
 
                 subImages.forEach((file) => formData.append("subImages", file));
 
@@ -629,6 +647,27 @@
                         showNotification("Thêm sản phẩm thành công!", 2500);
                         document.getElementById("productForm")?.reset();
                         subImageCache.clear();
+                        // Reset preview ảnh chính
+                        const mainPreview = document.getElementById("mainImagePreview");
+                        if (mainPreview) {
+                            mainPreview.innerHTML = `
+            <span class="material-symbols-outlined text-3xl text-primary mb-2">add_a_photo</span>
+            <p class="text-sm font-medium text-slate-900">Tải lên ảnh chính</p>
+            <p class="text-xs text-slate-400 mt-1">Dung lượng tối đa 5MB</p>
+        `;
+                        }
+
+                        // Reset preview ảnh phụ
+                        document.querySelectorAll('.sub-thumb').forEach(thumb => {
+                            thumb.innerHTML = `
+            <input type="file" accept="image/*" class="hidden subInput"/>
+            <span class="material-symbols-outlined text-slate-400">add</span>
+        `;
+                        });
+
+                        // Chuyển sang tab danh sách sản phẩm
+                        showTab("productListContent");
+                        loadProductsSmooth(0); // 🔥 thêm dòng này
                     } else {
                         errorDiv.textContent = data.message || "Có lỗi xảy ra!";
                     }
@@ -1104,7 +1143,7 @@
                 }, 350); // debounce 350ms cho mượt
             });
         });
-        // chỉnh sửa sản phẩm
+        //chỉnh sửa sản phẩm
         document.body.addEventListener("click", async function (e) {
             const editBtn = e.target.closest(".edit-btn");
             if (!editBtn) return;
@@ -1131,29 +1170,291 @@
                 document.getElementById("descInput").value = product.moTa || "";
 
                 // Ảnh chính
+                const mainPreview = document.getElementById("mainImagePreview");
                 if (product.anhChinh) {
-                    const mainPreview = document.getElementById("mainImagePreview");
                     mainPreview.innerHTML = `<img src="${product.anhChinh}" style="max-width:100%;max-height:100%;border-radius:12px;" alt="Ảnh chính"/>`;
+                } else {
+                    mainPreview.innerHTML = `
+                <span class="material-symbols-outlined text-3xl text-primary mb-2">add_a_photo</span>
+                <p class="text-sm font-medium text-slate-900">Tải lên ảnh chính</p>
+                <p class="text-xs text-slate-400 mt-1">Dung lượng tối đa 5MB</p>
+            `;
                 }
 
-                // Ảnh phụ (nâng cao)
-                if (product.anhPhu && Array.isArray(product.anhPhu)) {
-                    const subThumbs = document.querySelectorAll('.sub-thumb');
-                    product.anhPhu.forEach((url, idx) => {
-                        if (subThumbs[idx]) {
-                            subThumbs[idx].innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="Ảnh phụ"/>`;
-                        }
-                    });
-                }
+                // Ảnh phụ
+                const subThumbs = document.querySelectorAll('.sub-thumb');
+                subThumbs.forEach((thumb, idx) => {
+                    if (product.anhPhu && product.anhPhu[idx]) {
+                        thumb.innerHTML = `<img src="${product.anhPhu[idx]}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="Ảnh phụ"/>`;
+                        // Gắn lại input file để có thể chọn lại ảnh khác
+                        const input = document.createElement("input");
+                        input.type = "file";
+                        input.accept = "image/*";
+                        input.className = "hidden subInput";
+                        thumb.appendChild(input);
+                    } else {
+                        thumb.innerHTML = `
+                    <input type="file" accept="image/*" class="hidden subInput"/>
+                    <span class="material-symbols-outlined text-slate-400">add</span>
+                `;
+                    }
+                });
 
-                // Lưu productId vào biến toàn cục nếu muốn xử lý cập nhật khi submit
+                // Reset lỗi và cache ảnh phụ
+                document.getElementById("formError").textContent = "";
+                if (typeof subImageCache !== "undefined") subImageCache.clear();
+
+                // Lưu trạng thái đang chỉnh sửa
                 window.editingProductId = productId;
 
+                // Hiện nút cập nhật, ẩn nút thêm mới
+                document.getElementById("addBtn").style.display = "none";
+                document.getElementById("updateBtn").style.display = "inline-block";
             } catch (err) {
                 showNotification("Không lấy được thông tin sản phẩm!", 2500);
             }
             hideLoadingOverlay();
         });
+        // mở hộp thoại
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. ẢNH CHÍNH
+            const mainPreview = document.getElementById("mainImagePreview");
+            const mainInput = document.getElementById("mainImageInput");
+            if (mainPreview && mainInput) {
+                mainPreview.addEventListener("click", () => {
+                    mainInput.click();
+                });
+                mainInput.addEventListener("change", function () {
+                    const file = this.files && this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            mainPreview.innerHTML = `<img src="${e.target.result}" style="max-width:100%;max-height:100%;border-radius:12px;" alt="Ảnh chính"/>`;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        // Nếu không có file, hiện lại icon mặc định
+                        mainPreview.innerHTML = `
+                    <span class="material-symbols-outlined text-3xl text-primary mb-2">add_a_photo</span>
+                    <p class="text-sm font-medium text-slate-900">Tải lên ảnh chính</p>
+                    <p class="text-xs text-slate-400 mt-1">Dung lượng tối đa 5MB</p>
+                `;
+                    }
+                });
+            }
+
+            // 2. ẢNH PHỤ
+            // Khi click vào .sub-thumb thì trigger input file
+            document.querySelectorAll('.sub-thumb').forEach(thumb => {
+                const input = thumb.querySelector('input[type="file"]');
+                if (input) {
+                    thumb.addEventListener("click", function (e) {
+                        // Chỉ trigger khi click vào vùng thumb, không phải khi click vào input
+                        if (e.target === input) return;
+                        input.click();
+                    });
+                    input.addEventListener("change", function () {
+                        const file = this.files && this.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (evt) {
+                                thumb.innerHTML = `<img src="${evt.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="Ảnh phụ"/>`;
+                                // Gắn lại input file để có thể chọn lại ảnh khác
+                                thumb.appendChild(input);
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            // Nếu không có file, hiện lại icon mặc định
+                            thumb.innerHTML = `
+                        <input type="file" accept="image/*" class="hidden subInput"/>
+                        <span class="material-symbols-outlined text-slate-400">add</span>
+                    `;
+                        }
+                    });
+                }
+            });
+        });
+        //      cập nhật
+        document.getElementById("updateBtn").addEventListener("click", async function () {
+            const name = document.getElementById("nameInput")?.value.trim();
+            const brand = document.getElementById("brandInput")?.value;
+            const price = document.getElementById("priceInput")?.value.trim();
+            const desc = document.getElementById("descInput")?.value.trim();
+            const mainImage = document.getElementById("mainImageInput")?.files[0];
+            const errorDiv = document.getElementById("formError");
+            const subImages = Array.from(subImageCache.values()).flat().filter(Boolean);
+
+            errorDiv.textContent = "";
+
+            // Validation (giống thêm mới, nhưng không bắt buộc ảnh)
+            let error = null;
+            if (!name) error = "Vui lòng nhập tên sản phẩm!";
+            else if (!brand) error = "Vui lòng chọn thương hiệu!";
+            else if (!price) error = "Vui lòng nhập giá!";
+            else if (!/^\d+([.,]\d+)?$/.test(price.replace(/,/g, "")))
+                error = "Giá phải là số!";
+            else if (parseFloat(price.replace(/,/g, "")) <= 0)
+                error = "Giá phải lớn hơn 0!";
+            else if (!desc) error = "Vui lòng nhập mô tả!";
+
+            if (error) {
+                errorDiv.textContent = error;
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("brandId", brand);
+            formData.append("price", price);
+            formData.append("desc", desc);
+            if (mainImage) formData.append("mainImage", mainImage);
+            subImages.forEach((file) => formData.append("subImages", file));
+
+            const productId = window.editingProductId;
+            if (!productId) {
+                errorDiv.textContent = "Không xác định được sản phẩm cần cập nhật!";
+                return;
+            }
+
+            try {
+                showLoadingOverlay();
+                const res = await fetch(`/api/products3/${productId}`, {
+                    method: "PUT",
+                    body: formData,
+                });
+                const data = await res.json();
+                hideLoadingOverlay();
+
+                if (data.status === "success") {
+                    showNotification("Cập nhật sản phẩm thành công!", 2500);
+                    document.getElementById("productForm").reset();
+                    subImageCache.clear();
+                    window.editingProductId = null;
+                    // Reset preview ảnh chính
+                    const mainPreview = document.getElementById("mainImagePreview");
+                    if (mainPreview) {
+                        mainPreview.innerHTML = `
+            <span class="material-symbols-outlined text-3xl text-primary mb-2">add_a_photo</span>
+            <p class="text-sm font-medium text-slate-900">Tải lên ảnh chính</p>
+            <p class="text-xs text-slate-400 mt-1">Dung lượng tối đa 5MB</p>
+        `;
+                    }
+
+                    // Reset preview ảnh phụ
+                    document.querySelectorAll('.sub-thumb').forEach(thumb => {
+                        thumb.innerHTML = `
+            <input type="file" accept="image/*" class="hidden subInput"/>
+            <span class="material-symbols-outlined text-slate-400">add</span>
+        `;
+                    });
+                    // Chuyển về tab danh sách và reload
+                    showTab("productListContent");
+                   
+                } else {
+                    errorDiv.textContent = data.message || "Có lỗi xảy ra!";
+                }
+            } catch (err) {
+                hideLoadingOverlay();
+                errorDiv.textContent = "Không thể gửi dữ liệu lên server!";
+            }
+        });
+        document.getElementById("updateBtn").addEventListener("click", async function () {
+            const name = document.getElementById("nameInput")?.value.trim();
+            const brand = document.getElementById("brandInput")?.value;
+            const price = document.getElementById("priceInput")?.value.trim();
+            const desc = document.getElementById("descInput")?.value.trim();
+            const mainImage = document.getElementById("mainImageInput")?.files[0];
+            const errorDiv = document.getElementById("formError");
+            const subImages = Array.from(subImageCache.values()).flat().filter(Boolean);
+
+            errorDiv.textContent = "";
+
+            // Validation (giống thêm mới, nhưng không bắt buộc ảnh)
+            let error = null;
+            if (!name) error = "Vui lòng nhập tên sản phẩm!";
+            else if (!brand) error = "Vui lòng chọn thương hiệu!";
+            else if (!price) error = "Vui lòng nhập giá!";
+            else if (!/^\d+([.,]\d+)?$/.test(price.replace(/,/g, "")))
+                error = "Giá phải là số!";
+            else if (parseFloat(price.replace(/,/g, "")) <= 0)
+                error = "Giá phải lớn hơn 0!";
+            else if (!desc) error = "Vui lòng nhập mô tả!";
+
+            if (error) {
+                errorDiv.textContent = error;
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("brandId", brand);
+            formData.append("price", price);
+            formData.append("desc", desc);
+            if (mainImage) formData.append("mainImage", mainImage);
+            subImages.forEach((file) => formData.append("subImages", file));
+
+            const productId = window.editingProductId;
+            if (!productId) {
+                errorDiv.textContent = "Không xác định được sản phẩm cần cập nhật!";
+                return;
+            }
+
+            try {
+                showLoadingOverlay();
+                const res = await fetch(`/api/products3/${productId}`, {
+                    method: "PUT",
+                    body: formData,
+                });
+                const data = await res.json();
+                hideLoadingOverlay();
+
+                if (data.status === "success") {
+                    showNotification("Cập nhật sản phẩm thành công!", 2500);
+                    document.getElementById("productForm").reset();
+                    subImageCache.clear();
+                    window.editingProductId = null;
+                    // Chuyển về tab danh sách và reload
+                    showTab("productListContent");
+
+                } else {
+                    errorDiv.textContent = data.message || "Có lỗi xảy ra!";
+                }
+            } catch (err) {
+                hideLoadingOverlay();
+                errorDiv.textContent = "Không thể gửi dữ liệu lên server!";
+            }
+        });
+
+        //
+        if (data.status === "success") {
+            showNotification("Cập nhật sản phẩm thành công!", 2500);
+            document.getElementById("productForm").reset();
+            subImageCache.clear();
+            window.editingProductId = null;
+
+            // Reset preview ảnh chính
+            const mainPreview = document.getElementById("mainImagePreview");
+            if (mainPreview) {
+                mainPreview.innerHTML = `
+            <span class="material-symbols-outlined text-3xl text-primary mb-2">add_a_photo</span>
+            <p class="text-sm font-medium text-slate-900">Tải lên ảnh chính</p>
+            <p class="text-xs text-slate-400 mt-1">Dung lượng tối đa 5MB</p>
+        `;
+            }
+
+            // Reset preview ảnh phụ
+            document.querySelectorAll('.sub-thumb').forEach(thumb => {
+                thumb.innerHTML = `
+            <input type="file" accept="image/*" class="hidden subInput"/>
+            <span class="material-symbols-outlined text-slate-400">add</span>
+        `;
+            });
+
+            // Chuyển về tab danh sách và reload
+            showTab("productListContent");
+
+            loadProductsSmooth(0); // 🔥 thêm dòng này
+        }
     </script>
 </main>
 

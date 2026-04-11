@@ -12,7 +12,7 @@
     <nav class="flex-1 px-4 space-y-1">
 
         <!-- Thống kê -->
-        <a class="nav-link flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors"
+        <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
            th:href="@{/admin/dashboard}">
             <span class="material-symbols-outlined">analytics</span>
             <span class="text-sm font-medium">Thống kê</span>
@@ -21,7 +21,8 @@
 
         <!-- Sản phẩm -->
         <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-           th:href="@{/admin/product}">
+           th:href="@{/admin/product}"
+           data-full="true">
             <span class="material-symbols-outlined">inventory_2</span>
             <span class="text-sm font-medium">Sản phẩm</span>
         </a>

@@ -202,4 +202,59 @@ public class ProductCreateController {
         );
         return ResponseEntity.ok(result);
     }
+
+    @PutMapping("/products3/{id}")
+    public ResponseEntity<?> updateProduct(
+            @PathVariable Long id,
+            @RequestParam("name") String name,
+            @RequestParam("brandId") Long brandId,
+            @RequestParam("price") String price,
+            @RequestParam("desc") String desc,
+            @RequestParam(value = "mainImage", required = false) MultipartFile mainImage,
+            @RequestParam(value = "subImages", required = false) List<MultipartFile> subImages
+    ) {
+        try {
+            Optional<Product> productOpt = ProductRepository.findById(id);
+            if (productOpt.isEmpty()) {
+                return ResponseEntity.status(404).body(Map.of("status", "error", "message", "Không tìm thấy sản phẩm!"));
+            }
+            Product product = productOpt.get();
+
+            // Cập nhật thông tin cơ bản
+            product.setTenSanPham(name);
+            product.setGia(new BigDecimal(price.replace(",", "")));
+            product.setMoTa(desc);
+
+            Brand brandObj = brandRepository.findById(brandId).orElse(null);
+            product.setBrand(brandObj);
+
+            // Nếu có ảnh chính mới thì upload và cập nhật, không thì giữ ảnh cũ
+            if (mainImage != null && !mainImage.isEmpty()) {
+                String mainImageUrl = cloudinaryService.uploadFile(mainImage);
+                product.setAnhChinh(mainImageUrl);
+            }
+
+            // Nếu có ảnh phụ mới thì upload và cập nhật, không thì giữ ảnh cũ
+            if (subImages != null && subImages.size() == 4) {
+                String subImage1 = cloudinaryService.uploadFile(subImages.get(0));
+                String subImage2 = cloudinaryService.uploadFile(subImages.get(1));
+                String subImage3 = cloudinaryService.uploadFile(subImages.get(2));
+                String subImage4 = cloudinaryService.uploadFile(subImages.get(3));
+                product.setAnhPhu1(subImage1);
+                product.setAnhPhu2(subImage2);
+                product.setAnhPhu3(subImage3);
+                product.setAnhPhu4(subImage4);
+            }
+
+            ProductRepository.save(product);
+
+            return ResponseEntity.ok(Map.of("status", "success"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", "Lỗi khi cập nhật sản phẩm: " + e.getMessage()
+            ));
+        }
+    }
 }

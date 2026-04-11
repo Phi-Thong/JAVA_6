@@ -42,16 +42,24 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("brandIds") List<Long> brandIds,
             Pageable pageable
     );
-    // 
+
+    //
     @Query("SELECT p FROM Product p WHERE "
-     + "(:productSize IS NULL OR EXISTS (SELECT 1 FROM p.productSizes ps WHERE ps.size = :productSize)) "
-     + "AND (:brandId IS NULL OR p.brand.id IN :brandId) "
-     + "AND (:keyword IS NULL OR LOWER(p.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%')))")
-Page<Product> findByFilters(
-    @Param("productSize") Integer productSize,
-    @Param("brandId") List<Long> brandId,
-    @Param("keyword") String keyword,
-    Pageable pageable
-);
- List<Product> findTop4ByBrandIdAndIdNot(Long brandId, Long excludeProductId);
+            + "(:productSize IS NULL OR EXISTS (SELECT 1 FROM p.productSizes ps WHERE ps.size = :productSize)) "
+            + "AND (:brandId IS NULL OR p.brand.id IN :brandId) "
+            + "AND (:keyword IS NULL OR LOWER(p.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    Page<Product> findByFilters(
+            @Param("productSize") Integer productSize,
+            @Param("brandId") List<Long> brandId,
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );
+
+    List<Product> findTop4ByBrandIdAndIdNot(Long brandId, Long excludeProductId);
+
+    Page<Product> findByBrandId(Long brandId, Pageable pageable);
+
+    Page<Product> findByTenSanPhamContainingIgnoreCase(String keyword, Pageable pageable);
+
+    Page<Product> findByTenSanPhamContainingIgnoreCaseAndBrandId(String keyword, Long brandId, Pageable pageable);
 }

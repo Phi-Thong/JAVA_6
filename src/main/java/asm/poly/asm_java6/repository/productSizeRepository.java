@@ -10,9 +10,12 @@ import asm.poly.asm_java6.enity.ProductSize;
 public interface productSizeRepository extends JpaRepository<ProductSize, Long> {
     @Query("SELECT DISTINCT ps.size FROM ProductSize ps ORDER BY ps.size")
     List<Integer> findDistinctSizes();
-     @Query("SELECT SUM(ps.soLuong) FROM ProductSize ps WHERE ps.product.id = :productId")
+
+    @Query("SELECT SUM(ps.soLuong) FROM ProductSize ps WHERE ps.product.id = :productId")
     Integer getTotalStockByProductId(Integer productId);
 
     @Query("SELECT DISTINCT ps.size FROM ProductSize ps WHERE ps.product.id = :productId AND ps.soLuong > 0 ORDER BY ps.size")
-List<Integer> findSizesByProductId(Integer productId);
+    List<Integer> findSizesByProductId(Integer productId);
+
+    void deleteByProductId(Long productId);
 }

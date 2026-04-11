@@ -8,4 +8,6 @@ import java.util.List;
 public interface ProductReviewRepository extends JpaRepository<ProductReview, Long> {
     // Lấy tất cả đánh giá của 1 sản phẩm, mới nhất trước
     List<ProductReview> findByProductIdOrderByCreatedAtDesc(Long productId);
+
+    void deleteByProductId(Long productId);
 }

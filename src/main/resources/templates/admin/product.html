@@ -1,4 +1,134 @@
-<main class="flex-1 ml-64 p-8" th:fragment="product">
+<main class="flex-1 ml-64" style="margin-top: -50px" th:fragment="product">
+    <style>
+        .delete-modal-content {
+            min-width: 280px;
+            max-width: 320px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 32px rgba(220, 38, 38, 0.18), 0 1.5px 8px rgba(0, 0, 0, 0.07);
+            border-top: 5px solid #ef4444;
+            text-align: center;
+            padding: 22px 20px 18px 20px;
+            animation: fadeInModal 0.25s cubic-bezier(.4, 0, .2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .delete-modal-icon {
+            background: #fee2e2;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .delete-modal-icon .material-symbols-outlined {
+            color: #dc2626;
+            font-size: 28px;
+        }
+
+        .delete-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #dc2626;
+            margin-bottom: 6px;
+        }
+
+        .delete-modal-text {
+            font-size: 15px;
+            color: #991b1b;
+            margin-bottom: 18px;
+        }
+
+        .delete-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 7px;
+            padding: 7px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .cancel-btn {
+            background: #fff;
+            color: #dc2626;
+            font-weight: 600;
+            border: 1.5px solid #dc2626;
+            border-radius: 7px;
+            padding: 7px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+        }
+
+        .cancel-btn:hover {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* Fade in */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Box icon dễ thương */
+        .empty-box {
+            font-size: 48px;
+            animation: float 2.5s ease-in-out infinite;
+        }
+
+        /* Lắc nhẹ nhẹ cho “có hồn” */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
     <div class="flex-1 overflow-y-auto p-8">
         <div
                 class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"
@@ -44,6 +174,7 @@
             >search</span
             >
                         <input
+                                id="searchInput"
                                 class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                                 placeholder="Tìm kiếm tên sản phẩm, mã SKU..."
                                 type="text"
@@ -52,22 +183,18 @@
                     <div class="flex items-center gap-3">
                         <div class="relative">
                             <select
+                                    id="brandFilter"
                                     class="appearance-none pl-4 pr-10 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none cursor-pointer"
                             >
-                                <option>Thương hiệu</option>
-                                <option>Nike</option>
-                                <option>Adidas</option>
-                                <option>Puma</option>
+                                <option value="">Thương hiệu</option>
                             </select>
                         </div>
                         <div class="relative">
-                            <select
-                                    class="appearance-none pl-4 pr-10 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none cursor-pointer"
-                            >
-                                <option>Danh mục</option>
-                                <option>Sneaker</option>
-                                <option>Chạy bộ</option>
-                                <option>Bóng rổ</option>
+                            <select id="sortPrice"
+                                    class="appearance-none pl-4 pr-10 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none cursor-pointer">
+                                <option value="">Sắp xếp giá</option>
+                                <option value="asc">Giá tăng dần</option>
+                                <option value="desc">Giá giảm dần</option>
                             </select>
                         </div>
                     </div>
@@ -101,11 +228,7 @@
                             >
                                 Kho
                             </th>
-                            <th
-                                    class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider"
-                            >
-                                Trạng thái
-                            </th>
+
                             <th
                                     class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right"
                             >
@@ -113,105 +236,15 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
-                        <!-- Table Rows (Omitted for brevity, assuming standard population) -->
-                        <tr class="hover:bg-slate-50/80 transition-colors group">
-                            <td class="px-6 py-4">
-                                <div
-                                        class="size-14 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center mx-auto"
-                                >
-                                    <div
-                                            class="w-full h-full bg-center bg-cover"
-                                            style="
-                        background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBGq2xBFUwgqE-bC09DxjJBBfylV_WW5m_5U8wJs4yoYX46AZkHt4jl-Tc44fDwGYyQKgW0OiJ5uhhmK8nvGmuKoFz7jqjOG9m49JwKCBN7cQYWOPXBHRtaxDwjNFYETtAe1XKwQvcwu6T-wh9KcDNHVobUNFg-Wjui_jGRNKAa7RdQ8sotFpzB0slZGd8ZW5fgycdF3IB_kTDPRrgfWjpyN5SvxBT5E7cZbigWbQnqgEGH4AYspKyzutrDJX3zZUMBy-eIcEtbeSE&quot;);
-                      "
-                                    ></div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex flex-col">
-                    <span
-                            class="text-sm font-semibold text-slate-900 group-hover:text-primary transition-colors"
-                    >Nike Air Force 1 '07</span
-                    >
-                                    <span class="text-[11px] text-slate-400"
-                                    >SKU: NK-AF1-001</span
-                                    >
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="text-sm text-slate-600">Sneaker</span>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-slate-900">2.900.000đ</td>
-                            <td class="px-6 py-4 text-sm text-slate-600">45</td>
-                            <td class="px-6 py-4">
-                  <span
-                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200"
-                  >
-                    <span
-                            class="size-1.5 rounded-full bg-emerald-500 mr-1.5"
-                    ></span>
-                    Đang bán
-                  </span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <button
-                                            class="p-1.5 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                    >
-                      <span class="material-symbols-outlined text-xl"
-                      >edit_square</span
-                      >
-                                    </button>
-                                    <button
-                                            class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
-                                    >
-                      <span class="material-symbols-outlined text-xl"
-                      >delete</span
-                      >
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
+                        <tbody id="productTableBody" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
                 <div
                         class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between"
                 >
-                    <p class="text-xs text-slate-500 font-medium">
-                        Hiển thị 1 - 4 trong tổng số 24 sản phẩm
-                    </p>
+                    <p id="paginationInfo" class="text-xs text-slate-500 font-medium"></p>
                     <div class="flex gap-1">
-                        <button
-                                class="size-8 rounded border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all"
-                        >
-              <span class="material-symbols-outlined text-lg"
-              >chevron_left</span
-              >
-                        </button>
-                        <button
-                                class="size-8 rounded border border-primary bg-primary text-white text-xs font-bold shadow-sm"
-                        >
-                            1
-                        </button>
-                        <button
-                                class="size-8 rounded border border-slate-200 bg-white text-xs font-medium text-slate-600 hover:border-primary hover:text-primary transition-all"
-                        >
-                            2
-                        </button>
-                        <button
-                                class="size-8 rounded border border-slate-200 bg-white text-xs font-medium text-slate-600 hover:border-primary hover:text-primary transition-all"
-                        >
-                            3
-                        </button>
-                        <button
-                                class="size-8 rounded border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all"
-                        >
-              <span class="material-symbols-outlined text-lg"
-              >chevron_right</span
-              >
-                        </button>
+
                     </div>
                 </div>
             </div>
@@ -456,6 +489,20 @@
 
         </div>
     </div>
+    <div id="deleteModal"
+         style="display:none; position:fixed; inset:0; background:rgba(220,38,38,0.10); z-index:10001; justify-content:center; align-items:center;">
+        <div class="delete-modal-content">
+            <div class="delete-modal-icon">
+                <span class="material-symbols-outlined">warning</span>
+            </div>
+            <div class="delete-modal-title">Xác nhận xóa</div>
+            <div class="delete-modal-text">Bạn có chắc chắn muốn xóa sản phẩm này không?</div>
+            <div class="delete-modal-actions">
+                <button id="confirmDeleteBtn" class="delete-btn">Xóa</button>
+                <button id="cancelDeleteBtn" class="cancel-btn">Hủy</button>
+            </div>
+        </div>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             console.log("🔥 Product form system ready");
@@ -616,7 +663,7 @@
             if (overlay) overlay.style.display = "none";
         }
 
-       
+
     </script>
     <style>
         .loader {
@@ -659,5 +706,454 @@
             }
         }
     </style>
+    <script>
+        async function loadProducts(page = 0, brandId = undefined) {
+            const tbody = document.getElementById("productTableBody");
+            tbody.style.opacity = 0.5;
+
+            // Lấy filter nếu chưa truyền
+            if (brandId === undefined) {
+                const brandFilter = document.getElementById("brandFilter");
+                if (brandFilter) brandId = brandFilter.value;
+            }
+
+            // Lấy sort từ select
+            let sort = "";
+            const sortPrice = document.getElementById("sortPrice");
+            if (sortPrice) sort = sortPrice.value;
+
+            // Lấy keyword từ input tìm kiếm
+            let keyword = "";
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) keyword = searchInput.value.trim();
+
+            // Build URL
+            let url = `/api/products3?page=${page}&size=4`;
+            if (brandId) url += `&brandId=${brandId}`;
+            if (sort) url += `&sort=${sort}`;
+            if (keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const products = data.content || [];
+
+                // Không có dữ liệu
+                if (products.length === 0) {
+                    tbody.innerHTML = `
+<tr>
+    <td colspan="6" class="py-16 text-center">
+        <div class="flex flex-col items-center justify-center gap-4 animate-fadeIn">
+
+            <!-- ICON TRỐNG VẮNG -->
+            <div class="empty-box">
+                📦
+            </div>
+
+            <!-- TEXT -->
+            <div>
+                <p class="text-base font-semibold text-slate-600">
+                    Kho hàng đang trống
+                </p>
+                <p class="text-sm text-slate-400 mt-1">
+                    Chưa có sản phẩm nào, hãy thêm mới nhé ✨
+                </p>
+            </div>
+
+            <!-- BUTTON -->
+
+
+        </div>
+    </td>
+</tr>
+`;
+
+                    const currentPage = data.page - 1;
+                    renderPagination(data.totalPages, currentPage);
+                    renderPaginationInfo(currentPage, 4, data.totalElements);
+
+                    tbody.style.opacity = 1;
+                    return;
+                }
+
+                // Render tối ưu (không dùng +=)
+                let html = "";
+
+                products.forEach(p => {
+                    html += `<tr data-id="${p.id}" class="hover:bg-slate-50/80 transition-colors group">
+    <td class="px-6 py-4">
+        <div class="size-14 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center mx-auto">
+            <div class="w-full h-full bg-center bg-cover" style="background-image: url('${p.anhChinh}');"></div>
+        </div>
+    </td>
+    <td class="px-6 py-4">
+        <div class="flex flex-col">
+            <span class="text-sm font-semibold text-slate-900 group-hover:text-primary transition-colors">
+                ${p.tenSanPham}
+            </span>
+            <span class="text-[11px] text-slate-400">
+                SKU: ${p.brand?.tenThuongHieu || ""}
+            </span>
+        </div>
+    </td>
+    <td class="px-6 py-4">
+        <span class="text-sm text-slate-600">
+            ${p.brand?.tenThuongHieu || ""}
+        </span>
+    </td>
+    <td class="px-6 py-4 font-medium text-slate-900">
+        ${p.gia.toLocaleString()}đ
+    </td>
+    <td class="px-6 py-4 text-sm text-slate-600">
+        ${p.tongSoLuong}
+    </td>
+    <td class="px-6 py-4 text-right">
+        <div class="flex items-center justify-end gap-2">
+            <button class="edit-btn p-1.5 text-primary hover:bg-primary/10 rounded-lg transition-colors" data-id="${p.id}">
+    <span class="material-symbols-outlined text-xl">edit_square</span>
+</button>
+            <button class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-xl">delete</span>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
+                });
+
+                // Gán 1 lần (mượt hơn nhiều)
+                tbody.innerHTML = html;
+
+                // Phân trang + info
+                const currentPage = data.page - 1;
+                renderPagination(data.totalPages, currentPage);
+                renderPaginationInfo(currentPage, 4, data.totalElements);
+
+                // Hiện lại (fade in)
+                requestAnimationFrame(() => {
+                    tbody.style.opacity = 1;
+                });
+
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="6">Lỗi tải dữ liệu</td></tr>`;
+                tbody.style.opacity = 1;
+                console.error(e);
+            }
+        }
+
+        // Hàm render phân trang
+        function renderPagination(totalPages, currentPage) {
+            const paginationDiv = document.querySelector(".p-4 .flex.gap-1");
+            if (!paginationDiv) return;
+
+            paginationDiv.innerHTML = "";
+
+            const range = 1;
+            let pages = [];
+
+            // Gần đầu
+            if (currentPage <= 1) {
+                for (let i = 0; i < Math.min(3, totalPages); i++) {
+                    pages.push(i);
+                }
+                if (totalPages > 3) {
+                    pages.push("...");
+                    pages.push(totalPages - 1);
+                }
+            }
+            // Gần cuối
+            else if (currentPage >= totalPages - 2) {
+                pages.push(0);
+                pages.push("...");
+                for (let i = totalPages - 3; i < totalPages; i++) {
+                    if (i >= 0) pages.push(i);
+                }
+            }
+            // Ở giữa
+            else {
+                pages.push(0);
+                pages.push("...");
+
+                for (let i = currentPage - range; i <= currentPage + range; i++) {
+                    pages.push(i);
+                }
+
+                pages.push("...");
+                pages.push(totalPages - 1);
+            }
+
+            // render
+            pages.forEach(p => {
+                if (p === "...") {
+                    const dot = document.createElement("span");
+                    dot.textContent = "...";
+                    dot.className = "px-2 text-slate-400";
+                    paginationDiv.appendChild(dot);
+                } else {
+                    const btn = document.createElement("button");
+                    btn.textContent = p + 1;
+                    btn.className =
+                        "px-3 py-1 rounded " +
+                        (p === currentPage
+                            ? "bg-primary text-white"
+                            : "bg-white text-primary");
+
+                    btn.onclick = () => loadProductsSmooth(p);
+                    paginationDiv.appendChild(btn);
+                }
+            });
+        }
+
+        function showTab(tabId) {
+            document.getElementById("productListContent").classList.add("hidden");
+            document.getElementById("productFormContent").classList.add("hidden");
+            document.getElementById(tabId).classList.remove("hidden");
+            if (tabId === "productListContent") {
+                loadProducts(0);
+            }
+        }
+
+        function initProductPage() {
+            console.log("🔥 init product page");
+
+            loadProducts(0);
+
+            const tabList = document.getElementById("tabProductList");
+            const tabForm = document.getElementById("tabProductForm");
+
+            if (tabList && !tabList.dataset.bound) {
+                tabList.addEventListener("click", () => {
+                    document.getElementById("productListContent").classList.remove("hidden");
+                    document.getElementById("productFormContent").classList.add("hidden");
+                    loadProducts(0);
+                });
+                tabList.dataset.bound = "true";
+            }
+
+            if (tabForm && !tabForm.dataset.bound) {
+                tabForm.addEventListener("click", () => {
+                    document.getElementById("productListContent").classList.add("hidden");
+                    document.getElementById("productFormContent").classList.remove("hidden");
+                });
+                tabForm.dataset.bound = "true";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", initProductPage);
+
+        async function loadProductsSmooth(page) {
+            const table = document.getElementById("productTableBody");
+
+            window.scrollTo({
+                top: table.offsetTop - 120,
+                behavior: "smooth"
+            });
+
+            table.style.opacity = 0;
+            table.style.transform = "translateY(10px)";
+
+            // đợi animation out xong
+            await new Promise(resolve => setTimeout(resolve, 250));
+
+            // load data
+            await loadProducts(page);
+
+            // hiện lại
+            requestAnimationFrame(() => {
+                table.style.opacity = 1;
+                table.style.transform = "translateY(0)";
+            });
+        }
+
+        // đếm sản phẩm
+        function renderPaginationInfo(currentPage, pageSize, totalItems) {
+            const info = document.getElementById("paginationInfo");
+
+            if (totalItems === 0) {
+                info.textContent = "Không có sản phẩm";
+                return;
+            }
+
+            const start = currentPage * pageSize + 1;
+            const end = Math.min((currentPage + 1) * pageSize, totalItems);
+
+            info.textContent = `Hiển thị ${start} - ${end} trong tổng số ${totalItems} sản phẩm`;
+        }
+
+        // lấy thương hiệu cho bộ lọc
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Lấy select filter
+            const brandFilter = document.getElementById("brandFilter");
+            if (!brandFilter) return;
+
+            // Gọi API lấy danh sách thương hiệu
+            const res = await fetch("/api/brands2");
+            const brands = await res.json();
+
+            // Render option
+            brandFilter.innerHTML = '<option value="">Thương hiệu</option>';
+            brands.forEach(b => {
+                const option = document.createElement("option");
+                option.value = b.id;
+                option.textContent = b.tenThuongHieu;
+                brandFilter.appendChild(option);
+            });
+        });
+        // sự kiện cho bộ lọc thương hiệu
+        document.addEventListener("DOMContentLoaded", () => {
+            const brandFilter = document.getElementById("brandFilter");
+            if (brandFilter) {
+                brandFilter.addEventListener("change", function () {
+                    loadProductsSmooth(0, this.value);
+                });
+            }
+        });
+        // sắp xếp theo giá
+        document.addEventListener("DOMContentLoaded", () => {
+            const sortPrice = document.getElementById("sortPrice");
+            if (sortPrice) {
+                sortPrice.addEventListener("change", function () {
+                    loadProductsSmooth(0);
+                });
+            }
+        });
+        // hiển thị modal múo xóa
+        let productIdToDelete = null;
+
+        document.body.addEventListener("click", function (e) {
+            // Bắt sự kiện nút xóa
+            const delBtn = e.target.closest("button");
+            if (
+                delBtn &&
+                delBtn.querySelector(".material-symbols-outlined")?.textContent === "delete"
+            ) {
+                const row = delBtn.closest("tr");
+                if (!row) return;
+                productIdToDelete = row.getAttribute("data-id");
+                showDeleteModal();
+            }
+        });
+
+        function showDeleteModal() {
+            document.getElementById("deleteModal").style.display = "flex";
+        }
+
+        function hideDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        // Đóng modal khi bấm Hủy
+        document.getElementById("cancelDeleteBtn").onclick = function () {
+            hideDeleteModal();
+            productIdToDelete = null;
+        };
+        // nút xóa nha bà con
+        // Xử lý nút Xóa
+        document.getElementById("confirmDeleteBtn").onclick = async function () {
+            if (!productIdToDelete) return;
+            try {
+                // Hiện overlay loading (nếu muốn)
+                showLoadingOverlay();
+
+                // Gửi request xóa
+                const res = await fetch(`/api/products3/${productIdToDelete}`, {
+                    method: "DELETE"
+                });
+
+                hideLoadingOverlay();
+
+                if (res.ok) {
+                    showNotification("Đã xóa sản phẩm thành công!", 2000);
+                    hideDeleteModal();
+                    productIdToDelete = null;
+                    // Reload lại bảng sản phẩm
+                    loadProducts(0);
+                } else {
+                    const data = await res.json().catch(() => ({}));
+                    showNotification(data.message || "Xóa thất bại!", 2500);
+                }
+            } catch (err) {
+                hideLoadingOverlay();
+                showNotification("Lỗi kết nối server!", 2500);
+            }
+        };
+        //  tìm kiếm sản phẩm
+        // Sự kiện tìm kiếm sản phẩm theo tên (realtime)
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("searchInput");
+            if (!searchInput) return;
+
+            let searchTimeout = null;
+            searchInput.addEventListener("input", function () {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    loadProductsSmooth(0);
+                }, 350); // debounce 350ms cho mượt
+            });
+        });
+        // Sự kiện tìm kiếm sản phẩm theo tên (realtime)
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("searchInput");
+            if (!searchInput) return;
+
+            let searchTimeout = null;
+            searchInput.addEventListener("input", function () {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    loadProductsSmooth(0);
+                }, 350); // debounce 350ms cho mượt
+            });
+        });
+        // chỉnh sửa sản phẩm
+        document.body.addEventListener("click", async function (e) {
+            const editBtn = e.target.closest(".edit-btn");
+            if (!editBtn) return;
+
+            const productId = editBtn.getAttribute("data-id");
+            if (!productId) return;
+
+            showLoadingOverlay();
+            try {
+                // Gọi API lấy chi tiết sản phẩm
+                const res = await fetch(`/api/products3/${productId}`);
+                if (!res.ok) throw new Error("Không lấy được dữ liệu sản phẩm");
+                const product = await res.json();
+
+                // Chuyển sang tab form
+                document.getElementById("productListContent").classList.add("hidden");
+                document.getElementById("productFormContent").classList.remove("hidden");
+
+                // Đổ dữ liệu vào form
+                document.getElementById("nameInput").value = product.tenSanPham || "";
+                document.getElementById("skuInput").value = product.sku || "";
+                document.getElementById("brandInput").value = product.brand?.id || "";
+                document.getElementById("priceInput").value = product.gia?.toLocaleString() || "";
+                document.getElementById("descInput").value = product.moTa || "";
+
+                // Ảnh chính
+                if (product.anhChinh) {
+                    const mainPreview = document.getElementById("mainImagePreview");
+                    mainPreview.innerHTML = `<img src="${product.anhChinh}" style="max-width:100%;max-height:100%;border-radius:12px;" alt="Ảnh chính"/>`;
+                }
+
+                // Ảnh phụ (nâng cao)
+                if (product.anhPhu && Array.isArray(product.anhPhu)) {
+                    const subThumbs = document.querySelectorAll('.sub-thumb');
+                    product.anhPhu.forEach((url, idx) => {
+                        if (subThumbs[idx]) {
+                            subThumbs[idx].innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="Ảnh phụ"/>`;
+                        }
+                    });
+                }
+
+                // Lưu productId vào biến toàn cục nếu muốn xử lý cập nhật khi submit
+                window.editingProductId = productId;
+
+            } catch (err) {
+                showNotification("Không lấy được thông tin sản phẩm!", 2500);
+            }
+            hideLoadingOverlay();
+        });
+    </script>
 </main>
 

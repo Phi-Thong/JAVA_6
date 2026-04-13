@@ -1,310 +1,611 @@
-<main class="flex-1 ml-64 p-8" th:fragment="user">
+<main class="flex-1 ml-64" th:fragment="user">
+    <style>
+        .fade {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        .fade-out {
+            opacity: 0;
+        }
+    </style>
     <!-- Header -->
-    <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
+    <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0"style="margin-top: -25px">
         <h2 class="text-xl font-bold">Quản lý khách hàng</h2>
-        <div class="flex items-center gap-4">
-            <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
-                <span class="material-symbols-outlined">notifications</span>
-                <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
-            </button>
-            <button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">person_add</span>
-                Thêm khách hàng
-            </button>
-        </div>
+
     </header>
     <!-- Content Area -->
     <div class="flex-1 overflow-y-auto p-8 space-y-6">
         <!-- Page Info -->
-        <div class="space-y-1">
-            <p class="text-slate-500 dark:text-slate-400 text-sm">Theo dõi và quản lý thông tin khách hàng, lịch sử mua
-                hàng và trạng thái tài khoản.</p>
-        </div>
+
         <!-- Tabs -->
         <div class="flex border-b border-slate-200 dark:border-slate-800">
-            <button class="px-6 py-3 text-sm font-bold text-primary border-b-2 border-primary">Danh sách khách hàng
+            <button id="tabList" class="px-6 py-3 text-sm font-bold text-primary border-b-2 border-primary">Danh sách
+                khách hàng
             </button>
-            <button class="px-6 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+            <button id="tabForm"
+                    class="px-6 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
                 Thêm / Sửa người dùng
             </button>
         </div>
         <!-- Filters & Search -->
-        <div class="flex flex-wrap items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-            <div class="relative flex-1 min-w-[300px]">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm"
-                       placeholder="Tìm kiếm theo tên, email hoặc số điện thoại..." type="text"/>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
-                    <span class="text-xs font-semibold text-slate-500">Ngày đăng ký:</span>
-                    <select class="bg-transparent border-none text-sm p-0 focus:ring-0 font-medium">
-                        <option>Tất cả</option>
-                        <option>Hôm nay</option>
-                        <option>Tháng này</option>
-                        <option>Năm nay</option>
-                    </select>
+        <div id="userListContent">
+            <!-- ... bảng danh sách khách hàng ... -->
+            <div class="flex flex-wrap items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                <div class="relative flex-1 min-w-[300px]">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                    <input id="searchInput"
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm"
+                           placeholder="Tìm kiếm theo tên, email hoặc số điện thoại..."
+                           type="text"/>
                 </div>
-                <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
-                    <span class="text-xs font-semibold text-slate-500">Trạng thái:</span>
-                    <select class="bg-transparent border-none text-sm p-0 focus:ring-0 font-medium">
-                        <option>Tất cả</option>
-                        <option>Hoạt động</option>
-                        <option>Bị khóa</option>
-                    </select>
+                <div class="flex items-center gap-3">
+
+                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span class="text-xs font-semibold text-slate-500">Trạng thái:</span>
+                        <select id="statusFilter" class="bg-transparent border-none text-sm p-0 focus:ring-0 font-medium">
+                            <option value="">Tất cả</option>
+                            <option value="active">Bị khóa </option>
+                            <option value="locked">Hoạt động</option>
+                        </select>
+                    </div>
+                    <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span class="material-symbols-outlined">filter_list</span>
+                    </button>
                 </div>
-                <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
-                    <span class="material-symbols-outlined">filter_list</span>
-                </button>
             </div>
-        </div>
-        <!-- Customers Table -->
-        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                    <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Mã khách hàng
-                        </th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Họ tên</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Liên hệ</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Đơn
-                            hàng
-                        </th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Tổng
-                            chi tiêu
-                        </th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Trạng thái</th>
-                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Thao
-                            tác
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td class="px-6 py-4 text-sm font-mono text-slate-500">#CUS-9821</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <img alt="User 1" class="w-8 h-8 rounded-full object-cover"
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqR1fS5PaSUqrSNsebuxvBqzP9MbpotNVz-bHGAaBqccQOKLjvrRaV-dBf4FXVi_qIAMvN9puXCxqGbcdm087mAl95sIiyO9j-pS9nQHIe_hkkVSizwSoulqc0iE_-oUJnSWBbSIe-d3MXuG3NLrm4cpVg5KWz-EsqCFmqmEkGKYegV45sCd8XFPq-pBMVR4JlXgGzBmMY0Wy-yMpcmlgUvexLWBdEBVl8GovNkOdKjvKmbUh1u32JFjtZVLRhOQzPVahEO4JKayw"/>
-                                <div class="text-sm font-bold">Trần Văn Nam</div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="font-medium">nam.tv@gmail.com</div>
-                            <div class="text-xs text-slate-500">0901 234 567</div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-center font-semibold">12</td>
-                        <td class="px-6 py-4 text-sm text-right font-bold text-primary">15,450,000đ</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Hoạt động</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                        title="Sửa">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                        title="Xóa">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 2 -->
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td class="px-6 py-4 text-sm font-mono text-slate-500">#CUS-7742</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <img alt="User 2" class="w-8 h-8 rounded-full object-cover"
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUvwKP6yuIxegvP5LYCfXREq1R_eUo4g9Fm4ioKLXuqRO3nJHmqm88iXvJTkaji1x1lzzy-_do4RNjuw3GkzPPVbEKVpQfcprs0KyjhTJ224msnFmPE-70rlF4JU4gARVc7MYn40OfawrBKfsO2VF-Ohlpv9od9jqRQr7fVj-VrXmRc37iGt2eYbx6MXodVNVnYnHXa1Th7k4hUOoL983GJDrtVhl6EHq6Yj4BWenaxexDiGxb4wavYxdz4B8gL0rupmVTF9_kl0A"/>
-                                <div class="text-sm font-bold">Nguyễn Thị Mai</div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="font-medium">mai.nguyen@outlook.com</div>
-                            <div class="text-xs text-slate-500">0938 111 222</div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-center font-semibold">5</td>
-                        <td class="px-6 py-4 text-sm text-right font-bold text-primary">6,800,000đ</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Hoạt động</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                        title="Sửa">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                        title="Xóa">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td class="px-6 py-4 text-sm font-mono text-slate-500">#CUS-1209</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <img alt="User 3" class="w-8 h-8 rounded-full object-cover"
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL8wkPMBsy4sPSicwRtl4iZrx_lXcOFDs47UtwDE-yFxjfviCaHeYAUwJ74HTf4ycXCXfbEXrEksITy-X1NFHwNCceeASkWjxWor_VvGV4HUZ5bJ6s39xgUmHdV7EQlUamJs3ie3T4i_8qr9IWouCxFmKfv5Z9FHcx-Sp45Ydhf7EH2_8wHvvI872foilZGhycXTfC4rNY9mfoxqcYVufi2wPCcL20yEJmoKqIe7DkFbA393ebyL-gzb9EW2Bu-fOvqBkFpPFuGZ0"/>
-                                <div class="text-sm font-bold">Lê Minh Hoàng</div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="font-medium">hoanglm@yahoo.com</div>
-                            <div class="text-xs text-slate-500">0912 888 999</div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-center font-semibold">2</td>
-                        <td class="px-6 py-4 text-sm text-right font-bold text-primary">3,200,000đ</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">Bị khóa</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                        title="Sửa">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                        title="Xóa">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 4 -->
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td class="px-6 py-4 text-sm font-mono text-slate-500">#CUS-4432</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <img alt="User 4" class="w-8 h-8 rounded-full object-cover"
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvYOxYy6hIbJ9JzzmjH9NT3gpHmnGfQn2mT8jJjjnDh4J3ok4NmcSll3RyAvXhWPXLq5SLV9h-eyH_M0Nh6QQt9u_MAUnFNAdky8-oPZAuEoWXZLIuPNv0ywp3Vcz5G9eM8u0OVxoITrWqTyWm9HU0CtZLR_7Xl5tS-gdHWJIV3PGuU-WS2y-4zeJN5rWjxO53STj18n4nbW4FHFMX1ND-vhIkLCLX3Mkfq-IIKbkFKjQJRxViOxZ5FvZ6_w7r-rsMzZ7DGXApKRQ"/>
-                                <div class="text-sm font-bold">Phạm Diệu Linh</div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="font-medium">linhpd@gmail.com</div>
-                            <div class="text-xs text-slate-500">0987 654 321</div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-center font-semibold">22</td>
-                        <td class="px-6 py-4 text-sm text-right font-bold text-primary">42,100,000đ</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Hoạt động</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                        title="Sửa">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                        title="Xóa">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 5 -->
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td class="px-6 py-4 text-sm font-mono text-slate-500">#CUS-8812</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <img alt="User 5" class="w-8 h-8 rounded-full object-cover"
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE-qV1czBIFE6xvmYQz9NHYJobnwrxxAp5ANT8ZmnCw3TfD_s9l9C6IIrnglm3QX6NLD_A8MszQYzu3nJrFf06-4GqCjyxNrO1JF4vC4HUY2JzX9kllpoM--fzxlvfpbI-e_c0yTA0dKgLo9rQhWMNGueRks7T31HnCngmCAX9XvIegi48_Rc3OUn16eDlKf1EJIU3T7utDFitv0qmmZQ7IfCIBX1EdA3fnyJFoXjrCDnzYEJ4uZKBwwq91yutnKcMgTROua9Sv_g"/>
-                                <div class="text-sm font-bold">Vũ Đức Anh</div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm">
-                            <div class="font-medium">anh.vd@me.com</div>
-                            <div class="text-xs text-slate-500">0966 444 555</div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-center font-semibold">1</td>
-                        <td class="px-6 py-4 text-sm text-right font-bold text-primary">1,250,000đ</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Hoạt động</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                        title="Sửa">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                        title="Xóa">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Pagination -->
-            <div class="flex items-center justify-between px-6 py-4 border-t border-slate-200 dark:border-slate-800">
-                <div class="text-sm text-slate-500">
-                    Hiển thị từ <span class="font-semibold">1</span> đến <span class="font-semibold">5</span> trong
-                    <span class="font-semibold">1,248</span> khách hàng
+            <!-- Customers Table -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Mã khách
+                                hàng
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Họ tên</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Liên hệ</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">
+                                Đơn
+                                hàng
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">
+                                Tổng
+                                chi tiêu
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Trạng thái
+                            </th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">
+                                Thao
+                                tác
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="customerTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
                 </div>
-                <div class="flex items-center gap-1">
-                    <button class="p-2 text-slate-400 hover:text-slate-600 disabled:opacity-50" disabled="">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </button>
-                    <button class="w-8 h-8 rounded-lg bg-primary text-white text-sm font-bold">1</button>
-                    <button class="w-8 h-8 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                        2
-                    </button>
-                    <button class="w-8 h-8 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                        3
-                    </button>
-                    <span class="px-1 text-slate-400">...</span>
-                    <button class="w-8 h-8 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                        125
-                    </button>
-                    <button class="p-2 text-slate-400 hover:text-slate-600">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
+                <!-- Pagination -->
+                <div class="flex items-center justify-between px-6 py-4 border-t border-slate-200 dark:border-slate-800">
+                    <div class="text-sm text-slate-500">
+
+                    </div>
+                    <div class="flex items-center gap-1">
+
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Stats Footer Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined">person_add</span>
+        <div id="userFormContent" style="display:none">
+            <!-- ... form thêm/sửa người dùng ... -->
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div class="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-blue-600" data-icon="person">person</span>
+                        Thông tin người dùng
+                    </h3>
+                    <span class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full text-slate-500">USR-2024-0042</span>
                 </div>
-                <div>
-                    <p class="text-xs text-slate-500 uppercase tracking-wider font-bold">Khách hàng mới</p>
-                    <p class="text-2xl font-black text-slate-900 dark:text-slate-100">124</p>
-                    <p class="text-xs text-green-600 font-medium flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">trending_up</span> +12% tháng này
-                    </p>
+                <div class="p-8">
+                    <form id="userForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Họ và tên -->
+                        <div class="lg:col-span-1">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Họ và tên</label>
+                            <input id="hoTenInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all placeholder:text-slate-400" placeholder="Nhập họ và tên..." type="text"/>
+                        </div>
+                        <!-- Email -->
+                        <div class="lg:col-span-1">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
+                            <input id="emailInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all placeholder:text-slate-400" placeholder="example@domain.com" type="email"/>
+                        </div>
+                        <!-- Mật khẩu -->
+                        <div class="lg:col-span-1">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Mật khẩu</label>
+                            <div class="relative">
+                                <input id="matKhauInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all pr-10 placeholder:text-slate-400" placeholder="••••••••" type="password"/>
+                                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" type="button" tabindex="-1">
+                                    <span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Số điện thoại -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Số điện thoại</label>
+                            <input id="sdtInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all placeholder:text-slate-400" placeholder="090 1234 567" type="tel"/>
+                        </div>
+                        <!-- Giới tính -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Giới tính</label>
+                            <select id="gioiTinhInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all">
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                            </select>
+                        </div>
+                        <!-- Ngày sinh -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Ngày sinh</label>
+                            <input id="ngaySinhInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all" type="date"/>
+                        </div>
+                        <!-- Địa chỉ (Wider) -->
+                        <div class="md:col-span-2 lg:col-span-3">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Địa chỉ</label>
+                            <textarea id="diaChiInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all min-h-[80px] placeholder:text-slate-400" placeholder="Nhập địa chỉ chi tiết..."></textarea>
+                        </div>
+                        <!-- Vai trò -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Vai trò</label>
+                            <select id="vaiTroInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all">
+                                <option value="Customer">người dùng</option>
+
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        <!-- Trạng thái -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Trạng thái</label>
+                            <select id="trangThaiInput" class="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all">
+                                <option value="active">Bị khóa</option>
+                                <option value="locked">Hoạt động</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div id="formMessage" style="margin-left: 500px ;margin-bottom: 12px; color: red; font-weight: bold;"></div>
+                <!-- Action Buttons -->
+                <div class="p-8 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-4">
+                    <button type="button" class="px-6 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-bold hover:bg-slate-50 transition-all active:scale-95">
+                        Hủy
+                    </button>
+                    <button id="saveUserBtn" class="px-8 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all active:scale-95 flex items-center gap-2" type="button">
+                        <span class="material-symbols-outlined text-sm" data-icon="save">save</span>
+                        Lưu người dùng
+                    </button>
                 </div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-                <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined">stars</span>
+            <!-- Additional Information Cards -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 dark:text-white">Lịch sử đăng nhập</h4>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Người dùng này chưa có lịch sử đăng nhập. Tài khoản mới được khởi tạo và đang chờ kích hoạt hệ thống.</p>
                 </div>
-                <div>
-                    <p class="text-xs text-slate-500 uppercase tracking-wider font-bold">Khách hàng VIP</p>
-                    <p class="text-2xl font-black text-slate-900 dark:text-slate-100">82</p>
-                    <p class="text-xs text-slate-500 font-medium">6.5% tổng người dùng</p>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-                <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined">person_off</span>
-                </div>
-                <div>
-                    <p class="text-xs text-slate-500 uppercase tracking-wider font-bold">Tài khoản bị khóa</p>
-                    <p class="text-2xl font-black text-slate-900 dark:text-slate-100">18</p>
-                    <p class="text-xs text-slate-500 font-medium">-2 so với tháng trước</p>
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-sm" data-icon="key">key</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 dark:text-white">Phân quyền chi tiết</h4>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Tài khoản thuộc nhóm <b>Customer</b> sẽ chỉ có quyền truy cập vào khu vực mua sắm và xem lịch sử đơn hàng cá nhân.</p>
                 </div>
             </div>
         </div>
+            <!-- Form ở đây -->
+        </div>
     </div>
+    <div id="toast" style="
+  display:none;
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  z-index: 9999;
+  min-width: 220px;
+  background: #22c55e;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-weight: bold;
+  font-size: 15px;
+  transition: opacity 0.3s;
+"></div>
+<!--     hiển thị modal để xóa -->
+    <div id="deleteModal" style="
+  display:none; position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.3);
+  align-items:center; justify-content:center;">
+        <div style="background:white; border-radius:12px; padding:32px 24px; min-width:320px; box-shadow:0 2px 16px rgba(0,0,0,0.15); text-align:center;">
+            <div style="font-size:18px; font-weight:bold; margin-bottom:16px;">Bạn có chắc chắn muốn xóa người dùng này?</div>
+            <div style="margin-bottom:24px; color:#ef4444; font-weight:bold;" id="deleteUserName"></div>
+            <button id="confirmDeleteBtn" style="background:#ef4444; color:white; padding:8px 24px; border-radius:6px; font-weight:bold; margin-right:12px;">Xóa</button>
+            <button id="cancelDeleteBtn" style="background:#e5e7eb; color:#374151; padding:8px 24px; border-radius:6px; font-weight:bold;">Hủy</button>
+        </div>
+    </div>
+<!--    modal thông báo ko thể xóa -->
+    <div id="alertModal" style="
+  display:none; position:fixed; inset:0; z-index:10001; background:rgba(0,0,0,0.3);
+  align-items:center; justify-content:center;">
+        <div style="background:white; border-radius:12px; padding:32px 24px; min-width:320px; box-shadow:0 2px 16px rgba(0,0,0,0.15); text-align:center;">
+            <div id="alertModalMessage" style="font-size:16px; color:#ef4444; font-weight:bold; margin-bottom:24px;"></div>
+            <button id="closeAlertModalBtn" style="background:#ef4444; color:white; padding:8px 24px; border-radius:6px; font-weight:bold;">Đóng</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tabList = document.getElementById("tabList");
+            const tabForm = document.getElementById("tabForm");
+            const userListContent = document.getElementById("userListContent");
+            const userFormContent = document.getElementById("userFormContent");
+
+            tabList.addEventListener("click", function () {
+                tabList.classList.add("text-primary", "font-bold", "border-b-2", "border-primary");
+                tabForm.classList.remove("text-primary", "font-bold", "border-b-2", "border-primary");
+                userListContent.style.display = "";
+                userFormContent.style.display = "none";
+            });
+
+            tabForm.addEventListener("click", function () {
+                tabForm.classList.add("text-primary", "font-bold", "border-b-2", "border-primary");
+                tabList.classList.remove("text-primary", "font-bold", "border-b-2", "border-primary");
+                userListContent.style.display = "none";
+                userFormContent.style.display = "";
+            });
+        });
+        // lấy dữ liệu lên bảng
+        async function loadCustomers(page = 0) {
+            const tbody = document.getElementById("customerTableBody");
+            const status = document.getElementById("statusFilter").value;
+            const keyword = document.querySelector("input[placeholder]").value.trim();
+            // Thêm class fade nếu chưa có
+            if (!tbody.classList.contains("fade")) tbody.classList.add("fade");
+
+            // Fade out
+            tbody.classList.add("fade-out");
+
+            setTimeout(async () => {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8">Đang tải...</td></tr>`;
+
+                try {
+                    // Gọi API, truyền thêm filter nếu có
+                    let url = `/api/customers?page=${page}&size=5`;
+                    if (status) url += `&status=${status}`;
+                    if (keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
+
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    const customers = data.content || [];
+                    const totalPages = data.totalPages || 1;
+
+                    if (!Array.isArray(customers) || customers.length === 0) {
+                        tbody.innerHTML = `
+<tr>
+  <td colspan="7" class="py-12">
+    <div class="flex flex-col items-center justify-center text-center space-y-3 animate-fade-in">
+
+      <!-- Icon -->
+      <div class="w-16 h-16 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+        <span class="material-symbols-outlined text-3xl text-slate-400">group_off</span>
+      </div>
+
+      <!-- Title -->
+      <div class="text-sm font-semibold text-slate-600 dark:text-slate-300">
+        Không có khách hàng nào
+      </div>
+
+      <!-- Description -->
+      <div class="text-xs text-slate-400 max-w-xs">
+        Không tìm thấy dữ liệu phù hợp với bộ lọc hoặc từ khóa của bạn.
+      </div>
+
+      <!-- Gợi ý -->
+
+
+    </div>
+  </td>
+</tr>
+`;
+                        renderPagination(page, totalPages);
+                    } else {
+                        let html = "";
+                        customers.forEach(c => {
+                            html += `
+<tr class="hover:bg-slate-50/50 transition-colors">
+  <td class="px-6 py-4 text-sm font-mono text-slate-500">#CUS-${c.id}</td>
+  <td class="px-6 py-4">
+    <div class="flex items-center gap-3">
+      <img alt="${c.name}" class="w-8 h-8 rounded-full object-cover" src="${c.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(c.name)}"/>
+      <div class="text-sm font-bold">${c.name}</div>
+    </div>
+  </td>
+  <td class="px-6 py-4 text-sm">
+    <div class="font-medium">${c.email}</div>
+    <div class="text-xs text-slate-500">
+      ${c.phone ? c.phone : 'Không có'}
+    </div>
+  </td>
+  <td class="px-6 py-4 text-sm text-center font-semibold">${c.orderCount}</td>
+  <td class="px-6 py-4 text-sm text-right font-bold text-primary">${Number(c.totalSpent).toLocaleString()}đ</td>
+  <td class="px-6 py-4">
+    ${c.active
+                                ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">Bị khóa</span>`
+                                : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700">Hoạt động</span>`
+                            }
+  </td>
+  <td class="px-6 py-4 text-right">
+    <div class="flex justify-end gap-2">
+      <button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+        title="Sửa"
+        onclick="editCustomer('${c.id}')">
+        <span class="material-symbols-outlined text-lg">edit</span>
+      </button>
+      <button class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+        title="Xóa"
+        onclick="deleteCustomer('${c.id}', '${c.name}')">
+        <span class="material-symbols-outlined text-lg">delete</span>
+      </button>
+    </div>
+  </td>
+</tr>
+`;
+                        });
+                        tbody.innerHTML = html;
+                        renderPagination(page, totalPages);
+                    }
+                } catch (e) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-red-500">Lỗi tải dữ liệu</td></tr>`;
+                    console.error(e);
+                }
+                // Fade in
+                tbody.classList.remove("fade-out");
+            }, 200); // thời gian fade-out (ms)
+        }
+
+        // Gọi hàm khi trang tải xong
+        document.addEventListener("DOMContentLoaded", loadCustomers);
+
+        // thêm user
+        document.getElementById('saveUserBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            const msgDiv = document.getElementById('formMessage');
+            msgDiv.textContent = "";
+
+            // Lấy giá trị
+            const hoTen = document.getElementById('hoTenInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            const matKhau = document.getElementById('matKhauInput').value.trim();
+            const sdt = document.getElementById('sdtInput').value.trim();
+            const gioiTinh = document.getElementById('gioiTinhInput').value;
+            const ngaySinh = document.getElementById('ngaySinhInput').value;
+            const diaChi = document.getElementById('diaChiInput').value.trim();
+            const vaiTro = document.getElementById('vaiTroInput').value;
+            const trangThai = document.getElementById('trangThaiInput').value;
+
+            // Kiểm tra trống
+            if (!hoTen || !email || !matKhau || !sdt || !gioiTinh || !ngaySinh || !diaChi || !vaiTro || !trangThai) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Vui lòng nhập đầy đủ thông tin!";
+                return;
+            }
+
+            // Kiểm tra ngày sinh không vượt quá ngày hiện tại
+            const today = new Date();
+            const dob = new Date(ngaySinh);
+            if (dob > today) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Ngày sinh không được vượt quá ngày hiện tại!";
+                return;
+            }
+
+            // Kiểm tra mật khẩu tối thiểu 6 ký tự
+            if (matKhau.length < 6) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Mật khẩu phải có ít nhất 6 ký tự!";
+                return;
+            }
+
+            // Kiểm tra email đúng định dạng
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Email không đúng định dạng!";
+                return;
+            }
+
+            // Kiểm tra số điện thoại là số và đúng 10 số
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(sdt)) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Số điện thoại phải là số và đủ 10 số!";
+                return;
+            }
+
+            // Chuẩn bị dữ liệu user
+            const user = {
+                hoTen,
+                email,
+                matKhau,
+                sdt,
+                gioiTinh: gioiTinh === 'male',
+                ngaySinh,
+                diaChi,
+                vaiTro: vaiTro === 'Admin',
+                trangThai: trangThai === 'active'
+            };
+
+            // Phân biệt thêm mới hay chỉnh sửa
+            const isEdit = !!window.editingUserId;
+            const method = isEdit ? "PUT" : "POST";
+            const url = isEdit ? `/api/users/${window.editingUserId}` : "/api/users";
+
+            try {
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    showToast(isEdit ? "Cập nhật người dùng thành công!" : "Thêm người dùng thành công!");
+                    document.getElementById('userForm').reset();
+                    window.editingUserId = null;
+
+                    // Ẩn form, hiện tab danh sách
+                    userFormContent.style.display = "none";
+                    userListContent.style.display = "";
+
+                    // Gọi lại hàm load danh sách để cập nhật bảng
+                    loadCustomers();
+                } else {
+                    msgDiv.style.color = "red";
+                    msgDiv.textContent = data.message || "Có lỗi xảy ra!";
+                }
+            } catch (err) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Lỗi kết nối server!";
+            }
+        });
+        function showToast(message, color = "#22c55e") {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.background = color;
+            toast.style.display = "block";
+            toast.style.opacity = "1";
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                setTimeout(() => toast.style.display = "none", 300);
+            }, 2000);
+        }
+        // xóa người dùng
+        let userIdToDelete = null;
+
+        function deleteCustomer(id, name = "") {
+            userIdToDelete = id;
+            document.getElementById("deleteUserName").textContent = name ? `(${name})` : "";
+            document.getElementById("deleteModal").style.display = "flex";
+        }
+
+        // Đóng modal khi bấm Hủy
+        document.getElementById("cancelDeleteBtn").onclick = function() {
+            document.getElementById("deleteModal").style.display = "none";
+            userIdToDelete = null;
+        };
+
+        // Xác nhận xóa
+        document.getElementById("confirmDeleteBtn").onclick = async function() {
+            if (!userIdToDelete) return;
+            try {
+                const res = await fetch(`/api/users/${userIdToDelete}`, { method: "DELETE" });
+                const data = await res.json();
+                if (data.status === "success") {
+                    showToast("Xóa người dùng thành công!");
+                    loadCustomers();
+                } else {
+                    showErrorModal(data.message || "Không thể xóa!");
+                }
+            } catch {
+                showToast("Lỗi kết nối server!", "#ef4444");
+            }
+            document.getElementById("deleteModal").style.display = "none";
+            userIdToDelete = null;
+        };
+        // moda l thông báo ko thể xóa
+        function showErrorModal(message) {
+            document.getElementById("alertModalMessage").textContent = message;
+            document.getElementById("alertModal").style.display = "flex";
+        }
+        document.getElementById("closeAlertModalBtn").onclick = function() {
+            document.getElementById("alertModal").style.display = "none";
+        };
+        // sửa
+        async function editCustomer(id) {
+
+            // Gọi API lấy thông tin user theo id
+            const res = await fetch(`/api/users/${id}`);
+            const user = await res.json();
+            console.log(user);
+
+            // Đổ dữ liệu vào form
+            document.getElementById('hoTenInput').value = user.hoTen || "";
+            document.getElementById('emailInput').value = user.email || "";
+            document.getElementById('matKhauInput').value = user.matKhau || "";
+            document.getElementById('sdtInput').value = user.sdt || "";
+            document.getElementById('gioiTinhInput').value = user.gioiTinh ? "male" : "female";
+            document.getElementById('ngaySinhInput').value = user.ngaySinh ? user.ngaySinh.substring(0,10) : "";
+            document.getElementById('diaChiInput').value = user.diaChi || "";
+            document.getElementById('vaiTroInput').value = user.vaiTro ? "Admin" : "Customer";
+            document.getElementById('trangThaiInput').value = user.trangThai ? "active" : "locked";
+
+            // Disable email và mật khẩu khi chỉnh sửa
+            document.getElementById('emailInput').disabled = true;
+            document.getElementById('matKhauInput').disabled = true;
+
+            // Hiện form, ẩn danh sách
+            document.getElementById('userFormContent').style.display = "";
+            document.getElementById('userListContent').style.display = "none";
+
+            // Lưu id đang sửa vào biến toàn cục
+            window.editingUserId = id;
+        }
+        // hàm phân trang
+        function renderPagination(currentPage, totalPages) {
+            const container = document.querySelector(".flex.items-center.gap-1");
+            if (!container) return;
+            let html = '';
+
+            // Nút prev
+            html += `<button class="p-2 text-slate-400 hover:text-slate-600" ${currentPage === 0 ? 'disabled' : ''} onclick="loadCustomers(${currentPage - 1})">
+        <span class="material-symbols-outlined">chevron_left</span>
+    </button>`;
+
+            // Số trang (hiển thị tối đa 5 trang, có ... nếu nhiều)
+            let start = Math.max(0, currentPage - 2);
+            let end = Math.min(totalPages, start + 5);
+            if (end - start < 5) start = Math.max(0, end - 5);
+
+            for (let i = start; i < end; i++) {
+                html += `<button class="w-8 h-8 rounded-lg ${i === currentPage ? 'bg-primary text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'} text-sm font-medium"
+            onclick="loadCustomers(${i})">${i + 1}</button>`;
+            }
+            if (end < totalPages) html += `<span class="px-1 text-slate-400">...</span>`;
+
+            // Nút next
+            html += `<button class="p-2 text-slate-400 hover:text-slate-600" ${currentPage === totalPages - 1 ? 'disabled' : ''} onclick="loadCustomers(${currentPage + 1})">
+        <span class="material-symbols-outlined">chevron_right</span>
+    </button>`;
+
+            container.innerHTML = html;
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            loadCustomers(0);
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const statusFilter = document.getElementById("statusFilter");
+
+            statusFilter.addEventListener("change", function () {
+                loadCustomers(0); // load lại ngay lập tức
+            });
+        });
+        let debounceTimer;
+
+        document.querySelector("input[placeholder]")
+            .addEventListener("input", function () {
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(() => {
+                    loadCustomers(0); // reset về trang đầu
+                }, 400);
+            });
+    </script>
 </main>

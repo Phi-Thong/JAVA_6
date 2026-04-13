@@ -63,4 +63,14 @@ public class adminConTroller {
         return "admin/admin";
     }
 
+    @GetMapping("/ChatAdmin")
+    public String ChatAdmin(Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+        model.addAttribute("content", "admin/ChatAdmin :: ChatAdmin");
+        // Nếu là AJAX request, chỉ trả về fragment
+        if ("XMLHttpRequest".equals(requestedWith)) {
+            return "admin/ChatAdmin :: ChatAdmin";
+        }
+        return "admin/admin";
+    }
+
 }

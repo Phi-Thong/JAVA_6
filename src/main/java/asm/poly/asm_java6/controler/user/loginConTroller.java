@@ -23,8 +23,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class loginConTroller {
 
-@Autowired
-private JwtUtils jwtUtils;
+    @Autowired
+    private JwtUtils jwtUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -92,14 +92,14 @@ private JwtUtils jwtUtils;
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
-       // Sau khi xác thực thành công:
+        // Sau khi xác thực thành công:
         List<String> roles = new ArrayList<>();
         roles.add(user.getVaiTro() ? "ROLE_ADMIN" : "ROLE_USER");
         String token = jwtUtils.generateToken(user.getEmail(), roles, user.getHoTen(), null);
 
         Cookie cookie = new Cookie("jwt", token);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);// cho thành false để đọc được jwt
         cookie.setMaxAge(7 * 24 * 60 * 60); // 7 ngày
         response.addCookie(cookie);
 

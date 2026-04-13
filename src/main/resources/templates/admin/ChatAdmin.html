@@ -1,0 +1,285 @@
+<main class="flex-1 ml-64 flex overflow-hidden bg-white" th:fragment="ChatAdmin">
+    <!-- Column 1: Conversation List -->
+    <section class="w-80 flex-shrink-0 border-r border-slate-100 flex flex-col bg-slate-50/30">
+        <div class="p-4 border-b border-slate-100 bg-white">
+            <h2 class="text-lg font-bold text-slate-800 mb-3">Chats</h2>
+            <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                <input class="w-full pl-9 pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-1 focus:ring-blue-600 focus:bg-white transition-all"
+                       placeholder="Tìm khách hàng..." type="text"/>
+            </div>
+        </div>
+        <div class="flex-1 overflow-y-auto chat-scrollbar">
+            <!-- Chat Item (Active) -->
+            <div class="p-4 bg-blue-50/50 border-r-2 border-blue-600 flex gap-3 cursor-pointer">
+                <div class="relative flex-shrink-0">
+                    <img alt="Customer avatar" class="w-12 h-12 rounded-full object-cover"
+                         data-alt="Portrait of a smiling young woman with warm lighting and a blurred urban background"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRc1v9dgt62-yyLaiWhB2AnP9ZMP2KqGZ6RS3ZEsBpRnP00XAanPf0r7VuFPCUOG6TkZszG3XVnbIXxMHlzqx2qKk7qn8LyTObgGBwGDvO3I229V8N8yXfawFDZoPDEizfsimpEEKImKZr9HdQvbGVKB0EsNtrjzdmxysKRKCqhrgkTQSWl2XQL3fdW486U6jt1fCsRM1rhCM2sRQpOknT8ODr4x5YQk4ZlWae8qUkXOlK4-lD8RgJFpVgR27rIGunFZ_xYTFFwM8"/>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <h3 class="text-sm font-semibold text-slate-900 truncate">Lê Minh Anh</h3>
+                        <span class="text-[10px] text-slate-500 font-medium whitespace-nowrap">2 phút trước</span>
+                    </div>
+                    <p class="text-xs text-blue-600 font-medium truncate">Đôi Air Jordan 1 Low này còn size 42 không
+                        ạ?</p>
+                </div>
+            </div>
+            <!-- Chat Items (Inactive) -->
+            <div class="p-4 hover:bg-slate-50 flex gap-3 cursor-pointer transition-colors border-b border-slate-50">
+                <div class="relative flex-shrink-0">
+                    <img alt="Customer avatar" class="w-12 h-12 rounded-full object-cover"
+                         data-alt="Portrait of a young man with a friendly expression in soft daylight"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuB30t9tt4hcLgjqHDHSFxkS9M2_oWyY0OoTs6bjVJR6mFdjeZhKeYIRkPm8XQyIeqaKJug2GirxSL-96owc5alk4m3q3As2UBmy4ruGnOZG-EQ_LJjoculWghTtEOdFAP0eljw7J5FFaI40zBJI1Hz0EzKVbjL6uToj6BDGm47slWv1W7Aq_h4ItFVo3NSH9twEz2UgBE8jJnW3sPfIP2vYct5Tq9dpG4bwxamfVuHp7w8WdUnMaCfiqATMCOEv4DUSTZwLBp0rtqo"/>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-slate-300 border-2 border-white rounded-full"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <h3 class="text-sm font-semibold text-slate-900 truncate">Trần Hoàng Nam</h3>
+                        <span class="text-[10px] text-slate-500 font-medium whitespace-nowrap">1 giờ</span>
+                    </div>
+                    <p class="text-xs text-slate-500 truncate">Cảm ơn shop đã tư vấn nhiệt tình!</p>
+                </div>
+            </div>
+            <div class="p-4 hover:bg-slate-50 flex gap-3 cursor-pointer transition-colors border-b border-slate-50">
+                <div class="relative flex-shrink-0">
+                    <img alt="Customer avatar" class="w-12 h-12 rounded-full object-cover"
+                         data-alt="Professional woman looking confident in a modern office environment"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9ThGUdqV4H4VhzQL4IJ_d0RnfgPiC_-PWpjvOyc9HG2GRlZUJUg6-o_Fa8lpi4EDFB3s699KM8AQ_ubl28b7H_o-1OXZXXn1q9cj--xVhI3XKB-b0cl0cYxznKu7ZcXPURsKjy3u3Q70IhZCmO6lBDw7J705220QoFFiRlfTtNrbau6HCehnAutdxvoJWP2Pa0GXecKzEaofKJ8-HKtX9lJRD_NZxnpf5Z97rEtTku3FlveH1QTZlCHxfrX-Vp8T-UGSgszUDAC4"/>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <h3 class="text-sm font-semibold text-slate-900 truncate">Nguyễn Thảo Vy</h3>
+                        <span class="text-[10px] text-slate-500 font-medium whitespace-nowrap">4 giờ</span>
+                    </div>
+                    <p class="text-xs text-slate-500 truncate">Cho mình hỏi mã vận đơn với ạ.</p>
+                </div>
+            </div>
+            <div class="p-4 hover:bg-slate-50 flex gap-3 cursor-pointer transition-colors border-b border-slate-50">
+                <div class="relative flex-shrink-0">
+                    <img alt="Customer avatar" class="w-12 h-12 rounded-full object-cover"
+                         data-alt="Close-up portrait of a man with a slight smile and natural lighting"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqTg-MwmCxQs23Cb3raJL1Z9qzjlj5P4PnCclm79pM5iFpwK3j9gekf8R5ulTFBpkXtTtpS8iJm2Z3UBosHwRLpN7tI7cpnbbD6UXPh-4U6NQSdcK0lnX82gTNP327zVA8Y6BB9BllqnkCT0w0LpqfQbKoMLn3qH5W1NaUdCiPx-opLd7-vVV-0HfKqJN_dfVFHtfZfgy8lh5_j0JqTRry-2zrEvsbp0KfLR7mRUSV3hdZEGt9qfmsRFvsU43q10_N-7Q6_W3HIVQ"/>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-slate-300 border-2 border-white rounded-full"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <h3 class="text-sm font-semibold text-slate-900 truncate">Phạm Minh Đức</h3>
+                        <span class="text-[10px] text-slate-500 font-medium whitespace-nowrap">Hôm qua</span>
+                    </div>
+                    <p class="text-xs text-slate-500 truncate">Hàng đẹp lắm, cảm ơn shop.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Column 2: Main Chat Frame -->
+    <section class="flex-1 flex flex-col min-w-0 bg-slate-50/10">
+        <!-- Chat Header -->
+        <header class="h-16 flex-shrink-0 flex items-center justify-between px-6 bg-white border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="flex -space-x-2">
+                    <img alt="Chat header avatar" class="w-10 h-10 rounded-full border-2 border-white"
+                         data-alt="Focused portrait of a young woman with a pleasant look"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNrRhJg28NUAMHKQBkVT47oGHh_urtdFWMbj-OUo_ByLvie1jZIAvg1FqCagCVRhKeDBwBDuPIpFhQ-mUJZFqtAAyEX6_UTWFsh_gzMkaFrjNaPqG9HTBfs1BvQM5rYLp0HyJqOHKP5Sgx1luxsTEh9qvZSRLd-Y5IOgHUSPV_NohBRYguV52fUKBuKws64psPm63c4e2P0E6me7h13u5FT5cnVchvDeOgqf62lMWt97UJH9QSDMo44EG9qJPzQjgN-16vtvtYi8w"/>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900 leading-none mb-1">Lê Minh Anh</h2>
+                    <span class="flex items-center gap-1.5 text-[10px] text-green-600 font-bold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Đang hoạt động
+                            </span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors rounded-lg">
+                    <span class="material-symbols-outlined">call</span>
+                </button>
+                <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors rounded-lg">
+                    <span class="material-symbols-outlined">videocam</span>
+                </button>
+                <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors rounded-lg">
+                    <span class="material-symbols-outlined">more_vert</span>
+                </button>
+            </div>
+        </header>
+        <!-- Chat Body -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar">
+            <!-- Message Group -->
+            <div class="flex flex-col items-start gap-1">
+                <div class="flex items-end gap-2 max-w-[80%]">
+                    <div class="bg-white px-4 py-3 rounded-2xl rounded-bl-none shadow-sm border border-slate-100">
+                        <p class="text-sm text-slate-700 leading-relaxed">Chào shop ạ, mình đang quan tâm đến đôi
+                            Nike Air Jordan 1 Low 'Wolf Grey'.</p>
+                    </div>
+                    <span class="text-[10px] text-slate-400 mb-1">09:15</span>
+                </div>
+                <div class="flex items-end gap-2 max-w-[80%]">
+                    <div class="bg-white px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100">
+                        <p class="text-sm text-slate-700 leading-relaxed">Không biết bên mình còn sẵn size 42 không
+                            shop?</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Admin Response -->
+            <div class="flex flex-col items-end gap-1">
+                <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
+                    <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-br-none shadow-md shadow-blue-200">
+                        <p class="text-sm text-white leading-relaxed">Chào Minh Anh ạ! Rất vui được hỗ trợ bạn.</p>
+                    </div>
+                    <span class="text-[10px] text-slate-400 mb-1">09:17</span>
+                </div>
+                <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
+                    <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-tr-none shadow-md shadow-blue-200">
+                        <p class="text-sm text-white leading-relaxed">Để mình kiểm tra kho cho bạn nhé, bạn đợi mình
+                            1 phút ạ!</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Customer Image Query -->
+            <div class="flex flex-col items-start gap-1">
+                <div class="flex items-end gap-2 max-w-[80%]">
+                    <div class="bg-white px-4 py-3 rounded-2xl rounded-bl-none shadow-sm border border-slate-100">
+                        <p class="text-sm text-slate-700 leading-relaxed">Đôi này này shop ơi.</p>
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <img alt="Product image shared"
+                         class="w-48 h-48 rounded-xl object-cover shadow-sm border border-slate-200"
+                         data-alt="A clean shot of Nike Air Jordan 1 Low sneakers in a grey and white colorway, studio lighting"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZnWrbVluWQ8UUgdsjvELAxORVCu8vq780rF1kwzbPgKjSGbv3GFq1MrTmFt3AmOOg9AMIK4Ed8ZYO6IU9kqY3pxQ1hWrmjF7ELdu1c4A6c7TBnccEEV8soXBRabxPifv1ITk3gcdb2bqihfCpg2J5bzwsa-EdAfL2_XtBpUFRDX9UVx70aIMmjNNP4troE_Z-PehsvLtFJoTFyXHSiGNnKJpTp63p4FAMAkeulHd625OJobrkXMlcfqlADl7u9KCp3-QmDsni800"/>
+                </div>
+            </div>
+            <!-- Admin Confirmation -->
+            <div class="flex flex-col items-end gap-1">
+                <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
+                    <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-br-none shadow-md shadow-blue-200">
+                        <p class="text-sm text-white leading-relaxed">Dạ đúng rồi ạ, mẫu Wolf Grey này bên mình vừa
+                            về thêm hàng sáng nay, hiện còn đúng 1 đôi size 42 cuối cùng luôn ạ!</p>
+                    </div>
+                    <span class="text-[10px] text-slate-400 mb-1">Vừa xong</span>
+                </div>
+            </div>
+        </div>
+        <!-- Chat Footer (Input) -->
+        <div class="p-4 bg-white border-t border-slate-100">
+            <div class="flex items-center gap-2 bg-slate-100 rounded-xl p-2 focus-within:ring-2 focus-within:ring-blue-200 transition-all">
+                <div class="flex gap-1">
+                    <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+                        <span class="material-symbols-outlined">add_circle</span>
+                    </button>
+                    <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+                        <span class="material-symbols-outlined">image</span>
+                    </button>
+                    <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+                        <span class="material-symbols-outlined">sentiment_satisfied</span>
+                    </button>
+                </div>
+                <input class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2"
+                       placeholder="Nhập tin nhắn..." type="text"/>
+                <button class="bg-blue-600 text-white p-2.5 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200">
+                    <span class="material-symbols-outlined text-lg">send</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Column 3: Customer Info -->
+    <section class="w-80 flex-shrink-0 border-l border-slate-100 bg-white flex flex-col">
+        <div class="p-6 flex flex-col items-center text-center border-b border-slate-100">
+            <div class="w-24 h-24 rounded-3xl overflow-hidden mb-4 shadow-xl shadow-slate-200 ring-4 ring-slate-50">
+                <img alt="Customer profile detailed" class="w-full h-full object-cover"
+                     data-alt="Close up high quality portrait of a stylish woman with a bright smile"
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeMrk_anwgR1LYp2PQo2qv_W8BxsZrGVXjJLfpdMnJuVT6-lStHzLodZooHt5jZtJCmD4V0tlMcVdnTEzCy14rjB0167BqpOoUsdUyFyGFsjTaLBa9x0WT7tn3CXGjvAXPmWsByEEZTznQ1ZSANCbdfqSWz61ya7I4p1kMCPdPA99nq7osg1XLrZ-lizi_HDR03bCw4haSs6J61jiZdqzsTzeFzQb7vjwaEp8Gq02K7gWuR8lKHLtUTm1DxtMOQBGQcO6nF-RXYfw"/>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mb-1">Lê Minh Anh</h3>
+            <p class="text-xs text-slate-500 mb-4">Khách hàng Thân thiết</p>
+            <div class="flex gap-3 w-full">
+                <button class="flex-1 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-lg hover:bg-slate-200 transition-colors">
+                    Hồ sơ
+                </button>
+                <button class="flex-1 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors">
+                    Gắn thẻ
+                </button>
+            </div>
+        </div>
+        <div class="flex-1 overflow-y-auto chat-scrollbar p-6 space-y-8">
+            <!-- Contact Info -->
+            <div>
+                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Thông tin liên
+                    hệ</h4>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-lg">mail</span>
+                        <span class="text-xs text-slate-600">minhanh.le@gmail.com</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-lg">call</span>
+                        <span class="text-xs text-slate-600">090 123 4567</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+                        <span class="text-xs text-slate-600 leading-relaxed">123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM</span>
+                    </li>
+                </ul>
+            </div>
+            <!-- Order History -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Đơn hàng gần
+                        đây</h4>
+                    <span class="text-[10px] text-blue-600 font-bold cursor-pointer">Xem tất cả</span>
+                </div>
+                <div class="space-y-3">
+                    <!-- Order Item -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-colors cursor-pointer">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] font-bold text-slate-900">#SV-8842</span>
+                            <span class="text-[9px] px-1.5 py-0.5 bg-green-100 text-green-700 rounded font-bold">HOÀN TẤT</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2 truncate">Nike Dunk Low 'Panda'</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] text-slate-400">12/10/2023</span>
+                            <span class="text-xs font-bold text-slate-900">2.850.000đ</span>
+                        </div>
+                    </div>
+                    <!-- Order Item -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-colors cursor-pointer">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] font-bold text-slate-900">#SV-7210</span>
+                            <span class="text-[9px] px-1.5 py-0.5 bg-green-100 text-green-700 rounded font-bold">HOÀN TẤT</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2 truncate">Adidas Yeezy Boost 350</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] text-slate-400">05/08/2023</span>
+                            <span class="text-xs font-bold text-slate-900">6.200.000đ</span>
+                        </div>
+                    </div>
+                    <!-- Order Item -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-colors cursor-pointer">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] font-bold text-slate-900">#SV-6601</span>
+                            <span class="text-[9px] px-1.5 py-0.5 bg-slate-200 text-slate-600 rounded font-bold">ĐÃ HUỶ</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2 truncate">Converse Chuck 70 High</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] text-slate-400">20/05/2023</span>
+                            <span class="text-xs font-bold text-slate-900">1.950.000đ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Customer Stats -->
+            <div class="grid grid-cols-2 gap-3 pb-6">
+                <div class="p-4 bg-slate-50 rounded-xl text-center">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mb-1">Tổng đơn</p>
+                    <p class="text-lg font-black text-slate-900">08</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl text-center">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mb-1">Chi tiêu</p>
+                    <p class="text-lg font-black text-blue-600">22.4M</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

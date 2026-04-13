@@ -1,16 +1,25 @@
 package asm.poly.asm_java6.service.impl;
 
+import asm.poly.asm_java6.dto.CustomerSummaryDTO;
 import asm.poly.asm_java6.enity.users;
 import asm.poly.asm_java6.repository.UsersRepository;
 import asm.poly.asm_java6.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
+    public UserServiceImpl(UsersRepository userRepository) {
+        this.usersRepository = userRepository;
+    }
 
     @Autowired
     private UsersRepository usersRepository;
@@ -75,4 +84,24 @@ public class UserServiceImpl implements UserService {
     public users findByToken(String token) {
         return usersRepository.findByToken(token);
     }
+
+    @Override
+    public Page<CustomerSummaryDTO> getAllCustomerSummaries(Pageable pageable) {
+        return usersRepository.findAllCustomerSummaries(pageable);
+    }
+
+    @Override
+    public Page<CustomerSummaryDTO> getAllCustomerSummariesByStatus(boolean trangThai, Pageable pageable) {
+        return usersRepository.findAllCustomerSummariesByTrangThai(trangThai, pageable);
+    }
+
+    @Override
+    public Page<CustomerSummaryDTO> searchCustomers(String keyword, Boolean trangThai, Pageable pageable) {
+        return usersRepository.searchCustomers(
+                (keyword == null || keyword.isBlank()) ? null : keyword,
+                trangThai,
+                pageable
+        );
+    }
+
 }

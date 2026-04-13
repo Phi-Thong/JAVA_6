@@ -16,10 +16,12 @@ public class MessageServiceImpl implements MessageService {
     private MessageRepository messageRepository;
 
     @Override
-    public Message sendMessage(Long conversationId, Long senderId, String content) {
+    public Message sendMessage(Long conversationId, Long senderId, String senderName, String senderAvatar, String content) {
         Message m = new Message();
         m.setConversationId(conversationId);
         m.setSenderId(senderId);
+        m.setSenderName(senderName);
+        m.setSenderAvatar(senderAvatar);
         m.setContent(content);
         m.setSentAt(LocalDateTime.now());
         return messageRepository.save(m);

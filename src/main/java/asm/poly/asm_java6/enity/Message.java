@@ -26,4 +26,10 @@ public class Message {
 
     @Column(name = "sent_at")
     private LocalDateTime sentAt;
+
+    @Column(name = "sender_name")
+    private String senderName;
+
+    @Column(name = "sender_avatar")
+    private String senderAvatar;
 }

@@ -1,0 +1,16 @@
+package asm.poly.asm_java6.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ChatMessage {
+    private Long conversationId; // ID cuộc trò chuyện (bổ sung)
+    private String sender;
+    private String content;
+    private String timestamp;
+    private String avatarUrl;
+}

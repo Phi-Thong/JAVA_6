@@ -1,6 +1,16 @@
-<main class="flex-1 ml-64 p-8" th:fragment="order">
+<main class="flex-1 ml-64" th:fragment="order">
     <!-- Top Header -->
+    <style>
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
 
+        .fade-in {
+            opacity: 1;
+            transition: opacity 0.2s;
+        }
+    </style>
     <div class="p-8 space-y-6">
         <!-- Page Title -->
         <div class="flex items-center gap-3">
@@ -30,7 +40,8 @@
                 <div class="flex items-center gap-2">
 
                     <!-- Sắp xếp đơn hàng -->
-                    <select class="px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium">
+                    <select id="sortSelect"
+                            class="px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium">
                         <option value="newest">Đơn mới nhất</option>
                         <option value="oldest">Đơn cũ nhất</option>
                     </select>
@@ -122,218 +133,21 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
-                    <!-- Row 1: Processing -->
-                    <tr data-status="processing" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-primary">#ORD-9421</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">
-                                    NV
-                                </div>
-                                <div class="text-sm">
-                                    <p class="font-medium">Nguyễn Văn An</p>
-                                    <p class="text-xs text-slate-500">an.nguyen@gmail.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">22/10/2023 14:30</td>
-                        <td class="px-6 py-4 text-sm font-semibold">2.450.000₫</td>
-                        <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Chuyển khoản</td>
-                        <td class="px-6 py-4">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                Đang xử lý
-            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                                <button class="update-btn px-3 py-1 bg-primary text-white rounded text-xs font-semibold">
-                                    Cập nhật
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Row 2: Shipping -->
-                    <tr data-status="shipping" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-primary">#ORD-9420</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="size-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">
-                                    TL
-                                </div>
-                                <div class="text-sm">
-                                    <p class="font-medium">Trần Lan Hương</p>
-                                    <p class="text-xs text-slate-500">lanhuong.t@outlook.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600">22/10/2023 09:15</td>
-                        <td class="px-6 py-4 text-sm font-semibold">1.890.000₫</td>
-                        <td class="px-6 py-4 text-sm text-slate-600">COD</td>
-                        <td class="px-6 py-4">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700">
-                Đang giao
-            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                                <button class="px-3 py-1 bg-primary text-white rounded text-xs font-semibold">
-                                    Cập nhật
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Row 3: Completed -->
-                    <tr data-status="done" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-primary">#ORD-9419</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="size-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">
-                                    LM
-                                </div>
-                                <div class="text-sm">
-                                    <p class="font-medium">Lê Minh</p>
-                                    <p class="text-xs text-slate-500">minh.le@gmail.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600">21/10/2023 18:45</td>
-                        <td class="px-6 py-4 text-sm font-semibold">5.200.000₫</td>
-                        <td class="px-6 py-4 text-sm text-slate-600">Ví VNPay</td>
-                        <td class="px-6 py-4">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                Hoàn thành
-            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                                <button class="px-3 py-1 bg-primary text-white rounded text-xs font-semibold">
-                                    Cập nhật
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Row 4: Cancel -->
-                    <tr data-status="cancel" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-primary">#ORD-9418</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="size-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">
-                                    PD
-                                </div>
-                                <div class="text-sm">
-                                    <p class="font-medium">Phan Duy</p>
-                                    <p class="text-xs text-slate-500">duyphan@ymail.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600">21/10/2023 15:20</td>
-                        <td class="px-6 py-4 text-sm font-semibold">950.000₫</td>
-                        <td class="px-6 py-4 text-sm text-slate-600">COD</td>
-                        <td class="px-6 py-4">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
-                Đã hủy
-            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                                <button class="px-3 py-1 bg-primary text-white rounded text-xs font-semibold">
-                                    Cập nhật
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Row 5: Completed -->
-                    <tr data-status="done" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 text-sm font-semibold text-primary">#ORD-9417</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="size-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">
-                                    HT
-                                </div>
-                                <div class="text-sm">
-                                    <p class="font-medium">Hoàng Thảo</p>
-                                    <p class="text-xs text-slate-500">thao.hoang@example.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600">20/10/2023 20:05</td>
-                        <td class="px-6 py-4 text-sm font-semibold">3.650.000₫</td>
-                        <td class="px-6 py-4 text-sm text-slate-600">Chuyển khoản</td>
-                        <td class="px-6 py-4">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                Hoàn thành
-            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="p-1.5 text-slate-400 hover:text-primary">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                                <button class="px-3 py-1 bg-primary text-white rounded text-xs font-semibold">
-                                    Cập nhật
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
+                    <tbody id="orderTableBody"></tbody>
                 </table>
             </div>
             <!-- Pagination -->
             <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
-                <div class="text-sm text-slate-500 dark:text-slate-400">
-                    Hiển thị <span class="font-semibold text-slate-700 dark:text-slate-200">1</span> đến <span
-                        class="font-semibold text-slate-700 dark:text-slate-200">5</span> của <span
-                        class="font-semibold text-slate-700 dark:text-slate-200">128</span> đơn hàng
-                </div>
-                <div class="flex items-center gap-1">
-                    <button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50"
-                            disabled="">
-                        <span class="material-symbols-outlined text-sm">chevron_left</span>
-                    </button>
-                    <button class="size-8 flex items-center justify-center rounded border border-primary bg-primary text-white text-sm font-semibold">
-                        1
-                    </button>
-                    <button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm">
-                        2
-                    </button>
-                    <button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm">
-                        3
-                    </button>
-                    <span class="px-1 text-slate-400">...</span>
-                    <button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm">
-                        12
-                    </button>
-                    <button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-                        <span class="material-symbols-outlined text-sm">chevron_right</span>
-                    </button>
-                </div>
+                <div class="flex justify-end items-center gap-1 w-full" id="paginationContainer"></div>
             </div>
+
         </div>
         <!-- Simple Stats Footer (Optional context) -->
 
     </div>
     <!-- UPDATE ORDER MODAL -->
     <div id="updateModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 backdrop-blur-sm">
-
         <div class="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative animate-fadeIn">
-
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
                 <div>
@@ -345,74 +159,381 @@
                     ✕
                 </button>
             </div>
-
             <!-- Info khách hàng -->
             <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl mb-5 space-y-3">
-
                 <div class="flex items-center gap-3">
-                    <div class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                    <div id="modalInitials"
+                         class="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
                         NV
                     </div>
                     <div>
-                        <p id="customerName" class="font-semibold">Nguyễn Văn An</p>
-                        <p class="text-xs text-slate-500">an.nguyen@gmail.com</p>
+                        <p id="customerName" class="font-semibold">Tên khách</p>
+                        <p id="customerEmail" class="text-xs text-slate-500">email@email.com</p>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-3 text-sm">
                     <div>
                         <p class="text-slate-500">Mã đơn</p>
-                        <p id="orderId" class="font-semibold text-primary">#ORD-9421</p>
+                        <p id="orderId" class="font-semibold text-primary">#ORD-0000</p>
                     </div>
                     <div>
                         <p class="text-slate-500">Tổng tiền</p>
-                        <p class="font-semibold">2.450.000₫</p>
+                        <p id="orderTotal" class="font-semibold">0₫</p>
                     </div>
                 </div>
-
             </div>
-
             <!-- Form -->
-            <form id="updateForm" class="space-y-5">
-
-                <!-- Status -->
+            <form id="updateForm" class="space-y-6">
                 <div>
-                    <label class="text-sm font-semibold mb-1 block">Trạng thái giao hàng</label>
-
+                    <label class="text-sm font-semibold mb-2 block text-slate-700 dark:text-slate-300">
+                        Trạng thái giao hàng
+                    </label>
                     <select id="orderStatus"
-                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none">
-
-                        <option value="processing">🟡 Đang xử lý</option>
-                        <option value="shipping">🟠 Đang giao</option>
-                        <option value="done">🟢 Hoàn thành</option>
-                        <option value="cancel">🔴 Đã hủy</option>
-
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700
+                   bg-slate-50 dark:bg-slate-800 text-sm font-medium
+                   focus:ring-2 focus:ring-primary focus:border-primary outline-none
+                   transition-all duration-200 shadow-sm hover:shadow-md">
+                        <option value="ĐANG_CHỜ_XÁC_NHẬN">Đang chờ xác nhận</option>
+                        <option value="DANG_GIAO">Đang giao</option>
+                        <option value="DA_GIAO">Hoàn thành</option>
+                        <option value="DA_HUY">Đã hủy</option>
                     </select>
                 </div>
-
-                <!-- Note -->
-                <div>
-                    <label class="text-sm font-semibold mb-1 block">Ghi chú</label>
-                    <textarea placeholder="Nhập ghi chú (nếu có)..."
-                              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"></textarea>
-                </div>
-
-                <!-- Actions -->
-                <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-
+                <div class="border-t border-dashed border-slate-200 dark:border-slate-700"></div>
+                <div class="flex justify-end gap-3 pt-2">
                     <button type="button" id="cancelBtn"
-                            class="px-4 py-2 rounded-lg border border-slate-300 hover:bg-slate-100 transition">
+                            class="px-4 py-2.5 rounded-xl border border-slate-300
+                   text-slate-600 font-medium
+                   hover:bg-slate-100 hover:shadow-sm
+                   transition-all duration-200">
                         Hủy
                     </button>
-
                     <button type="submit"
-                            class="px-5 py-2 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition">
+                            class="px-5 py-2.5 rounded-xl bg-primary text-white font-semibold shadow-md
+                   hover:scale-[1.03] hover:shadow-lg active:scale-[0.97]
+                   transition-all duration-200">
                         Lưu thay đổi
                     </button>
-
                 </div>
-
             </form>
         </div>
     </div>
+    <div id="toast" style="
+    display:none;
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 9999;
+    background: #22c55e;
+    color: white;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s;
+">
+        Cập nhật thành công!
+    </div>
+    <script>
+
+
+        let currentSort = "newest";
+        let currentStatus = "all"; // trạng thái mặc định
+
+        async function loadOrders(page = 0, sort = "newest", status = "all") {
+            const tbody = document.getElementById("orderTableBody");
+            const tableContainer = document.querySelector('.overflow-x-auto');
+
+            tableContainer.classList.remove('fade-in');
+            tableContainer.classList.add('fade-out');
+
+            setTimeout(async () => {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8">Đang tải...</td></tr>`;
+
+                try {
+                    let url = `/api/orders?page=${page}&size=5&sort=${sort}`;
+                    if (status && status !== "all") url += `&status=${status}`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    const orders = data.content || [];
+                    const totalPages = data.totalPages || 1;
+                    const currentPage = data.number;
+
+                    if (!Array.isArray(orders) || orders.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8">Không có đơn hàng nào</td></tr>`;
+                        renderPagination(currentPage, totalPages, 'loadOrders');
+                        tableContainer.scrollIntoView({behavior: 'smooth', block: 'start'});
+                        tableContainer.classList.remove('fade-out');
+                        tableContainer.classList.add('fade-in');
+                        return;
+                    }
+
+                    let html = "";
+                    orders.forEach(o => {
+                        html += `<tr data-status="${o.status}">
+    <td class="px-6 py-4 text-sm font-semibold text-primary">#ORD-${o.id}</td>
+    <td class="px-6 py-4">
+        <div class="flex items-center gap-3">
+            <div class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">
+                ${getInitials(o.customerName)}
+            </div>
+            <div class="text-sm">
+                <p class="font-medium">${o.customerName}</p>
+                <p class="text-xs text-slate-500">${o.customerEmail}</p>
+            </div>
+        </div>
+    </td>
+    <td class="px-6 py-4 text-sm text-slate-600">${formatDateTime(o.orderDate)}</td>
+    <td class="px-6 py-4 text-sm font-semibold">${formatCurrency(o.totalAmount)}</td>
+    <td class="px-6 py-4 text-sm text-slate-600">${getRandomPaymentMethod()}</td>
+    <td class="px-6 py-4">
+        ${renderStatusBadge(o.status)}
+    </td>
+    <td class="px-6 py-4 text-right">
+        <div class="flex items-center justify-end gap-2">
+        <button class="update-btn px-3 py-1 bg-primary text-white rounded text-xs font-semibold flex items-center gap-1.5"
+    onclick='openUpdateModal(${JSON.stringify(o)})'>
+    <span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+        </div>
+    </td>
+</tr>`;
+                    });
+                    tbody.innerHTML = html;
+                    renderPagination(currentPage, totalPages, 'loadOrders');
+                } catch (e) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-red-500">Lỗi tải dữ liệu</td></tr>`;
+                    console.error(e);
+                }
+                tableContainer.scrollIntoView({behavior: 'smooth', block: 'start'});
+                tableContainer.classList.remove('fade-out');
+                tableContainer.classList.add('fade-in');
+            }, 200);
+        }
+
+        // Map tab data-status sang giá trị status trong DB
+        const statusMap = {
+            all: "all",
+            processing: "ÐANG_CH?_XÁC_NH?N",
+            shipping: "DANG_GIAO",
+            done: "DA_GIAO",
+            cancel: "DA_HUY"
+        };
+
+        // Sự kiện click tab trạng thái
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('text-primary', 'font-semibold'));
+                this.classList.add('text-primary', 'font-semibold');
+                const tabStatus = this.getAttribute('data-status');
+                currentStatus = statusMap[tabStatus] || "all";
+                loadOrders(0, currentSort, currentStatus);
+            });
+        });
+
+        // Sự kiện đổi sort
+        document.getElementById("sortSelect").addEventListener("change", function () {
+            currentSort = this.value;
+            loadOrders(0, currentSort, currentStatus);
+        });
+
+        // Khi trang tải xong
+        document.addEventListener("DOMContentLoaded", () => loadOrders(0, currentSort, currentStatus));
+
+        function getRandomPaymentMethod() {
+            return Math.random() < 0.5 ? "COD" : "Chuyển khoản";
+        }
+
+        // Helper functions
+        function getInitials(name) {
+            return name.split(' ').map(w => w[0]).join('').toUpperCase();
+        }
+
+        function formatDateTime(dt) {
+            // dt: "2023-10-22T14:30:00" => "22/10/2023 14:30"
+            if (!dt) return "";
+            const d = new Date(dt);
+            return d.toLocaleDateString('vi-VN') + ' ' + d.toLocaleTimeString('vi-VN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatCurrency(amount) {
+            return Number(amount).toLocaleString('vi-VN') + '₫';
+        }
+
+        function renderStatusBadge(status) {
+            switch (status) {
+                case "ÐANG_CH?_XÁC_NH?N":
+                    return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-yellow-50 text-yellow-800 border border-yellow-200 shadow">
+                <span class="material-symbols-outlined" style="font-size:16px;">hourglass_top</span>
+                Đang chờ xác nhận
+            </span>`;
+                case "DANG_GIAO":
+                    return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200 shadow">
+                <span class="material-symbols-outlined" style="font-size:16px;">local_shipping</span>
+                Đang giao hàng
+            </span>`;
+                case "DA_GIAO":
+                    return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-800 border border-green-200 shadow">
+                <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>
+                Đã giao thành công
+            </span>`;
+                case "DA_HUY":
+                    return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-800 border border-red-200 shadow">
+                <span class="material-symbols-outlined" style="font-size:16px;">cancel</span>
+                Đã hủy
+            </span>`;
+                default:
+                    return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 border border-gray-200 shadow">
+                <span class="material-symbols-outlined" style="font-size:16px;">help</span>
+                Không xác định
+            </span>`;
+            }
+        }
+
+        function renderPagination(currentPage, totalPages, onPageChange) {
+            let html = '';
+
+            // Nút prev
+            html += `<button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50"
+        ${currentPage === 0 ? 'disabled' : ''}
+        onclick="${currentPage > 0 ? `${onPageChange}(${currentPage - 1}, '${currentSort}')` : ''}">
+        <span class="material-symbols-outlined text-sm">chevron_left</span>
+    </button>`;
+
+            // Số trang
+            let start = Math.max(0, currentPage - 2);
+            let end = Math.min(totalPages - 1, start + 4);
+            if (end - start < 4) start = Math.max(0, end - 4);
+
+            for (let i = start; i <= end; i++) {
+                html += `<button class="size-8 flex items-center justify-center rounded border ${i === currentPage ? 'border-primary bg-primary text-white font-semibold' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm'}"
+            ${i === currentPage ? 'disabled' : ''}
+            onclick="${i !== currentPage ? `${onPageChange}(${i}, '${currentSort}')` : ''}">
+            ${i + 1}
+        </button>`;
+            }
+            if (end < totalPages - 1) {
+                html += `<span class="px-1 text-slate-400">...</span>
+        <button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm"
+            onclick="${onPageChange}(${totalPages - 1}, '${currentSort}')">${totalPages}</button>`;
+            }
+
+            // Nút next
+            html += `<button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50"
+        ${currentPage === totalPages - 1 ? 'disabled' : ''}
+        onclick="${currentPage < totalPages - 1 ? `${onPageChange}(${currentPage + 1}, '${currentSort}')` : ''}">
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+    </button>`;
+
+            document.getElementById('paginationContainer').innerHTML = html;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => loadOrders(0, currentSort));
+
+        // Gọi khi trang tải xong
+
+        document.getElementById("cancelBtn").addEventListener("click", () => {
+            document.getElementById("updateModal").classList.add("hidden");
+        });
+        // cập nhật
+        let updatingOrderId = null;
+
+        function openUpdateModal(order) {
+            updatingOrderId = order.id;
+            document.getElementById('updateModal').classList.remove('hidden');
+            // Đổ dữ liệu lên modal
+            document.getElementById('customerName').textContent = order.customerName;
+            document.getElementById('customerEmail').textContent = order.customerEmail;
+            document.getElementById('orderId').textContent = '#ORD-' + order.id;
+            document.getElementById('orderTotal').textContent = formatCurrency(order.totalAmount);
+            document.getElementById('modalInitials').textContent = getInitials(order.customerName);
+            document.getElementById('orderStatus').value = mapStatusToValue(order.status);
+        }
+
+        // Map status backend sang value của select
+        function mapStatusToValue(status) {
+            switch (status) {
+                case "ĐANG_CHỜ_XÁC_NHẬN":
+                    return "ĐANG_CHỜ_XÁC_NHẬN";
+                case "DANG_GIAO":
+                    return "DANG_GIAO";
+                case "DA_GIAO":
+                    return "DA_GIAO";
+                case "DA_HUY":
+                    return "DA_HUY";
+                default:
+                    return "ĐANG_CHỜ_XÁC_NHẬN";
+            }
+        }
+
+        // Đóng modal
+        document.getElementById("closeModal").onclick =
+            document.getElementById("cancelBtn").onclick = function () {
+                document.getElementById("updateModal").classList.add("hidden");
+            };
+
+        document.getElementById("updateForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const status = document.getElementById("orderStatus").value;
+            if (!updatingOrderId) return;
+
+            try {
+                const res = await fetch(`/api/orders/${updatingOrderId}/status`, {
+                    method: "PUT",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({status})
+                });
+                const data = await res.json();
+                if (data.status === "success") {
+                    document.getElementById("updateModal").classList.add("hidden");
+                    showToast("Cập nhật thành công!");
+                    loadOrders();//hoặc loadOrders(currentPage) nếu có biến currentPage
+                } else {
+                    alert(data.message || "Cập nhật thất bại!");
+                }
+            } catch (err) {
+                alert("Lỗi kết nối server!");
+            }
+        });
+
+        async function openUpdateModalById(orderId) {
+            try {
+                const res = await fetch(`/api/orders/${orderId}`);
+                const order = await res.json();
+                openUpdateModal(order);
+            } catch (e) {
+                alert("Không lấy được thông tin đơn hàng!");
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000); // 2 giây
+        }
+
+        document.getElementById("sortSelect").addEventListener("change", function () {
+            currentSort = this.value;
+            loadOrders(0, currentSort); // Khi đổi sort, về trang đầu
+        });
+
+        // update
+        async function updateTabCounts() {
+            const res = await fetch('/api/orders/count-by-status');
+            const data = await res.json();
+            document.querySelector('button[data-status="all"] span:last-child').textContent = data.all || 0;
+            document.querySelector('button[data-status="processing"] span:last-child').textContent = data.processing || 0;
+            document.querySelector('button[data-status="shipping"] span:last-child').textContent = data.shipping || 0;
+            document.querySelector('button[data-status="done"] span:last-child').textContent = data.done || 0;
+            document.querySelector('button[data-status="cancel"] span:last-child').textContent = data.cancel || 0;
+        }
+
+        document.addEventListener("DOMContentLoaded", updateTabCounts);
+    </script>
 </main>

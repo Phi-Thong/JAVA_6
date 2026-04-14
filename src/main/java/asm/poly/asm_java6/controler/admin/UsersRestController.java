@@ -18,6 +18,8 @@ public class UsersRestController {
     private UsersRepository usersRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody users user) {
@@ -28,6 +30,8 @@ public class UsersRestController {
             );
         }
         user.setCreatedAt(new Date());
+        // Mã hóa mật khẩu trước khi lưu
+        user.setMatKhau(passwordEncoder.encode(user.getMatKhau()));
         users saved = usersRepository.save(user);
         return ResponseEntity.ok(
                 Map.of("status", "success", "data", saved)
@@ -58,10 +62,12 @@ public class UsersRestController {
         if (user == null) {
             return ResponseEntity.badRequest().body(Map.of("status", "fail", "message", "Không tìm thấy người dùng!"));
         }
-        // Cập nhật các trường cần thiết
         user.setHoTen(updatedUser.getHoTen());
         user.setEmail(updatedUser.getEmail());
-        user.setMatKhau(updatedUser.getMatKhau());
+        // Nếu mật khẩu thay đổi thì mã hóa lại để đăng nhập
+        if (!updatedUser.getMatKhau().equals(user.getMatKhau())) {
+            user.setMatKhau(passwordEncoder.encode(updatedUser.getMatKhau()));
+        }
         user.setSdt(updatedUser.getSdt());
         user.setGioiTinh(updatedUser.getGioiTinh());
         user.setNgaySinh(updatedUser.getNgaySinh());

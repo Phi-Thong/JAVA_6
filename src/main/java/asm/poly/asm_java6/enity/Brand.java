@@ -1,14 +1,11 @@
 package asm.poly.asm_java6.enity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "brands")
@@ -22,4 +19,14 @@ public class Brand {
 
     @Column(name = "ten_thuong_hieu", nullable = false)
     private String tenThuongHieu;
+
+    @Column(name = "mo_ta")
+    private String moTa;
+
+    @Column(name = "trang_thai")
+    private String trangThai;
+
+    @Column(name = "ngay_tao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ngayTao;
 }

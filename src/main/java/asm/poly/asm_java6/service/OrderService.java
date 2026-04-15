@@ -13,4 +13,5 @@ public interface OrderService {
     boolean updateOrderStatus(Long id, String status);
 
     Page<OrderSummaryDTO> getAllOrderSummariesByStatus(String status, Pageable pageable);
+    
 }

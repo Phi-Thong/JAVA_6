@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface OrderRepository extends JpaRepository<Order, Long> {
     long countByUserId(Long userId);
 
@@ -24,6 +26,36 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<OrderSummaryDTO> findAllOrderSummariesByStatus(@Param("status") String status, Pageable pageable);
 
 
-    // ... các method khác
     long countByTrangThai(String trangThai);
+
+    @Query(value = """
+            SELECT 
+                ISNULL(SUM(CASE 
+                    WHEN MONTH(o.ngay_dat) = MONTH(GETDATE()) AND YEAR(o.ngay_dat) = YEAR(GETDATE()) 
+                    THEN o.tong_tien ELSE 0 END), 0) AS doanh_thu_thang,
+                ISNULL(SUM(CASE 
+                    WHEN MONTH(o.ngay_dat) = MONTH(DATEADD(MONTH, -1, GETDATE())) AND YEAR(o.ngay_dat) = YEAR(DATEADD(MONTH, -1, GETDATE())) 
+                    THEN o.tong_tien ELSE 0 END), 0) AS doanh_thu_thang_truoc
+                FROM orders o
+            """, nativeQuery = true)
+    List<Object[]> getRevenueStats();
+
+    @Query(value = "SELECT COUNT(*) FROM orders WHERE MONTH(ngay_dat) = MONTH(GETDATE()) AND YEAR(ngay_dat) = YEAR(GETDATE())", nativeQuery = true)
+    long countOrdersThisMonth();
+
+    @Query(value = "SELECT COUNT(*) FROM orders WHERE MONTH(ngay_dat) = MONTH(DATEADD(MONTH, -1, GETDATE())) AND YEAR(ngay_dat) = YEAR(DATEADD(MONTH, -1, GETDATE()))", nativeQuery = true)
+    long countOrdersLastMonth();
+
+    @Query(value = """
+            SELECT 
+                ISNULL(SUM(CASE 
+                    WHEN MONTH(o.ngay_dat) = MONTH(GETDATE()) AND YEAR(o.ngay_dat) = YEAR(GETDATE()) 
+                    THEN 1 ELSE 0 END), 0) AS tong_don_thang,
+                ISNULL(SUM(CASE 
+                    WHEN MONTH(o.ngay_dat) = MONTH(DATEADD(MONTH, -1, GETDATE())) AND YEAR(o.ngay_dat) = YEAR(DATEADD(MONTH, -1, GETDATE())) 
+                    THEN 1 ELSE 0 END), 0) AS tong_don_thang_truoc
+                FROM orders o
+            """, nativeQuery = true)
+    List<Object[]> getOrderCountStats();
+    
 }

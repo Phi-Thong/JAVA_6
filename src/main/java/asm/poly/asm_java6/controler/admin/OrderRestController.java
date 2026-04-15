@@ -28,7 +28,9 @@ public class OrderRestController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "newest") String sort,
-            @RequestParam(required = false, defaultValue = "all") String status
+            @RequestParam(required = false, defaultValue = "all") String status,
+            @RequestParam(required = false) String keyword
+
     ) {
         System.out.println("Status param: " + status);
         Sort.Direction direction = "oldest".equalsIgnoreCase(sort) ? Sort.Direction.ASC : Sort.Direction.DESC;

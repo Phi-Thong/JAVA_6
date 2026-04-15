@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface UsersRepository extends JpaRepository<users, Long> {
 
     // =========================
@@ -84,4 +86,38 @@ public interface UsersRepository extends JpaRepository<users, Long> {
             Boolean trangThai,
             Pageable pageable
     );
+
+    @Query(value = "SELECT COUNT(*) FROM users WHERE MONTH(created_at) = MONTH(GETDATE()) AND YEAR(created_at) = YEAR(GETDATE())", nativeQuery = true)
+    long countNewUsersThisMonth();
+
+    @Query(value = "SELECT COUNT(*) FROM users WHERE MONTH(created_at) = MONTH(DATEADD(MONTH, -1, GETDATE())) AND YEAR(created_at) = YEAR(DATEADD(MONTH, -1, GETDATE()))", nativeQuery = true)
+    long countNewUsersLastMonth();
+
+    @Query(value = """
+            SELECT 
+                ISNULL(SUM(CASE 
+                    WHEN MONTH(created_at) = MONTH(GETDATE()) AND YEAR(created_at) = YEAR(GETDATE()) 
+                    THEN 1 ELSE 0 END), 0) AS khach_moi_thang,
+                ISNULL(SUM(CASE 
+                    WHEN MONTH(created_at) = MONTH(DATEADD(MONTH, -1, GETDATE())) AND YEAR(created_at) = YEAR(DATEADD(MONTH, -1, GETDATE())) 
+                    THEN 1 ELSE 0 END), 0) AS khach_moi_thang_truoc
+            FROM users
+            """, nativeQuery = true)
+    List<Object[]> getNewCustomerStats();
+
+    @Query(value = """
+                SELECT TOP 10
+                    u.ho_ten AS fullname,
+                    u.avatar,
+                    u.email,
+                    COUNT(o.id) AS total_orders,
+                    SUM(o.tong_tien) AS total_spent
+                FROM users u
+                JOIN orders o ON u.id = o.user_id
+                WHERE MONTH(o.ngay_dat) = MONTH(GETDATE())
+                  AND YEAR(o.ngay_dat) = YEAR(GETDATE())
+                GROUP BY u.ho_ten, u.avatar, u.email
+                ORDER BY total_spent DESC
+            """, nativeQuery = true)
+    List<Object[]> getTopVipCustomers();
 }

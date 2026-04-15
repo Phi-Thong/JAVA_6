@@ -46,4 +46,5 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderSummaryDTO> getAllOrderSummariesByStatus(String status, Pageable pageable) {
         return orderRepository.findAllOrderSummariesByStatus(status, pageable);
     }
+    
 }

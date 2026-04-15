@@ -102,9 +102,21 @@
     // ===============================
     // 1. BIỂU ĐỒ DASHBOARD
     // ===============================
-    function initSalesChart() {
+    async function initSalesChart() {
         const ctx = document.getElementById('salesChart');
         if (!ctx) return;
+
+        // Fetch dữ liệu từ backend
+        let labels = ['1-5', '6-10', '11-15', '16-20', '21-25', '26-31'];
+        let data = [0, 0, 0, 0, 0, 0];
+        try {
+            const res = await fetch('/api/dashboard/revenue-chart');
+            const json = await res.json();
+            labels = json.labels;
+            data = json.data;
+        } catch (e) {
+            // Nếu lỗi thì giữ dữ liệu mặc định
+        }
 
         if (window.mySalesChart instanceof Chart) {
             window.mySalesChart.destroy();
@@ -113,10 +125,10 @@
         window.mySalesChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['1-5', '6-10', '11-15', '16-20', '21-25', '26-31'],
+                labels: labels,
                 datasets: [{
                     label: 'Doanh thu tháng',
-                    data: [120, 200, 150, 300, 250, 400],
+                    data: data,
                     borderColor: '#607AFB',
                     backgroundColor: 'rgba(96,122,251,0.2)',
                     tension: 0.4,
@@ -137,6 +149,8 @@
         });
     }
 
+    // Gọi hàm khi DOM đã sẵn sàng
+    document.addEventListener("DOMContentLoaded", initSalesChart);
 
     // ===============================
     // 2. TAB LOẠI SẢN PHẨM

@@ -248,16 +248,10 @@
 
                     initSalesChart();
                     initCategoryTabs();
-                    initProductTabs();
-                    initMainImageUpload();
-                    initSubImages();
-                    initBrands();
 
-                    // 🔥 THÊM DÒNG NÀY
-                    if (url.includes("/admin/product")) {
-                        initProductPage();
+                    if (typeof initPage === "function") {
+                        initPage();
                     }
-
                 });
 
             })

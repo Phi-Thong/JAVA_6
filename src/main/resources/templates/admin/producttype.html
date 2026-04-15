@@ -1,7 +1,32 @@
 <!-- Main Content -->
-<main class="flex-1 ml-64 p-8" th:fragment="producttype">
+<main class="flex-1 ml-64" th:fragment="producttype">
     <!-- Header -->
+    <style>
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+    </style>
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto p-8 space-y-8">
         <!-- Page Title -->
@@ -42,15 +67,19 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <select class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
-                        <option>Sắp xếp: Mới nhất</option>
-                        <option>Tên A-Z</option>
-                        <option>Tên Z-A</option>
+                    <!-- Sắp xếp -->
+                    <select id="sortSelect"
+                            class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
+                        <option value="createdDesc">Sắp xếp: Mới nhất</option>
+                        <option value="nameAsc">Tên A-Z</option>
+                        <option value="nameDesc">Tên Z-A</option>
                     </select>
-                    <select class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
-                        <option>Trạng thái: Tất cả</option>
-                        <option>Đang sử dụng</option>
-                        <option>Ngừng sử dụng</option>
+                    <!-- Trạng thái -->
+                    <select id="statusSelect"
+                            class="text-sm bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/20 py-2 pl-3 pr-8 cursor-pointer">
+                        <option value="all">Trạng thái: Tất cả</option>
+                        <option value="active">Đang sử dụng</option>
+                        <option value="inactive">Ngừng sử dụng</option>
                     </select>
                 </div>
             </div>
@@ -85,45 +114,27 @@
                 </div>
                 <!-- Pagination -->
                 <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p class="text-sm text-slate-500">Hiển thị <span
-                            class="font-bold text-slate-900 dark:text-white">1 - 4</span> trong tổng số <span
-                            class="font-bold text-slate-900 dark:text-white">24</span> kết quả</p>
+                    <p id="paginationInfo" class="text-sm text-slate-500">
+                        Hiển thị <span class="font-bold text-slate-900 dark:text-white">1 - 4</span> trong tổng số <span
+                            class="font-bold text-slate-900 dark:text-white">24</span> kết quả
+                    </p>
                     <div class="flex items-center gap-1">
-                        <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                            <span class="material-symbols-outlined text-lg">chevron_left</span>
-                        </button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm shadow-sm">
-                            1
-                        </button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                            2
-                        </button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                            3
-                        </button>
-                        <span class="px-1 text-slate-400">...</span>
-                        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium">
-                            6
-                        </button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                            <span class="material-symbols-outlined text-lg">chevron_right</span>
-                        </button>
+                        <div id="pagination" class="flex items-center gap-1"></div>
                     </div>
+                </div>
+                <div id="loadingSpinner" style="display:none; text-align:center; padding:16px;">
+                    <span class="material-symbols-outlined animate-spin text-3xl text-primary">progress_activity</span>
                 </div>
             </div>
         </div>
         <!-- Form Section (Hidden by default or in another tab) -->
         <div id="formContent" class="hidden space-y-8">
-
-
             <div class="max-w-3xl mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-
                 <!-- Header -->
                 <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                         <span class="material-symbols-outlined text-primary">category</span>
                     </div>
-
                     <div>
                         <h3 class="text-lg font-bold text-slate-800 dark:text-white">
                             Thêm loại sản phẩm
@@ -133,22 +144,18 @@
                         </p>
                     </div>
                 </div>
-
                 <!-- Body -->
                 <div class="p-8 space-y-6">
-
                     <!-- Tên loại -->
                     <div class="space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">
                             Tên loại sản phẩm
                             <span class="text-rose-500">*</span>
                         </label>
-
                         <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                    <span class="material-symbols-outlined text-[20px]">inventory_2</span>
-                </span>
-
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                        <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                    </span>
                             <input id="brandName"
                                    type="text"
                                    placeholder="Ví dụ: Giày Sneaker"
@@ -156,67 +163,51 @@
                             >
                         </div>
                     </div>
-
                     <!-- Mô tả -->
                     <div class="space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">
                             Mô tả loại sản phẩm
                         </label>
-
                         <textarea id="brandDesc"
                                   rows="4"
                                   placeholder="Nhập mô tả chi tiết về loại sản phẩm..."
                                   class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/40 outline-none resize-none transition"
                         ></textarea>
                     </div>
-
                     <!-- Trạng thái -->
                     <div class="space-y-3">
-
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">
                             Trạng thái
                         </label>
-
                         <div class="flex items-center gap-6">
-
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="status" value="Đang sử dụng" id="statusActive" checked>
-                                <span class="text-sm text-slate-700 dark:text-slate-300">
-                        Đang sử dụng
-                    </span>
+                                <span class="text-sm text-slate-700 dark:text-slate-300">Đang sử dụng</span>
                             </label>
-
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="status" value="Ngừng sử dụng" id="statusInactive">
-                                <span class="text-sm text-slate-700 dark:text-slate-300">
-                        Ngừng sử dụng
-                    </span>
+                                <span class="text-sm text-slate-700 dark:text-slate-300">Ngừng sử dụng</span>
                             </label>
-
                         </div>
                     </div>
-
+                    <!-- Thông báo lỗi/thành công -->
+                    <div>
+                        <div id="brandFormError" class="text-red-500 text-sm mt-2" style="margin-left: 270px;"></div>
+                        <div id="brandFormSuccess" class="text-green-500 text-sm mt-2"></div>
+                    </div>
                 </div>
-                <div id="brandFormError" class="text-red-500 text-sm mt-2" style="margin-left: 270px;"></div>
-
                 <!-- Footer -->
                 <div class="p-6 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3 border-t border-slate-200 dark:border-slate-800">
-
                     <button
                             class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition">
                         Hủy
                     </button>
-
                     <button id="saveBrandBtn"
                             class="px-8 py-2.5 text-sm font-semibold bg-primary text-white rounded-xl shadow-lg shadow-primary/30 hover:bg-primary/90 transition">
                         Lưu loại sản phẩm
                     </button>
-
                 </div>
-
             </div>
-
-
         </div>
 
     </div>
@@ -241,51 +232,82 @@
 
         function renderBrandsTable(brands) {
             const tbody = document.getElementById("brandsTableBody");
-            tbody.innerHTML = brands.map((b, idx) => `
-        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-            <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-${String(idx + 1).padStart(3, '0')}</td>
-            <td class="px-6 py-4">
-                <span class="text-sm font-bold text-slate-900 dark:text-slate-100">${b.tenThuongHieu}</span>
-            </td>
-            <td class="px-6 py-4">
-                <p class="text-sm text-slate-500 max-w-[200px] truncate">${b.moTa || ""}</p>
-            </td>
-            <td class="px-6 py-4 text-center">
-                <span class="text-sm font-semibold">${b.soLuong}</span>
-            </td>
-            <td class="px-6 py-4">
-                ${renderStatusBadge(b.trangThai)}
-            </td>
-            <td class="px-6 py-4 text-sm text-slate-500">${formatDate(b.ngayTao)}</td>
-            <td class="px-6 py-4 text-right">
-                <div class="flex justify-end gap-2">
-                    <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors edit-btn" data-idx="${idx}">
-                        <span class="material-symbols-outlined text-lg">edit</span>
-                    </button>
-                    <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors delete-btn" data-idx="${idx}">
-                        <span class="material-symbols-outlined text-lg">delete</span>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    `).join('');
+            tbody.style.transition = "opacity 0.3s";
+            tbody.style.opacity = 0;
 
-            // Gán sự kiện cho nút edit
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const index = this.getAttribute('data-idx');
-                    showEditForm(brands[index]);
-                });
-            });
+            setTimeout(() => {
+                if (!brands || brands.length === 0) {
+                    tbody.innerHTML = `<tr>
+               <td colspan="7" class="py-12">
+    <div class="flex flex-col items-center justify-center text-center space-y-4 animate-fadeIn">
 
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const index = this.getAttribute('data-idx');
-                    brandToDelete = brands[index];
-                    document.getElementById("deleteModalMsg").textContent = `Bạn có chắc muốn xóa loại sản phẩm "${brandToDelete.tenThuongHieu}"?`;
-                    document.getElementById("deleteModal").classList.remove("hidden");
+        <div class="w-16 h-16 flex items-center justify-center rounded-full bg-primary/10">
+            <span class="material-symbols-outlined text-3xl text-primary animate-bounce">
+                inventory_2
+            </span>
+        </div>
+
+        <p class="text-slate-700 dark:text-slate-200 font-semibold text-lg">
+            Danh sách đang trống
+        </p>
+
+        <p class="text-sm text-slate-400">
+            Chưa có loại sản phẩm nào được tạo
+        </p>
+
+    </div>
+</td>
+            </tr>`;
+                } else {
+                    tbody.innerHTML = brands.map((b, idx) => `
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td class="px-6 py-4 text-sm font-medium text-slate-400">#CT-${String(idx + 1).padStart(3, '0')}</td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-bold text-slate-900 dark:text-slate-100">${b.tenThuongHieu}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="text-sm text-slate-500 max-w-[200px] truncate">${b.moTa || ""}</p>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="text-sm font-semibold">${b.soLuong}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        ${renderStatusBadge(b.trangThai)}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-500">${formatDate(b.ngayTao)}</td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex justify-end gap-2">
+                            <button class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors edit-btn" data-idx="${idx}">
+                                <span class="material-symbols-outlined text-lg">edit</span>
+                            </button>
+                            <button class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors delete-btn" data-idx="${idx}">
+                                <span class="material-symbols-outlined text-lg">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+                }
+                tbody.style.opacity = 1;
+
+                // Gán sự kiện cho nút edit
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const index = this.getAttribute('data-idx');
+                        showEditForm(brands[index]);
+                    });
                 });
-            });
+
+                // Gán sự kiện cho nút delete
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const index = this.getAttribute('data-idx');
+                        brandToDelete = brands[index];
+                        document.getElementById("deleteModalMsg").textContent = `Bạn có chắc muốn xóa loại sản phẩm "${brandToDelete.tenThuongHieu}"?`;
+                        document.getElementById("deleteModal").classList.remove("hidden");
+                    });
+                });
+            }, 200); // Thời gian hiệu ứng mờ (ms)
         }
 
         document.getElementById("cancelDeleteBtn").onclick = function () {
@@ -451,7 +473,119 @@
 
         //
         // Gán sự kiện cho nút delete
+        function renderPagination(page, totalPages) {
+            const pagination = document.getElementById("pagination");
+            let html = "";
 
+            // Nút prev
+            html += `<button ${page === 0 ? "disabled" : ""} class="w-8 h-8 flex items-center justify-center rounded-lg border text-slate-400 ${page === 0 ? "" : "hover:bg-white dark:hover:bg-slate-800"}" data-page="${page - 1}">
+        <span class="material-symbols-outlined text-lg">chevron_left</span>
+    </button>`;
+
+            // Các nút số trang
+            for (let i = 0; i < totalPages; i++) {
+                html += `<button class="w-8 h-8 flex items-center justify-center rounded-lg ${i === page ? "bg-primary text-white font-bold" : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"} text-sm font-medium" data-page="${i}">
+            ${i + 1}
+        </button>`;
+            }
+
+            // Nút next
+            html += `<button ${page === totalPages - 1 ? "disabled" : ""} class="w-8 h-8 flex items-center justify-center rounded-lg border text-slate-400 ${page === totalPages - 1 ? "" : "hover:bg-white dark:hover:bg-slate-800"}" data-page="${page + 1}">
+        <span class="material-symbols-outlined text-lg">chevron_right</span>
+    </button>`;
+
+            pagination.innerHTML = html;
+
+            // Gán sự kiện click cho các nút
+            pagination.querySelectorAll("button[data-page]").forEach(btn => {
+                btn.onclick = function () {
+                    const p = parseInt(this.getAttribute("data-page"));
+                    if (p >= 0 && p < totalPages) {
+                        loadBrands(p); // Hàm này bạn sẽ viết để gọi API lấy dữ liệu trang p
+                    }
+                }
+            });
+        }
+
+        // phân trang bạn nhé
+        let searchTimeout = null;
+        document.querySelector('input[placeholder^="Tìm kiếm"]').addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                loadBrands(0); // Khi tìm kiếm, về trang đầu
+            }, 400); // debounce 400ms
+        });
+
+        async function loadBrands(page = 0, size = 4) {
+            const tbody = document.getElementById("brandsTableBody");
+
+            // 1. Fade out
+            tbody.style.transition = "opacity 0.25s ease";
+            tbody.style.opacity = 0;
+
+            // 2. Skeleton loading
+            setTimeout(() => {
+                tbody.innerHTML = renderSkeletonRows();
+                tbody.style.opacity = 1;
+            }, 150);
+
+            const sort = document.getElementById("sortSelect")?.value || "createdDesc";
+            const status = document.getElementById("statusSelect")?.value || "all";
+            const keyword = document.querySelector('input[placeholder^="Tìm kiếm"]').value.trim();
+
+            let url = `/api/brands1/paged?page=${page}&size=${size}&sort=${sort}&status=${status}`;
+            if (keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+
+                // 3. Fade out skeleton
+                tbody.style.opacity = 0;
+
+                setTimeout(() => {
+                    renderBrandsTable(data.content);
+
+                    // update pagination
+                    renderPagination(data.number, data.totalPages);
+
+                    const start = data.number * data.size + 1;
+                    const end = start + data.content.length - 1;
+                    document.getElementById("paginationInfo").innerHTML =
+                        `Hiển thị <span class="font-bold text-slate-900 dark:text-white">${start} - ${end}</span> trong tổng số <span class="font-bold text-slate-900 dark:text-white">${data.totalElements}</span> kết quả`;
+
+                    tbody.style.opacity = 1;
+                }, 200);
+
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-red-500">Không thể tải dữ liệu</td></tr>`;
+                tbody.style.opacity = 1;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadBrands(0); // Trang đầu tiên
+        });
+        document.getElementById("sortSelect").addEventListener("change", function () {
+            loadBrands(0); // Khi đổi sort, về trang đầu
+        });
+        document.getElementById("statusSelect").addEventListener("change", function () {
+            loadBrands(0); // Khi đổi filter, về trang đầu
+        });
+
+        function renderSkeletonRows() {
+            return Array(4).fill(0).map(() => `
+        <tr class="animate-pulse">
+            <td class="px-6 py-4"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16"></div></td>
+            <td class="px-6 py-4"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32"></div></td>
+            <td class="px-6 py-4"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40"></div></td>
+            <td class="px-6 py-4 text-center"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-10 mx-auto"></div></td>
+            <td class="px-6 py-4"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24"></div></td>
+            <td class="px-6 py-4"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-28"></div></td>
+            <td class="px-6 py-4"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 ml-auto"></div></td>
+        </tr>
+    `).join('');
+        }
     </script>
 
 </main>

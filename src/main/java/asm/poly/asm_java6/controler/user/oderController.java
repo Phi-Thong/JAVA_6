@@ -37,12 +37,35 @@ public class oderController {
     private OrderItemRepository orderItemRepository;
 
     // Hiển thị trang đặt hàng
+    @Autowired
+    private ProductRepository productRepository;
+
     @GetMapping("/order")
-    public String order(Model model, Principal principal) {
+    public String order(
+            @RequestParam(value = "productId", required = false) Long productId,
+            @RequestParam(value = "quantity", required = false, defaultValue = "1") Integer quantity,
+            Model model, Principal principal) {
+
         String email = principal.getName();
         users user = usersRepository.findByEmail(email);
 
-        List<Cart_item> cartItems = cartService.getCartItemsByUser(user);
+        List<Cart_item> cartItems = new ArrayList<>();
+
+        if (productId != null) {
+            // Trường hợp "Mua ngay"
+            Product product = productRepository.findById(productId).orElse(null);
+            if (product == null) {
+                model.addAttribute("error", "Sản phẩm không tồn tại!");
+                return "User/oder";
+            }
+            Cart_item item = new Cart_item();
+            item.setProduct(product);
+            item.setQuantity(quantity);
+            cartItems.add(item);
+        } else {
+            // Trường hợp lấy từ giỏ hàng
+            cartItems = cartService.getCartItemsByUser(user);
+        }
 
         BigDecimal total = cartItems.stream()
                 .map(item -> item.getProduct().getGia().multiply(BigDecimal.valueOf(item.getQuantity())))
@@ -55,8 +78,6 @@ public class oderController {
         model.addAttribute("total", total);
         model.addAttribute("shippingFee", shippingFee);
         model.addAttribute("grandTotal", grandTotal);
-
-        // Để binding form nếu dùng form truyền thống
         model.addAttribute("orderForm", new OrderForm());
 
         return "User/oder";

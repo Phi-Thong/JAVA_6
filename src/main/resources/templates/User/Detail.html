@@ -218,6 +218,7 @@
                     </button>
                 </div>
                 <a
+                        id="buyNowBtn"
                         th:href="@{/user/order}"
                         class="w-full flex items-center justify-center bg-primary text-white h-14 rounded-lg font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
                 >
@@ -823,5 +824,20 @@
             }, 1200);
         }
 
+        const addToCartBtn = document.getElementById("addToCartBtn");
+        const buyNowBtn = document.getElementById("buyNowBtn");
+        const quantityDisplay = document.getElementById("quantity");
+
+        if (buyNowBtn && addToCartBtn && quantityDisplay) {
+            buyNowBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                const id = addToCartBtn.getAttribute("data-id");
+                const quantity = Number(quantityDisplay.textContent) || 1;
+                // Chuyển hướng sang trang order với tham số trên URL
+                window.location.href = `/user/order?productId=${id}&quantity=${quantity}`;
+            });
+        }
+
     });
+
 </script>

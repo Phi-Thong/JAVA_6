@@ -1,9 +1,11 @@
 package asm.poly.asm_java6.repository;
 
+import asm.poly.asm_java6.dto.OrderDto;
 import asm.poly.asm_java6.enity.Order;
 import asm.poly.asm_java6.dto.OrderSummaryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -57,5 +59,20 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                 FROM orders o
             """, nativeQuery = true)
     List<Object[]> getOrderCountStats();
-    
+
+    @Query("""
+            SELECT new asm.poly.asm_java6.dto.OrderDto(
+                o.id,
+                o.ngayDat,
+                COUNT(oi) * 1L,
+                o.tongTien,
+                o.trangThai
+            )
+            FROM Order o 
+            LEFT JOIN o.orderItems oi 
+            WHERE o.user.id = :userId
+            GROUP BY o.id, o.ngayDat, o.tongTien, o.trangThai
+            ORDER BY o.ngayDat DESC
+            """)
+    List<OrderDto> findOrderSummariesByUserId(Long userId);
 }

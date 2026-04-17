@@ -3,6 +3,7 @@ package asm.poly.asm_java6.controler;
 import java.util.List;
 import java.util.Map;
 
+import asm.poly.asm_java6.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,43 +28,47 @@ public class homeConTroller {
     @Autowired
     private BrandRepository brandRepository;
 
+    @Autowired
+    private UsersRepository usersRepository;
+
+
     @GetMapping("/home")
     public String home(Model model,
                        @AuthenticationPrincipal OAuth2User user,
                        @RequestParam(defaultValue = "0") int page,
                        HttpSession session) {
 
-        //  User info
+        // User info: Truyền object user từ DB vào model
         if (user != null) {
-            model.addAttribute("name", user.getAttribute("name"));
-            model.addAttribute("picture", user.getAttribute("picture"));
+            String email = user.getAttribute("email");
+            asm.poly.asm_java6.enity.users dbUser = usersRepository.findByEmail(email);
+            model.addAttribute("user", dbUser);
+            if (dbUser != null) {
+                model.addAttribute("user", dbUser);
+            }
         }
 
-        //  CART COUNT
+        // CART COUNT
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-
         int totalQuantity = 0;
-
         if (cart != null) {
             for (int qty : cart.values()) {
                 totalQuantity += qty;
             }
         }
-
         model.addAttribute("cartCount", totalQuantity);
-
         System.out.println("Cart count = " + totalQuantity); // debug
 
-        //  Product paging
+        // Product paging
         int pageSize = 8;
         Page<Product> productPage = productService.findPaginated(page, pageSize);
-         List<Integer> sizes = productService.getAllSizes();
-    model.addAttribute("sizes", sizes);
+        List<Integer> sizes = productService.getAllSizes();
+        model.addAttribute("sizes", sizes);
 
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("currentPage", page);
-         model.addAttribute("brands", brandRepository.findAll());
+        model.addAttribute("brands", brandRepository.findAll());
 
         return "home";
     }

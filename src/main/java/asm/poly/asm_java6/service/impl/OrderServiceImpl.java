@@ -1,5 +1,6 @@
 package asm.poly.asm_java6.service.impl;
 
+import asm.poly.asm_java6.dto.OrderDto;
 import asm.poly.asm_java6.dto.OrderSummaryDTO;
 import asm.poly.asm_java6.enity.Order;
 import asm.poly.asm_java6.repository.OrderRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,5 +48,10 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderSummaryDTO> getAllOrderSummariesByStatus(String status, Pageable pageable) {
         return orderRepository.findAllOrderSummariesByStatus(status, pageable);
     }
-    
+
+    @Override
+    public List<OrderDto> getOrderSummariesByUserId(Long userId) {
+        return orderRepository.findOrderSummariesByUserId(userId);
+    }
+
 }

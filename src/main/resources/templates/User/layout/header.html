@@ -74,16 +74,13 @@
                             class="flex items-center gap-2 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
                     >
                         <!-- Avatar -->
-                        <img
-                                th:src="${picture != null && #strings.startsWith(picture, 'http')} ? ${picture} : '/img/default.jpg'"
-                                class="w-8 h-8 rounded-full object-cover border"
-                                referrerpolicy="no-referrer"
-                        />
-
+                        <img id="header-avatar"
+                             th:src="${user != null and user.avatar != null and !#strings.isEmpty(user.avatar) ? user.avatar : '/img/default.jpg'}"
+                             class="w-8 h-8 rounded-full object-cover border"/>
                         <!-- Text -->
                         <div class="text-left leading-tight">
                             <div class="text-xs text-gray-500">Xin chào</div>
-                            <span class="font-semibold" th:text="${name}"></span>
+                            <span class="font-semibold" id="header-username" th:text="${name}"></span>
                         </div>
 
                         <span class="material-symbols-outlined text-gray-500 text-sm">

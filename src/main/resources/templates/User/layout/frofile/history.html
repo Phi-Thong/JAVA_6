@@ -1,75 +1,66 @@
 <div class="tab-content space-y-4" id="orders-content" th:fragment="history">
     <h3 class="text-xl font-bold mb-6">Lịch sử đơn hàng</h3>
     <!-- Order Card 1 -->
-    <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-            <div class="bg-blue-50 p-3 rounded-xl">
-                <i class="text-blue-500 w-6 h-6" data-lucide="package"></i>
+    <div id="orders-list"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lấy userId từ biến Thymeleaf hoặc JS (ví dụ: [[${user.id}]])
+            const userId = /*[[${user.id}]]*/ 15; // Thay 15 bằng user.id động nếu có
+
+            fetch(`/user/api/orders/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('orders-list');
+                    container.innerHTML = data.map(order => renderOrderCard(order)).join('');
+                });
+
+            function renderOrderCard(order) {
+                // Định dạng ngày/tháng/năm
+                const date = new Date(order.ngayDat).toLocaleDateString('vi-VN');
+                // Định dạng tiền
+                const tongTien = Number(order.tongTien).toLocaleString('vi-VN') + 'đ';
+                // Định dạng trạng thái
+                let statusClass = '', statusText = '';
+                if (order.trangThai === 'ÐANG_CH?_XÁC_NH?N') {
+                    statusClass = 'bg-yellow-100 text-yellow-700';
+                    statusText = 'Đang xử lý';
+                } else if (order.trangThai === 'DANG_GIAO') {
+                    statusClass = 'bg-blue-100 text-blue-700';
+                    statusText = 'Đang giao';
+                } else if (order.trangThai === 'DA_GIAO') {
+                    statusClass = 'bg-green-100 text-green-700';
+                    statusText = 'Đã giao';
+                } else {
+                    statusClass = 'bg-gray-100 text-gray-700';
+                    statusText = order.trangThai;
+                }
+
+                return `
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+            <div class="flex items-center gap-4">
+                <div class="${statusClass.replace('text-', 'bg-')} p-3 rounded-xl">
+                    <i class="w-6 h-6" data-lucide="package"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-gray-800">#DH${order.id}</p>
+                    <p class="text-xs text-gray-500">${date} • ${order.soSanPham} sản phẩm</p>
+                </div>
             </div>
-            <div>
-                <p class="font-bold text-gray-800">#DH1023</p>
-                <p class="text-xs text-gray-500">20/10/2023 • 2 sản phẩm</p>
+            <div class="flex flex-wrap items-center gap-4 md:gap-8">
+                <div class="text-right">
+                    <p class="text-sm text-gray-400">Tổng tiền</p>
+                    <p class="font-bold text-gray-900 text-lg">${tongTien}</p>
+                </div>
+                <div>
+                    <span class="px-3 py-1 text-xs font-semibold rounded-full ${statusClass}">${statusText}</span>
+                </div>
+                <button class="text-sm font-bold border px-4 py-2 rounded-lg hover:text-white transition-all text-blue-600 border-blue-600 hover:bg-blue-600">
+                    Xem chi tiết
+                </button>
             </div>
         </div>
-        <div class="flex flex-wrap items-center gap-4 md:gap-8">
-            <div class="text-right">
-                <p class="text-sm text-gray-400">Tổng tiền</p>
-                <p class="font-bold text-gray-900 text-lg">4.930.000đ</p>
-            </div>
-            <div>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">Đang xử lý</span>
-            </div>
-            <button class="text-sm font-bold border px-4 py-2 rounded-lg hover:text-white transition-all text-blue-600 border-blue-600 hover:bg-blue-600">
-                Xem chi tiết
-            </button>
-        </div>
-    </div>
-    <!-- Order Card 2 -->
-    <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-            <div class="bg-purple-50 p-3 rounded-xl">
-                <i class="text-purple-500 w-6 h-6" data-lucide="truck"></i>
-            </div>
-            <div>
-                <p class="font-bold text-gray-800">#DH1012</p>
-                <p class="text-xs text-gray-500">15/09/2023 • 1 sản phẩm</p>
-            </div>
-        </div>
-        <div class="flex flex-wrap items-center gap-4 md:gap-8">
-            <div class="text-right">
-                <p class="text-sm text-gray-400">Tổng tiền</p>
-                <p class="font-bold text-gray-900 text-lg">2.150.000đ</p>
-            </div>
-            <div>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">Đang giao</span>
-            </div>
-            <button class="text-sm font-bold border px-4 py-2 rounded-lg hover:text-white transition-all text-blue-600 border-blue-600 hover:bg-blue-600">
-                Xem chi tiết
-            </button>
-        </div>
-    </div>
-    <!-- Order Card 3 -->
-    <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-            <div class="bg-green-50 p-3 rounded-xl">
-                <i class="text-green-500 w-6 h-6" data-lucide="check-circle"></i>
-            </div>
-            <div>
-                <p class="font-bold text-gray-800">#DH0985</p>
-                <p class="text-xs text-gray-500">01/08/2023 • 3 sản phẩm</p>
-            </div>
-        </div>
-        <div class="flex flex-wrap items-center gap-4 md:gap-8">
-            <div class="text-right">
-                <p class="text-sm text-gray-400">Tổng tiền</p>
-                <p class="font-bold text-gray-900 text-lg">7.200.000đ</p>
-            </div>
-            <div>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">Đã giao</span>
-            </div>
-            <button class="text-sm font-bold border px-4 py-2 rounded-lg hover:text-white transition-all text-blue-600 border-blue-600 hover:bg-blue-600">
-                Xem chi tiết
-            </button>
-        </div>
-    </div>
+        `;
+            }
+        });
+    </script>
 </div>

@@ -34,6 +34,7 @@ public class GlobalControllerAdvice {
                 String email = ((UserDetails) principal).getUsername();
                 users user = usersRepository.findByEmail(email);
                 if (user != null) {
+                    model.addAttribute("user", user);
                     model.addAttribute("name", user.getHoTen());
                     model.addAttribute("picture", user.getAvatar());
                 }
@@ -49,6 +50,7 @@ public class GlobalControllerAdvice {
                 if (email != null) {
                     users user = usersRepository.findByEmail(email);
                     if (user != null) {
+                        model.addAttribute("user", user);
                         model.addAttribute("name", user.getHoTen());
                         model.addAttribute("picture", user.getAvatar());
                         return;

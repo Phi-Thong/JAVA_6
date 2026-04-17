@@ -4,16 +4,18 @@
         <!-- User Profile Header -->
         <div class="flex flex-col items-center text-center mb-8">
             <div class="relative group cursor-pointer">
-                <img alt="Avatar Nguyễn Phi Thông"
+                <img alt="Avatar [[${user.hoTen}]]"
                      class="w-24 h-24 rounded-full object-cover border-4 border-gray-50 shadow-sm"
                      id="avatar-preview"
-                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO98zXZPgyfghnCd_ZDybi8zBNKCYGXqz1DTE4kTYoBgpTn0iSDXxZEpkHXK-4ybddPe8abc7rcMDia_C1V3SPsAzczB9CDsg_c_xwzcZn_iO03S08grPmOKy12e5DCj5qmPVV_Gu3FgQBCz4F_AX6xnxC1qPuOR5BRFS98pu5LXiYzhlsQcEi4dtjrYI03mxGJ3LSvbWufrBzzmKxq46VRP99wW5dvnjreYVeRa1HZi_U-DJ37Gjm3xTVkCHaBVSdNfkK2vRz9js"/>
-                <div class="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                     th:src="${user.avatar != null && !#strings.isEmpty(user.avatar) ? user.avatar : '/img/default.jpg'}"/>
+                <input type="file" id="avatar-input" accept="image/*" style="display:none"/>
+                <div class="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                     onclick="document.getElementById('avatar-input').click()">
                     <i class="text-white w-6 h-6" data-lucide="camera"></i>
                 </div>
             </div>
-            <h2 class="mt-4 font-bold text-lg text-gray-800">Nguyễn Phi Thông</h2>
-            <p class="text-sm text-gray-500">thong@example.com</p>
+            <h2 class="mt-4 font-bold text-lg text-gray-800" th:text="${user.hoTen}">Tên người dùng</h2>
+            <p class="text-sm text-gray-500" th:text="${user.email}">email@example.com</p>
         </div>
         <!-- Navigation Tabs -->
         <nav class="space-y-1" data-purpose="profile-navigation">
@@ -39,4 +41,51 @@
             </button>
         </nav>
     </div>
+    <script>
+        document.getElementById('avatar-input').addEventListener('change', async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            // Hiển thị ảnh preview ngay
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('avatar-preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // Gửi file lên backend qua fetch API
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            try {
+                const res = await fetch('/user/api/avatar', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    document.getElementById('error-message').textContent = data.message || 'Cập nhật ảnh thất bại!';
+                } else {
+                    document.getElementById('error-message').textContent = '';
+                    // Nếu backend trả về link ảnh mới, cập nhật lại src:
+                    if (data.avatarUrl) {
+                        document.getElementById('avatar-preview').src = data.avatarUrl;
+                        // Cập nhật avatar trên header nếu có
+                        const headerAvatar = document.getElementById('header-avatar');
+                        if (headerAvatar) headerAvatar.src = data.avatarUrl;
+                    }
+                    // Hiển thị toast nếu muốn
+                    const toast = document.getElementById('toast-success');
+                    toast.textContent = 'Cập nhật ảnh thành công!';
+                    toast.style.display = 'block';
+                    setTimeout(() => {
+                        toast.style.display = 'none';
+                        toast.textContent = 'Cập nhật thành công!';
+                    }, 2000);
+                }
+            } catch (err) {
+                document.getElementById('error-message').textContent = 'Có lỗi kết nối!';
+            }
+        });
+    </script>
 </aside>

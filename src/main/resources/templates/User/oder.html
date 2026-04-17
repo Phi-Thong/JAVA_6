@@ -570,5 +570,33 @@
         };
     }
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Kiểm tra nếu có sản phẩm "Mua ngay"
+        const buyNowProduct = localStorage.getItem("buyNowProduct");
+        if (buyNowProduct) {
+            const product = JSON.parse(buyNowProduct);
+            // Render sản phẩm ra phần order summary (ví dụ id="order-list" hoặc sửa lại cho đúng vị trí)
+            const orderList = document.querySelector(".max-h-72 .flex.gap-4");
+            if (orderList) {
+                orderList.innerHTML = `
+                <div class="w-24 h-24 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                    <img src="${product.image}" class="w-full h-full object-cover"/>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-bold text-slate-900 dark:text-slate-100">${product.name}</h4>
+                    <div class="flex justify-between items-end mt-2">
+                        <span class="text-sm font-medium">SL: ${product.quantity}</span>
+                        <span class="font-bold text-lg">${Number(product.price).toLocaleString()}₫</span>
+                    </div>
+                </div>
+            `;
+            }
+            // Xóa key để tránh lặp lại khi reload
+            localStorage.removeItem("buyNowProduct");
+        }
+        // Nếu không có "buyNowProduct" thì giữ nguyên logic lấy từ cart như cũ
+    });
+</script>
 </body>
 </html>

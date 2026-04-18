@@ -3,6 +3,8 @@ package asm.poly.asm_java6.controler.user;
 import asm.poly.asm_java6.dto.OrderDetailDto;
 import asm.poly.asm_java6.dto.OrderDto;
 import asm.poly.asm_java6.enity.users;
+import asm.poly.asm_java6.repository.ProductRepository;
+import asm.poly.asm_java6.repository.ProductReviewRepository;
 import asm.poly.asm_java6.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import asm.poly.asm_java6.dto.OrderSummaryDTO;
 import asm.poly.asm_java6.service.OrderService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import asm.poly.asm_java6.dto.ProductReviewRequest;
+
+import asm.poly.asm_java6.enity.Product;
+import asm.poly.asm_java6.enity.ProductReview;
+
+
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -36,6 +44,11 @@ public class profileController {
     private OrderService orderService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ProductReviewRepository productReviewRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping("/profile")
     public String profile(Model model, Principal principal) {
@@ -166,5 +179,39 @@ public class profileController {
         usersRepository.save(user);
         res.put("success", true);
         return res;
+    }
+
+    @PostMapping("/api/review")
+    @ResponseBody
+    public ResponseEntity<?> addProductReview(@RequestBody ProductReviewRequest req, Principal principal) {
+        // Lấy user hiện tại
+        String email = principal.getName();
+        users user = usersRepository.findByEmail(email);
+
+        // Lấy sản phẩm
+        Product product = productRepository.findById(req.getProductId()).orElse(null);
+        if (product == null) {
+            return ResponseEntity.badRequest().body("Sản phẩm không tồn tại!");
+        }
+
+        // Validate số sao
+        if (req.getRating() < 1 || req.getRating() > 5) {
+            return ResponseEntity.badRequest().body("Số sao phải từ 1 đến 5!");
+        }
+        if (req.getComment() == null || req.getComment().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Vui lòng nhập bình luận!");
+        }
+
+        // Tạo đánh giá mới
+        ProductReview review = new ProductReview();
+        review.setProduct(product);
+        review.setUser(user);
+        review.setRating(req.getRating());
+        review.setComment(req.getComment());
+        review.setCreatedAt(LocalDateTime.now());
+
+        productReviewRepository.save(review);
+
+        return ResponseEntity.ok("Đánh giá thành công!");
     }
 }

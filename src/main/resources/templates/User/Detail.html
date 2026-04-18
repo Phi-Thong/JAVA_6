@@ -343,6 +343,7 @@
                 <h3 class="text-xl font-bold mb-6">Đánh giá sản phẩm</h3>
 
                 <div class="space-y-6">
+
                     <!-- Nếu KHÔNG có bình luận -->
                     <div
                             th:if="${reviews == null || #lists.isEmpty(reviews)}"
@@ -357,36 +358,41 @@
                             class="max-h-[280px] overflow-y-auto pr-2"
                     >
                         <div th:each="review : ${reviews}" class="border-b pb-4">
+
+                            <!-- Avatar + Tên -->
                             <div class="flex items-center gap-3 mb-2">
                                 <img
                                         th:src="${review.user.avatar != null && !#strings.isEmpty(review.user.avatar) ? review.user.avatar : '/img/default.jpg'}"
                                         class="w-10 h-10 rounded-full"
                                 />
+
                                 <div>
                                     <p class="font-semibold" th:text="${review.user.hoTen}">
                                         Tên người dùng
                                     </p>
+
+                                    <!-- ⭐ FIX SAO Ở ĐÂY -->
                                     <div class="text-yellow-400 text-sm">
-                        <span
-                                th:each="star : ${#numbers.sequence(1, review.rating)}"
-                        >★</span
-                        >
-                                        <span
-                                                th:each="star : ${#numbers.sequence(review.rating + 1, 5)}"
-                                                class="text-slate-300"
-                                        >★</span
-                                        >
+                                <span th:each="i : ${#numbers.sequence(1,5)}"
+                                      th:classappend="${i <= review.rating ? '' : 'text-slate-300'}">
+                                    ★
+                                </span>
                                     </div>
+
                                 </div>
                             </div>
+
+                            <!-- Nội dung bình luận -->
                             <p
                                     class="text-slate-600 dark:text-slate-400"
                                     th:text="${review.comment}"
                             >
                                 Nội dung bình luận
                             </p>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -824,9 +830,9 @@
             }, 1200);
         }
 
-        const addToCartBtn = document.getElementById("addToCartBtn");
-        const buyNowBtn = document.getElementById("buyNowBtn");
-        const quantityDisplay = document.getElementById("quantity");
+        // const addToCartBtn = document.getElementById("addToCartBtn");
+        // const buyNowBtn = document.getElementById("buyNowBtn");
+        // const quantityDisplay = document.getElementById("quantity");
 
         if (buyNowBtn && addToCartBtn && quantityDisplay) {
             buyNowBtn.addEventListener("click", function (e) {

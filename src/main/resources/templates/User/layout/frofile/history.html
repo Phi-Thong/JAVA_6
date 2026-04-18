@@ -1,25 +1,104 @@
 <div class="tab-content space-y-4" id="orders-content" th:fragment="history">
+    <style>
+        #orders-list {
+            transition: all 0.3s ease;
+        }
+    </style>
     <h3 class="text-xl font-bold mb-6">Lịch sử đơn hàng</h3>
     <!-- Order Card 1 -->
     <div id="orders-list"></div>
+    <div id="pagination" class="flex gap-2 mt-4" style="margin-left: 700px;"></div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Lấy userId từ biến Thymeleaf hoặc JS (ví dụ: [[${user.id}]])
-            const userId = /*[[${user.id}]]*/ 15; // Thay 15 bằng user.id động nếu có
+            const PAGE_SIZE = 4;
+            let orders = [];
+            let currentPage = 1;
 
-            fetch(`/user/api/orders/${userId}`)
+            fetch('/user/api/orders')
                 .then(res => res.json())
                 .then(data => {
-                    const container = document.getElementById('orders-list');
-                    container.innerHTML = data.map(order => renderOrderCard(order)).join('');
+                    orders = Array.isArray(data) ? data : [];
+                    renderPage(1);
+                    renderPagination();
+                })
+                .catch(() => {
+                    document.getElementById('orders-list').innerHTML = '<p class="text-red-500">Không thể tải lịch sử đơn hàng.</p>';
                 });
 
+            function renderPage(page) {
+                currentPage = page;
+                const container = document.getElementById('orders-list');
+
+                //  fade out
+                container.style.opacity = 0;
+                container.style.transform = 'translateY(10px)';
+
+                setTimeout(() => {
+                    if (orders.length === 0) {
+                        container.innerHTML = '<p class="text-gray-500">Bạn chưa có đơn hàng nào.</p>';
+                        document.getElementById('pagination').innerHTML = '';
+                        return;
+                    }
+
+                    const start = (page - 1) * PAGE_SIZE;
+                    const end = start + PAGE_SIZE;
+                    const pageOrders = orders.slice(start, end);
+
+                    container.innerHTML = pageOrders.map(order => renderOrderCard(order)).join('');
+
+                    //  fade in
+                    container.style.opacity = 1;
+                    container.style.transform = 'translateY(0)';
+                }, 150);
+            }
+
+            function renderPagination() {
+                const totalPages = Math.ceil(orders.length / PAGE_SIZE);
+                const pagination = document.getElementById('pagination');
+
+                if (totalPages <= 1) {
+                    pagination.innerHTML = '';
+                    return;
+                }
+
+                let html = '';
+
+                const addButton = (i) => {
+                    html += `<button class="px-3 py-1 rounded ${
+                        i === currentPage ? 'bg-primary text-white' : 'bg-gray-200'
+                    }" onclick="goToPage(${i})">${i}</button>`;
+                };
+
+                const addDots = () => {
+                    html += `<span class="px-2">...</span>`;
+                };
+
+                const windowSize = 1; // số trang xung quanh currentPage
+
+                for (let i = 1; i <= totalPages; i++) {
+                    if (
+                        i === 1 ||                         // luôn hiện trang đầu
+                        i === totalPages ||               // luôn hiện trang cuối
+                        (i >= currentPage - windowSize && i <= currentPage + windowSize)
+                    ) {
+                        addButton(i);
+                    } else {
+                        // tránh lặp nhiều dấu ...
+                        if (
+                            i === currentPage - windowSize - 1 ||
+                            i === currentPage + windowSize + 1
+                        ) {
+                            addDots();
+                        }
+                    }
+                }
+
+                pagination.innerHTML = html;
+            }
+
             function renderOrderCard(order) {
-                // Định dạng ngày/tháng/năm
                 const date = new Date(order.ngayDat).toLocaleDateString('vi-VN');
-                // Định dạng tiền
                 const tongTien = Number(order.tongTien).toLocaleString('vi-VN') + 'đ';
-                // Định dạng trạng thái
                 let statusClass = '', statusText = '';
                 if (order.trangThai === 'ÐANG_CH?_XÁC_NH?N') {
                     statusClass = 'bg-yellow-100 text-yellow-700';
@@ -34,33 +113,209 @@
                     statusClass = 'bg-gray-100 text-gray-700';
                     statusText = order.trangThai;
                 }
-
                 return `
-        <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-            <div class="flex items-center gap-4">
-                <div class="${statusClass.replace('text-', 'bg-')} p-3 rounded-xl">
-                    <i class="w-6 h-6" data-lucide="package"></i>
-                </div>
-                <div>
-                    <p class="font-bold text-gray-800">#DH${order.id}</p>
-                    <p class="text-xs text-gray-500">${date} • ${order.soSanPham} sản phẩm</p>
-                </div>
-            </div>
-            <div class="flex flex-wrap items-center gap-4 md:gap-8">
-                <div class="text-right">
-                    <p class="text-sm text-gray-400">Tổng tiền</p>
-                    <p class="font-bold text-gray-900 text-lg">${tongTien}</p>
-                </div>
-                <div>
-                    <span class="px-3 py-1 text-xs font-semibold rounded-full ${statusClass}">${statusText}</span>
-                </div>
-                <button class="text-sm font-bold border px-4 py-2 rounded-lg hover:text-white transition-all text-blue-600 border-blue-600 hover:bg-blue-600">
-                    Xem chi tiết
-                </button>
-            </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm
+            hover:shadow-lg hover:-translate-y-1 transition-all duration-300
+            flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+
+    <div class="flex items-center gap-4">
+ <div class="w-12 h-12 flex items-center justify-center rounded-xl overflow-hidden ${statusClass.replace('text-', 'bg-')}">
+            <img src="${order.anhChinh}" alt="Ảnh sản phẩm" class="w-full h-full object-cover"/>
         </div>
+        <div>
+            <p class="font-semibold text-gray-800 text-lg">#DH${order.id}</p>
+            <p class="text-sm text-gray-500">${date}</p>
+            <p class="text-xs text-gray-400">${order.soSanPham} sản phẩm</p>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-4 md:gap-10">
+
+        <div class="text-right">
+            <p class="text-xs text-gray-400 uppercase tracking-wide">Tổng tiền</p>
+            <p class="font-bold text-xl text-gray-900">${tongTien}</p>
+        </div>
+
+        <div>
+            <span class="px-4 py-1 text-xs font-semibold rounded-full
+                         ${statusClass} shadow-sm">
+                ${statusText}
+            </span>
+        </div>
+
+   <button onclick="showOrderDetailModal(${order.id})"
+    class="flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-lg
+           bg-blue-600 text-white
+           hover:bg-blue-700
+           transition-all duration-300 shadow-md hover:shadow-lg active:scale-95">
+
+    <i data-lucide="eye" class="w-4 h-4"></i>
+    Xem chi tiết
+</button>
+    </div>
+</div>
+
         `;
             }
+
+            window.goToPage = function (page) {
+                renderPage(page);
+                renderPagination();
+            };
         });
+
+        // Hàm mở modal và render dữ liệu
+        function showOrderDetailModal(orderId) {
+            fetch(`/user/api/orders/${orderId}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Lỗi server hoặc không tìm thấy đơn hàng!');
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data || !Array.isArray(data.items)) {
+                        alert('Dữ liệu đơn hàng không hợp lệ!');
+                        return;
+                    }
+
+                    // Xử lý trạng thái tiếng Việt
+                    let statusText = '';
+                    switch (data.trangThai) {
+                        case 'ÐANG_CH?_XÁC_NH?N':
+                        case 'DANG_CHO_XAC_NHAN':
+                            statusText = 'Đang xử lý';
+                            break;
+                        case 'DA_GIAO':
+                            statusText = 'Đã giao';
+                            break;
+                        case 'DA_HUY':
+                            statusText = 'Đã hủy';
+                            break;
+                        case 'DANG_GIAO':
+                            statusText = 'Đang giao';
+                            break;
+                        default:
+                            statusText = data.trangThai ?? '';
+                    }
+
+                    // Header
+                    document.getElementById('order-id').textContent = data.orderId ?? data.id ?? '';
+                    document.getElementById('order-date').textContent = data.ngayDat ?? '';
+                    document.getElementById('order-status').textContent = statusText;
+
+                    // Sản phẩm
+                    const productsDiv = document.getElementById('order-products');
+                    productsDiv.innerHTML = data.items.length > 0
+                        ? data.items.map(item => `
+                    <div class="flex items-center gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 shadow-sm">
+                        <img src="${item.anhChinh}" class="w-16 h-16 object-cover rounded-lg border"/>
+                        <div class="flex-1">
+                            <div class="font-semibold text-slate-800 dark:text-white">${item.tenSanPham}</div>
+                            <div class="text-sm text-slate-600 mt-1">${item.soLuong} × ${Number(item.gia).toLocaleString()}₫</div>
+                        </div>
+                        <div class="font-bold text-primary text-lg">${Number(item.tongTienSanPham).toLocaleString()}₫</div>
+                    </div>
+                `).join('')
+                        : '<div class="text-center text-slate-500">Không có sản phẩm nào trong đơn hàng này.</div>';
+
+                    // Thanh toán
+                    document.getElementById('order-tamtinh').textContent = Number(data.tongTien).toLocaleString() + '₫';
+                    document.getElementById('order-ship').textContent = Number(data.phiVanChuyen).toLocaleString() + '₫';
+                    document.getElementById('order-total').textContent = (Number(data.tongTien) + Number(data.phiVanChuyen)).toLocaleString() + '₫';
+
+                    // Người nhận
+                    document.getElementById('order-name').textContent = data.hoTenNguoiNhan ?? '';
+                    document.getElementById('order-phone').textContent = data.sdtNguoiNhan ?? '';
+                    document.getElementById('order-address').textContent = data.diaChiGiaoHang ?? '';
+                    document.getElementById('order-email').textContent = data.emailNguoiNhan ?? '';
+                    document.getElementById('order-note').textContent = data.ghiChu ?? '';
+
+                    // Hiện modal
+                    document.getElementById('orderDetailModal').classList.remove('hidden');
+                })
+                .catch(err => {
+                    alert('Có lỗi khi lấy chi tiết đơn hàng: ' + err.message);
+                });
+        }
+
     </script>
+    <!--    modal nha -->
+    <!-- Modal Chi Tiết Đơn Hàng -->
+    <div id="orderDetailModal" class="fixed inset-0 bg-black/40 z-[9999] hidden items-center justify-center"
+         style="margin-left: 400px; margin-top: 50px;">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative animate-scaleIn">
+            <!-- Nút đóng -->
+            <button onclick="closeOrderDetailModal()"
+                    class="absolute top-4 right-4 text-slate-400 hover:text-red-500 text-2xl font-bold z-10">✕
+            </button>
+            <!-- Header -->
+            <div class="p-6 border-b flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white">
+                        Đơn hàng #<span id="order-id"></span>
+                    </h2>
+                    <div class="flex items-center gap-3 text-sm text-slate-500 mt-1">
+                        <span id="order-date"></span>
+                        <span id="order-status"
+                              class="px-3 py-1 rounded-full bg-blue-100 text-blue-600 font-semibold text-xs"></span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mt-2 md:mt-0">
+                    <span class="material-symbols-outlined text-primary">local_shipping</span>
+                    <span class="text-xs text-slate-500">Giao hàng tiêu chuẩn</span>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="grid md:grid-cols-2 gap-8 p-6 overflow-y-auto flex-1">
+                <!-- Left: Products -->
+                <div>
+                    <h3 class="font-bold mb-3 text-primary">Sản phẩm</h3>
+                    <div id="order-products" class="space-y-4"></div>
+                </div>
+                <!-- Right: Info & Payment -->
+                <div class="flex flex-col gap-8">
+                    <!-- Payment -->
+                    <div>
+                        <h3 class="font-bold mb-2 text-primary">Thanh toán</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between text-slate-500">
+                                <span>Tạm tính</span>
+                                <span id="order-tamtinh"></span>
+                            </div>
+                            <div class="flex justify-between text-slate-500">
+                                <span>Phí vận chuyển</span>
+                                <span id="order-ship"></span>
+                            </div>
+                            <div class="flex justify-between mt-2">
+                                <span class="font-bold text-lg">Tổng cộng</span>
+                                <span id="order-total" class="font-black text-xl text-primary"></span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="material-symbols-outlined text-green-500">payments</span>
+                                <span class="text-xs text-slate-500">Phương thức: <b>COD</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Customer -->
+                    <div>
+                        <h3 class="font-bold mb-2 text-primary">Người nhận</h3>
+                        <div class="text-sm space-y-1">
+                            <div><span id="order-name" class="font-semibold"></span></div>
+                            <div>Điện thoại: <span id="order-phone" class="font-semibold"></span></div>
+                            <div>Địa chỉ: <span id="order-address" class="font-semibold"></span></div>
+                            <div>Email: <span id="order-email" class="font-semibold"></span></div>
+                            <div>Ghi chú: <span id="order-note" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer (nếu cần) -->
+        </div>
+    </div>
+    <script>
+        function closeOrderDetailModal() {
+            document.getElementById('orderDetailModal').classList.add('hidden');
+        }
+    </script>
+
 </div>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import asm.poly.asm_java6.repository.CartItemRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,39 +88,30 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void clearCart(users user) {
-        // Ví dụ nếu bạn dùng JPA:
         cartItemRepository.deleteByUser(user);
     }
 
-
     @Override
+    @Transactional
     public Cart removeFromCart(users user, Long productId) {
-
-        // Lấy cart theo user
         Cart cart = cartRepository.findByUser(user);
-
         if (cart == null) {
             throw new RuntimeException("Cart not found");
         }
-
-        // Tìm item cần xóa
         Cart_item itemToRemove = null;
-
         for (Cart_item item : cart.getItems()) {
             if (item.getProduct().getId().equals(productId)) {
                 itemToRemove = item;
                 break;
             }
         }
-
-        // Nếu tìm thấy thì xóa
         if (itemToRemove != null) {
             cart.getItems().remove(itemToRemove);
             cartItemRepository.delete(itemToRemove);
             cartRepository.save(cart);
         }
-
         return cart;
     }
 }

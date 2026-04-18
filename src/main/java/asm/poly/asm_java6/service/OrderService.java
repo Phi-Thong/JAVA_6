@@ -1,5 +1,6 @@
 package asm.poly.asm_java6.service;
 
+import asm.poly.asm_java6.dto.OrderDetailDto;
 import asm.poly.asm_java6.dto.OrderDto;
 import asm.poly.asm_java6.dto.OrderSummaryDTO;
 import org.springframework.data.domain.Page;
@@ -18,4 +19,8 @@ public interface OrderService {
     Page<OrderSummaryDTO> getAllOrderSummariesByStatus(String status, Pageable pageable);
 
     List<OrderDto> getOrderSummariesByUserId(Long userId);
+
+    OrderDto getOrderDetailById(Long id);
+
+    OrderDetailDto getOrderDetailDtoById(Long id);
 }

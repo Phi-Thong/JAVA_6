@@ -1,16 +1,19 @@
 package asm.poly.asm_java6.controler.user;
 
+import asm.poly.asm_java6.dto.OrderDetailDto;
 import asm.poly.asm_java6.dto.OrderDto;
 import asm.poly.asm_java6.enity.users;
 import asm.poly.asm_java6.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import asm.poly.asm_java6.dto.OrderSummaryDTO;
 import asm.poly.asm_java6.service.OrderService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -31,6 +34,8 @@ public class profileController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/profile")
     public String profile(Model model, Principal principal) {
@@ -119,5 +124,47 @@ public class profileController {
         String email = principal.getName();
         users user = usersRepository.findByEmail(email);
         return orderService.getOrderSummariesByUserId(user.getId());
+    }
+
+    @GetMapping("/api/orders/{id}")
+    public ResponseEntity<OrderDetailDto> getOrderDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderDetailDtoById(id));
+        //                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    }
+
+    @PostMapping("/api/change-password")
+    @ResponseBody
+    public Map<String, Object> changePassword(@RequestBody Map<String, String> payload, Principal principal) {
+        String email = principal.getName();
+        String current = payload.get("currentPassword");
+        String news = payload.get("newPassword");
+
+        Map<String, Object> res = new HashMap<>();
+        // Validate backend
+        if (current == null || current.isEmpty()) {
+            res.put("success", false);
+            res.put("errorField", "currentPassword");
+            res.put("message", "Vui lòng nhập mật khẩu hiện tại");
+            return res;
+        }
+        if (news == null || news.length() < 6) {
+            res.put("success", false);
+            res.put("errorField", "newPassword");
+            res.put("message", "Mật khẩu mới phải ít nhất 6 ký tự");
+            return res;
+        }
+        // Kiểm tra mật khẩu hiện tại
+        users user = usersRepository.findByEmail(email);
+        if (!passwordEncoder.matches(current, user.getMatKhau())) {
+            res.put("success", false);
+            res.put("errorField", "currentPassword");
+            res.put("message", "Mật khẩu hiện tại không chính xác");
+            return res;
+        }
+        // Đổi mật khẩu
+        user.setMatKhau(passwordEncoder.encode(news));
+        usersRepository.save(user);
+        res.put("success", true);
+        return res;
     }
 }

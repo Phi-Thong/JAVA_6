@@ -1,28 +1,36 @@
 <div class="tab-content bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 h-full"
      id="security-content" th:fragment="security">
     <h3 class="text-xl font-bold mb-6">Bảo mật tài khoản</h3>
-    <form class="max-w-md space-y-6">
+    <form id="changePasswordForm" class="max-w-md space-y-6" autocomplete="off">
         <div class="space-y-1">
             <label class="text-sm font-semibold text-gray-700">Mật khẩu hiện tại</label>
-            <input class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
+            <input id="currentPassword"
+                   class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
                    placeholder="••••••••" type="password"/>
+            <div id="errCurrent" class="text-red-500 text-xs mt-1"></div>
         </div>
         <div class="space-y-1">
             <label class="text-sm font-semibold text-gray-700">Mật khẩu mới</label>
-            <input class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
-                   placeholder="Tối thiểu 8 ký tự" type="password"/>
+            <input id="newPassword"
+                   class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
+                   placeholder="Tối thiểu 6 ký tự" type="password"/>
+            <div id="errNew" class="text-red-500 text-xs mt-1"></div>
         </div>
         <div class="space-y-1">
             <label class="text-sm font-semibold text-gray-700">Xác nhận mật khẩu mới</label>
-            <input class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
+            <input id="confirmPassword"
+                   class="w-full rounded-lg border-gray-200 focus:ring-black focus:border-black transition-all"
                    placeholder="••••••••" type="password"/>
+            <div id="errConfirm" class="text-red-500 text-xs mt-1"></div>
         </div>
         <div class="pt-2">
-            <button class="text-white px-8 py-3 rounded-xl font-semibold transition-colors bg-blue-600 hover:bg-blue-700"
+            <button id="changePasswordBtn"
+                    class="text-white px-8 py-3 rounded-xl font-semibold transition-colors bg-blue-600 hover:bg-blue-700"
                     type="submit">
                 Cập nhật mật khẩu
             </button>
         </div>
+        <div id="successMsg" class="text-green-600 text-sm mt-2"></div>
     </form>
     <div class="mt-12 p-4 bg-gray-50 rounded-xl border border-gray-100">
         <div class="flex gap-3">
@@ -31,4 +39,72 @@
                 lần để bảo vệ tài khoản tốt nhất.</p>
         </div>
     </div>
+    <script>
+        document.getElementById('changePasswordForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Xóa lỗi cũ
+            document.getElementById('errCurrent').textContent = '';
+            document.getElementById('errNew').textContent = '';
+            document.getElementById('errConfirm').textContent = '';
+            document.getElementById('successMsg').textContent = '';
+
+            // Lấy giá trị
+            const current = document.getElementById('currentPassword').value.trim();
+            const news = document.getElementById('newPassword').value.trim();
+            const confirm = document.getElementById('confirmPassword').value.trim();
+
+            let hasError = false;
+
+            // Validate FE
+            if (!current) {
+                document.getElementById('errCurrent').textContent = 'Vui lòng nhập mật khẩu hiện tại';
+                hasError = true;
+            }
+            if (!news) {
+                document.getElementById('errNew').textContent = 'Vui lòng nhập mật khẩu mới';
+                hasError = true;
+            } else if (news.length < 6) {
+                document.getElementById('errNew').textContent = 'Mật khẩu mới phải ít nhất 6 ký tự';
+                hasError = true;
+            }
+            if (!confirm) {
+                document.getElementById('errConfirm').textContent = 'Vui lòng xác nhận mật khẩu mới';
+                hasError = true;
+            } else if (news !== confirm) {
+                document.getElementById('errConfirm').textContent = 'Mật khẩu xác nhận không khớp';
+                hasError = true;
+            }
+            if (hasError) return;
+
+            // Gửi API
+            fetch('/user/api/change-password', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    currentPassword: current,
+                    newPassword: news
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('successMsg').textContent = 'Đổi mật khẩu thành công!';
+                        document.getElementById('changePasswordForm').reset();
+                    } else {
+                        // Hiển thị lỗi từ backend
+                        if (data.errorField === 'currentPassword') {
+                            document.getElementById('errCurrent').textContent = data.message;
+                        } else if (data.errorField === 'newPassword') {
+                            document.getElementById('errNew').textContent = data.message;
+                        } else {
+                            document.getElementById('errCurrent').textContent = data.message;
+                        }
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('errCurrent').textContent = 'Có lỗi xảy ra, vui lòng thử lại!';
+                });
+        });
+    </script>
 </div>

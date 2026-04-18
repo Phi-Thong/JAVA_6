@@ -9,17 +9,19 @@ public class OrderDto {
     private Long soSanPham;
     private BigDecimal tongTien;
     private String trangThai;
+    private String anhChinh; // Thêm trường ảnh đại diện
 
     public OrderDto() {
     }
 
-   
-    public OrderDto(Long id, LocalDateTime ngayDat, Long soSanPham, BigDecimal tongTien, String trangThai) {
+    // Constructor đầy đủ
+    public OrderDto(Long id, LocalDateTime ngayDat, Long soSanPham, BigDecimal tongTien, String trangThai, String anhChinh) {
         this.id = id;
         this.ngayDat = ngayDat;
         this.soSanPham = soSanPham;
         this.tongTien = tongTien;
         this.trangThai = trangThai;
+        this.anhChinh = anhChinh;
     }
 
     // Getter & Setter
@@ -61,5 +63,13 @@ public class OrderDto {
 
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
+    }
+
+    public String getAnhChinh() {
+        return anhChinh;
+    }
+
+    public void setAnhChinh(String anhChinh) {
+        this.anhChinh = anhChinh;
     }
 }

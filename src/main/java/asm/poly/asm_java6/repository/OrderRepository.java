@@ -61,18 +61,21 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Object[]> getOrderCountStats();
 
     @Query("""
-            SELECT new asm.poly.asm_java6.dto.OrderDto(
-                o.id,
-                o.ngayDat,
-                COUNT(oi) * 1L,
-                o.tongTien,
-                o.trangThai
-            )
-            FROM Order o 
-            LEFT JOIN o.orderItems oi 
-            WHERE o.user.id = :userId
-            GROUP BY o.id, o.ngayDat, o.tongTien, o.trangThai
-            ORDER BY o.ngayDat DESC
+                SELECT new asm.poly.asm_java6.dto.OrderDto(
+                    o.id,
+                    o.ngayDat,
+                    COUNT(oi) * 1L,
+                    o.tongTien,
+                    o.trangThai,
+                    MIN(oi.product.anhChinh)
+                )
+                FROM Order o
+                LEFT JOIN o.orderItems oi
+                WHERE o.user.id = :userId
+                GROUP BY o.id, o.ngayDat, o.tongTien, o.trangThai
+                ORDER BY o.ngayDat DESC
             """)
     List<OrderDto> findOrderSummariesByUserId(Long userId);
+
+    
 }

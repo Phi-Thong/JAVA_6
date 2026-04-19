@@ -1,7 +1,11 @@
 package asm.poly.asm_java6.service.impl;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
+import asm.poly.asm_java6.dto.BestSellerProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -73,25 +77,39 @@ public class ProductServiceImpl implements ProductService {
     // lọc theo size
 
     @Override
-@Transactional
-public Page<Product> findByFilters(Integer size, List<Long> brandIds, String keyword, Pageable pageable) {
-    Page<Product> page = productRepository.findByFilters(size, brandIds, keyword, pageable);
+    @Transactional
+    public Page<Product> findByFilters(Integer size, List<Long> brandIds, String keyword, Pageable pageable) {
+        Page<Product> page = productRepository.findByFilters(size, brandIds, keyword, pageable);
 
-    // Nếu có lọc size, chỉ giữ lại productSizes đúng size đó
-    if (size != null) {
-        page.getContent().forEach(product -> {
-            product.setProductSizes(
-                product.getProductSizes().stream()
-                    .filter(ps -> ps.getSize().equals(size))
-                    .toList());
-        });
+        // Nếu có lọc size, chỉ giữ lại productSizes đúng size đó
+        if (size != null) {
+            page.getContent().forEach(product -> {
+                product.setProductSizes(
+                        product.getProductSizes().stream()
+                                .filter(ps -> ps.getSize().equals(size))
+                                .toList());
+            });
+        }
+        return page;
     }
-    return page;
-}
-    // 
-     @Override
+
+    //
+    @Override
     public List<Product> findRelatedProducts(Long brandId, Long excludeProductId) {
         return productRepository.findTop4ByBrandIdAndIdNot(brandId, excludeProductId);
+    }
+
+    @Override
+    public Page<BestSellerProductDTO> findAllBestSellers(Pageable pageable) {
+        Page<Object[]> rows = productRepository.findBestSellers(pageable);
+        return rows.map(row -> new BestSellerProductDTO(
+                ((Number) row[0]).longValue(),
+                (String) row[1],
+                (BigDecimal) row[2],
+                (String) row[3],
+                (String) row[4],
+                row[5] == null ? 0L : ((Number) row[5]).longValue()
+        ));
     }
 
 

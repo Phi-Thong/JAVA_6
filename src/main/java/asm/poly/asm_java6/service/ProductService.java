@@ -2,6 +2,7 @@ package asm.poly.asm_java6.service;
 
 import java.util.List;
 
+import asm.poly.asm_java6.dto.BestSellerProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -27,7 +28,12 @@ public interface ProductService {
     List<Integer> getAllSizes();
 
     // lọc theo size
-    
+
     Page<Product> findByFilters(Integer productSize, List<Long> brandId, String keyword, Pageable pageable);
-     List<Product> findRelatedProducts(Long brandId, Long excludeProductId);
+
+    List<Product> findRelatedProducts(Long brandId, Long excludeProductId);
+
+//    List<BestSellerProductDTO> findAllBestSellers();
+
+    Page<BestSellerProductDTO> findAllBestSellers(Pageable pageable);
 }

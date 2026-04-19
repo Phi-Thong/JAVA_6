@@ -64,4 +64,37 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByTenSanPhamContainingIgnoreCaseAndBrandId(String keyword, Long brandId, Pageable pageable);
 
     long countByBrandId(Long brandId);
+
+    // Nếu dùng Spring Data JPA
+    //List<Product> findAllByOrderBySoldCountDesc();
+
+    @Query(
+            value = """
+                    SELECT 
+                        p.id,
+                        p.ten_san_pham,
+                        p.gia,
+                        p.anh_chinh,
+                        b.ten_thuong_hieu,
+                        ISNULL(SUM(oi.so_luong), 0) AS tong_ban
+                    FROM products p
+                    LEFT JOIN brands b ON p.brand_id = b.id
+                    LEFT JOIN order_items oi ON p.id = oi.product_id
+                    LEFT JOIN orders o ON oi.order_id = o.id AND o.trang_thai NOT IN ('CANCELLED', 'FAILED')
+                    GROUP BY p.id, p.ten_san_pham, p.gia, p.anh_chinh, b.ten_thuong_hieu
+                    ORDER BY tong_ban DESC, p.id ASC
+                    """,
+            countQuery = """
+                    SELECT COUNT(*) FROM (
+                        SELECT p.id
+                        FROM products p
+                        LEFT JOIN brands b ON p.brand_id = b.id
+                        LEFT JOIN order_items oi ON p.id = oi.product_id
+                        LEFT JOIN orders o ON oi.order_id = o.id AND o.trang_thai NOT IN ('CANCELLED', 'FAILED')
+                        GROUP BY p.id, p.ten_san_pham, p.gia, p.anh_chinh, b.ten_thuong_hieu
+                    ) AS count_table
+                    """,
+            nativeQuery = true
+    )
+    Page<Object[]> findBestSellers(Pageable pageable);
 }

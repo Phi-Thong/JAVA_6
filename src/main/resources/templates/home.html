@@ -121,7 +121,7 @@
                     ></button>
                 </div>
             </div>
-            
+
         </div>
     </aside>
     <section class="flex-1 space-y-16">
@@ -141,11 +141,12 @@
                 Sắp xếp:
               </span>
                     <select
+                            id="sort-select"
                             class="bg-transparent border-none text-sm font-medium focus:ring-0 cursor-pointer"
                     >
-                        <option>Mới nhất</option>
-                        <option>Giá: Thấp đến Cao</option>
-                        <option>Giá: Cao đến Thấp</option>
+                        <option value="newest">Mới nhất</option>
+                        <option value="price-asc">Giá: Thấp đến Cao</option>
+                        <option value="price-desc">Giá: Cao đến Thấp</option>
                     </select>
                 </div>
             </div>
@@ -376,215 +377,14 @@
             </div>
         </div>
         <div id="best-sellers">
-            <div
-                    class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4"
-            >
-                <h2
-                        class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight text-red-600"
-                >
-              <span class="material-symbols-outlined text-3xl"
-              >local_fire_department</span
-              >
+            <div class="flex items-center justify-between mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h2 class="flex items-center gap-2 text-2xl font-bold uppercase tracking-tight text-red-600">
+                    <span class="material-symbols-outlined text-3xl">local_fire_department</span>
                     Sản phẩm bán chạy
                 </h2>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- New Balance 550 -->
-                <div
-                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-                >
-                    <div
-                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-                    >
-                        <img
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                        />
-                        <span
-                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                        >Bestseller</span
-                        >
-                    </div>
-                    <div class="p-4 space-y-2">
-                        <div>
-                            <p
-                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                            >
-                                New Balance
-                            </p>
-                            <h3
-                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                            >
-                                New Balance 550
-                            </h3>
-                        </div>
-                        <p class="font-bold text-primary text-base">3.400.000₫</p>
-                        <div class="flex gap-2 pt-2">
-                            <button
-                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                THÊM VÀO GIỎ
-                            </button>
-                            <button
-                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                Chi tiết
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- New Balance 550 -->
-                <div
-                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-                >
-                    <div
-                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-                    >
-                        <img
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                        />
-                        <span
-                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                        >Bestseller</span
-                        >
-                    </div>
-                    <div class="p-4 space-y-2">
-                        <div>
-                            <p
-                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                            >
-                                New Balance
-                            </p>
-                            <h3
-                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                            >
-                                New Balance 550
-                            </h3>
-                        </div>
-                        <p class="font-bold text-primary text-base">3.400.000₫</p>
-                        <div class="flex gap-2 pt-2">
-                            <button
-                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                THÊM VÀO GIỎ
-                            </button>
-                            <button
-                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                Chi tiết
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- New Balance 550 -->
-                <div
-                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-                >
-                    <div
-                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-                    >
-                        <img
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98SGUZL7p9a5rKz9cYzlNsFjH2AQPEdqy2oTYz-Jfo4GJ4DPxtUwTN4xwgta1X6oMGy_GUeodpPL06aE6-vlQqh1XZeTCCBEy67rmU1s-wCh0xAgGEO520TxRVC-zyzxoMh4rlt0V7t6BmTBUcjYDxVdP_Y6zk3FxEv9HGbEOIs6g270KO7ecAERhmPGBIXzuhQAQm-tO2cKm-MTHSPSYrwd4rGsOU1_7OH608QewH-w8Q0oxIXFgp-TWl_2Rx5i2cMKEprXNCCo"
-                        />
-                        <span
-                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                        >Bestseller</span
-                        >
-                    </div>
-                    <div class="p-4 space-y-2">
-                        <div>
-                            <p
-                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                            >
-                                New Balance
-                            </p>
-                            <h3
-                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                            >
-                                New Balance 550
-                            </h3>
-                        </div>
-                        <p class="font-bold text-primary text-base">3.400.000₫</p>
-                        <div class="flex gap-2 pt-2">
-                            <button
-                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                THÊM VÀO GIỎ
-                            </button>
-                            <button
-                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                Chi tiết
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Vans Old Skool -->
-                <div
-                        class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
-                >
-                    <div
-                            class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl"
-                    >
-                        <img
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1U1qRAuryY-qj9i94ALnp3upVkF089Haqc51sE_pnhxw1R7gN_a7ZqUfB8k4rHWft4Go-Uex8tKD9-jMrYhSXrinlMni6xcJLFp4nMbMj_otYfzudjcUry7JhcU4cSx-697nPzvKF3tD-OmUch70FWG3OiwAFR0gNc7NJk98v5ZYugPVRd4uF-vPk1r-4ZVnt8X4CAzoJjEGXldkv63tj4HBTIC0xikxLB5Tb199J4fe1Axk6MvipgvjRQ9khbWW1eqo-HOBAd4I"
-                        />
-                        <span
-                                class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg"
-                        >Bestseller</span
-                        >
-                    </div>
-                    <div class="p-4 space-y-2">
-                        <div>
-                            <p
-                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
-                            >
-                                Vans
-                            </p>
-                            <h3
-                                    class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors"
-                            >
-                                Vans Old Skool
-                            </h3>
-                        </div>
-                        <p class="font-bold text-primary text-base">1.850.000₫</p>
-                        <div class="flex gap-2 pt-2">
-                            <button
-                                    class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                THÊM VÀO GIỎ
-                            </button>
-                            <button
-                                    class="flex-1 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wider"
-                            >
-                                Chi tiết
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-center mt-12 gap-2">
-                <button
-                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-                >
-                    1
-                </button>
-                <button
-                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-                >
-                    2
-                </button>
-                <button
-                        class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-                >
-              <span class="material-symbols-outlined text-sm"
-              >chevron_right</span
-              >
-                </button>
-            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            <div id="best-sellers-pagination" class="flex justify-center mt-8 gap-2"></div>
         </div>
     </section>
 </main>
@@ -723,6 +523,14 @@
         });
 
     //
+    let selectedSort = "newest"; // Thêm biến lưu trạng thái sort
+
+    // Lắng nghe sự kiện thay đổi sort
+    document.getElementById("sort-select").addEventListener("change", function () {
+        selectedSort = this.value;
+        loadProducts(0);
+    });
+
     function loadProducts(page = 0, keyword = "") {
         const list = document.getElementById("product-list");
         list.style.opacity = 0;
@@ -744,6 +552,15 @@
         // Thêm keyword tìm kiếm nếu có
         if (keyword) {
             url += `&keyword=${encodeURIComponent(keyword)}`;
+        }
+
+        // Thêm sort
+        if (selectedSort === "price-asc") {
+            url += `&sort=gia,asc`;
+        } else if (selectedSort === "price-desc") {
+            url += `&sort=gia,desc`;
+        } else {
+            url += `&sort=createdDate,desc`; // hoặc trường ngày tạo của bạn
         }
 
         fetch(url)
@@ -768,6 +585,7 @@
         .addEventListener("click", async function (e) {
             const btn = e.target.closest(".add-to-cart-home");
             if (!btn) return;
+            e.stopPropagation();
 
             e.preventDefault();
             const product = {
@@ -924,6 +742,170 @@
         updateCartCount();
     });
     // khung chat vs nhân viên
+    // của sản phẩm bán chạy
+    function renderBestSellers(products) {
+        const list = document.querySelector("#best-sellers .grid");
+        if (!products || products.length === 0) {
+            list.innerHTML = "<p>Không có sản phẩm bán chạy.</p>";
+            return;
+        }
+        list.innerHTML = products
+            .map(
+                (p) => `
+  <div
+    class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] transition-all duration-300 border border-transparent hover:border-primary/20"
+  >
+    <a href="/detail/${p.id}" class="block hover:no-underline">
+      <div class="aspect-square relative overflow-hidden bg-slate-50 rounded-t-xl">
+        <img
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          src="${p.anhChinh || ""}"
+          alt="Ảnh sản phẩm"
+        />
+      </div>
+      <div class="p-4 space-y-2">
+        <div>
+          <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+            ${p.brand ? p.brand.tenThuongHieu : ""}
+          </p>
+          <h3 class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+            ${p.tenSanPham || ""}
+          </h3>
+        </div>
+        <p class="font-bold text-primary text-base">
+          ${Number(p.gia).toLocaleString("vi-VN")}₫
+        </p>
+      </div>
+    </a>
+    <div class="flex gap-2 pt-3 px-4 pb-4">
+      <button
+        class="add-to-cart-home flex-[1.6] flex items-center justify-center gap-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
+        data-id="${p.id}"
+        data-name="${p.tenSanPham}"
+        data-price="${p.gia}"
+        data-image="${p.anhChinh}"
+        data-brand="${p.brand ? p.brand.tenThuongHieu : ""}"
+        type="button"
+      >
+        <span class="material-symbols-outlined text-xs">shopping_cart</span>
+        Thêm vào giỏ
+      </button>
+      <button
+        class="flex-[1] flex items-center justify-center gap-1 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-[9px] font-semibold py-2 px-3 rounded-xl whitespace-nowrap hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all duration-300 uppercase tracking-wide"
+        onclick="window.location.href='/detail/${p.id}'"
+        type="button"
+      >
+        <span class="material-symbols-outlined text-xs">visibility</span>
+        Chi tiết
+      </button>
+    </div>
+  </div>
+  `
+            )
+            .join("");
+        // Thêm vào giỏ hàng cho khu vực best-sellers
+        document
+            .querySelector("#best-sellers .grid")
+            .addEventListener("click", async function (e) {
+                const btn = e.target.closest(".add-to-cart-home");
+                if (!btn) return;
+                e.stopPropagation();
+                e.preventDefault();
+                const product = {
+                    id: btn.getAttribute("data-id"),
+                    name: btn.getAttribute("data-name"),
+                    price: btn.getAttribute("data-price"),
+                    image: btn.getAttribute("data-image"),
+                    brand: btn.getAttribute("data-brand"),
+                    quantity: 1,
+                };
+
+                if (isLoggedIn) {
+                    let localCart = JSON.parse(localStorage.getItem("cart")) || [];
+                    if (localCart.length > 0) {
+                        for (const item of localCart) {
+                            await fetch("/api/cart/add", {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                credentials: "include",
+                                body: JSON.stringify({
+                                    productId: item.id,
+                                    quantity: item.quantity,
+                                }),
+                            });
+                        }
+                        localStorage.removeItem("cart");
+                    }
+                    fetch("/api/cart/add", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        credentials: "include",
+                        body: JSON.stringify({
+                            productId: product.id,
+                            quantity: 1,
+                        }),
+                    })
+                        .then((res) => res.json())
+                        .then((cart) => {
+                            if (window.currentCart) window.currentCart = null;
+                            updateCartCount && updateCartCount(cart);
+                            showToast("Đã thêm vào giỏ hàng!");
+                        });
+                } else {
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    const index = cart.findIndex((item) => item.id == product.id);
+                    if (index >= 0) {
+                        cart[index].quantity += 1;
+                    } else {
+                        cart.push(product);
+                    }
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount && updateCartCount();
+                    showToast("Đã thêm vào giỏ hàng!");
+                }
+            });
+
+    }
+
+    function renderBestSellersPagination(totalPages, currentPage) {
+        const pagination = document.getElementById("best-sellers-pagination");
+        let html = "";
+        for (let i = 0; i < totalPages; i++) {
+            html += `<a href="#" class="w-8 h-8 flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 text-xs font-medium hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 best-sellers-page-link${i === currentPage ? " bg-primary text-white border-primary" : ""}" data-page="${i}">${i + 1}</a> `;
+        }
+        pagination.innerHTML = html;
+        document.querySelectorAll(".best-sellers-page-link").forEach((link) => {
+            link.onclick = function (e) {
+                e.preventDefault();
+                loadBestSellers(Number(this.dataset.page));
+            };
+        });
+    }
+
+    function loadBestSellers(page = 0) {
+        const list = document.querySelector("#best-sellers .grid");
+        list.innerHTML = `<div class="col-span-full text-center py-8">
+        <span class="material-symbols-outlined text-5xl text-primary animate-spin">autorenew</span>
+        <div class="mt-2 text-primary font-semibold">Đang tải...</div>
+    </div>`;
+        fetch(`/api/products/best-sellers?page=${page}&size=8`)
+            .then((res) => res.json())
+            .then((data) => {
+                renderBestSellers(data.content);
+                renderBestSellersPagination(data.totalPages, data.number);
+            });
+    }
+
+    // Gọi API khi trang load xong
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/api/products/best-sellers")
+            .then((res) => res.json())
+            .then((data) => renderBestSellers(data));
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        loadBestSellers(0);
+    });
+
 
 </script>
 </html>

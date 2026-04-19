@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +19,15 @@ public class Conversation {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "staff_id", nullable = false)
-    private Long staffId;
+    @Column(name = "staff_id")
+    private Long staffId; // Cho phép null khi chưa có nhân viên nhận
+
+    @Column(name = "status", length = 20)
+    private String status; // OPEN, WAITING, CLOSED
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "closed_at")
+    private LocalDateTime closedAt;
 }

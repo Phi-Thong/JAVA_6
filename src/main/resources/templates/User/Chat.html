@@ -29,8 +29,10 @@
     </style>
 
     <!-- ================= BUBBLE ================= -->
-    <div id="chat-ai-label"
-         style="
+    <div id="chat-widget-container" style="display:none;">
+        <!-- Dán toàn bộ code chat widget ở đây -->
+        <div id="chat-ai-label"
+             style="
         position: fixed;
         bottom: 95px;
         right: 28px;
@@ -45,13 +47,13 @@
         transition: 0.3s ease;
         z-index: 10001;
         pointer-events: none;
-     ">
-        Bạn cần giúp gì không? 🤖
-    </div>
+        ">
+            Bạn cần giúp gì không? 🤖
+        </div>
 
-    <!-- ================= CHAT BUBBLE ================= -->
-    <div id="chat-bubble"
-         style="
+        <!-- ================= CHAT BUBBLE ================= -->
+        <div id="chat-bubble"
+             style="
      position: fixed;
      bottom: 28px;
      right: 28px;
@@ -67,12 +69,12 @@
      z-index: 9999;
      transition: 0.2s ease;
      ">
-        <span class="chat-icon">🤖</span>
-    </div>
+            <span class="chat-icon">🤖</span>
+        </div>
 
-    <!-- ================= CHAT BOX ================= -->
-    <div id="chat-box"
-         style="
+        <!-- ================= CHAT BOX ================= -->
+        <div id="chat-box"
+             style="
      position: fixed;
      bottom: 100px;
      right: 28px;
@@ -88,8 +90,8 @@
      border: 1px solid #e5e7eb;
      ">
 
-        <!-- HEADER -->
-        <div style="
+            <!-- HEADER -->
+            <div style="
         background: linear-gradient(135deg, #93c5fd, #60a5fa);
         color: #fff;
         padding: 14px 16px;
@@ -99,12 +101,12 @@
         align-items:center;
         font-size: 14px;
     ">
-            <span>💬 Hỗ trợ khách hàng</span>
-            <span id="close-chat" style="cursor:pointer; font-size:18px;">✕</span>
-        </div>
+                <span>💬 Hỗ trợ khách hàng</span>
+                <span id="close-chat" style="cursor:pointer; font-size:18px;">✕</span>
+            </div>
 
-        <!-- INTRO -->
-        <div style="
+            <!-- INTRO -->
+            <div style="
         padding: 12px;
         background: #eff6ff;
         border-bottom: 1px solid #e5e7eb;
@@ -112,13 +114,13 @@
         color: #334155;
         line-height: 1.4;
     ">
-            👋 Nhân viên của chúng tôi sẽ hỗ trợ bạn nhanh nhất có thể.<br>
-            Vui lòng nhập câu hỏi, chúng tôi sẽ phản hồi sớm nhất!
-        </div>
+                👋 Nhân viên của chúng tôi sẽ hỗ trợ bạn nhanh nhất có thể.<br>
+                Vui lòng nhập câu hỏi, chúng tôi sẽ phản hồi sớm nhất!
+            </div>
 
-        <!-- MESSAGES -->
-        <div id="chat-messages"
-             style="
+            <!-- MESSAGES -->
+            <div id="chat-messages"
+                 style="
          flex: 1;
          padding: 12px;
          overflow-y: auto;
@@ -127,11 +129,11 @@
          flex-direction: column;
          gap: 8px;
          ">
-        </div>
+            </div>
 
-        <!-- INPUT -->
-        <form id="chat-form"
-              style="
+            <!-- INPUT -->
+            <form id="chat-form"
+                  style="
           display: flex;
           border-top: 1px solid #e5e7eb;
           padding: 8px;
@@ -139,10 +141,10 @@
           background: #fff;
           ">
 
-            <input id="chat-input"
-                   type="text"
-                   placeholder="Nhập tin nhắn..."
-                   style="
+                <input id="chat-input"
+                       type="text"
+                       placeholder="Nhập tin nhắn..."
+                       style="
                flex: 1;
                border: 1px solid #e5e7eb;
                border-radius: 12px;
@@ -151,8 +153,8 @@
                font-size: 13px;
                ">
 
-            <button type="submit"
-                    style="
+                <button type="submit"
+                        style="
                 background: linear-gradient(135deg, #60a5fa, #3b82f6);
                 color: #fff;
                 border: none;
@@ -161,9 +163,11 @@
                 font-weight: 600;
                 cursor: pointer;
                 ">
-                Gửi
-            </button>
-        </form>
+                    Gửi
+                </button>
+            </form>
+        </div>
+        <!-- ... -->
     </div>
 
     <!-- ================= SCRIPT ================= -->
@@ -424,6 +428,17 @@
                 }, 10000);
 
             }, 8000);
+        });
+
+        // Hàm kiểm tra cookie jwt
+        function hasJwtCookie() {
+            return document.cookie.split(';').some((c) => c.trim().startsWith('jwt='));
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (hasJwtCookie()) {
+                document.getElementById("chat-widget-container").style.display = "block";
+            }
         });
     </script>
 

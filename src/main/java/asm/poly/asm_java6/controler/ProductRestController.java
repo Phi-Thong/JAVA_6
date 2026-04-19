@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import asm.poly.asm_java6.dto.BestSellerProductDTO;
+import asm.poly.asm_java6.dto.FeaturedProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -86,5 +87,10 @@ public class ProductRestController {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         return productService.findAllBestSellers(pageable);
+    }
+
+    @GetMapping("/featured")
+    public List<FeaturedProductDTO> getFeaturedProducts() {
+        return productService.getFeaturedProducts();
     }
 }

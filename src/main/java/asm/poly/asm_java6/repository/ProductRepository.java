@@ -97,4 +97,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             nativeQuery = true
     )
     Page<Object[]> findBestSellers(Pageable pageable);
+
+    @Query(value = "SELECT TOP 8 p.id, p.ten_san_pham, p.gia, p.anh_chinh, b.ten_thuong_hieu, SUM(ci.quantity) AS total_added_to_cart " +
+            "FROM cart_item ci " +
+            "JOIN products p ON ci.product_id = p.id " +
+            "LEFT JOIN brands b ON p.brand_id = b.id " +
+            "GROUP BY p.id, p.ten_san_pham, p.gia, p.anh_chinh, b.ten_thuong_hieu " +
+            "ORDER BY total_added_to_cart DESC", nativeQuery = true)
+    List<Object[]> findFeaturedProducts();
 }

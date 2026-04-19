@@ -3,6 +3,7 @@ package asm.poly.asm_java6.service;
 import java.util.List;
 
 import asm.poly.asm_java6.dto.BestSellerProductDTO;
+import asm.poly.asm_java6.dto.FeaturedProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -36,4 +37,6 @@ public interface ProductService {
 //    List<BestSellerProductDTO> findAllBestSellers();
 
     Page<BestSellerProductDTO> findAllBestSellers(Pageable pageable);
+
+    List<FeaturedProductDTO> getFeaturedProducts();
 }

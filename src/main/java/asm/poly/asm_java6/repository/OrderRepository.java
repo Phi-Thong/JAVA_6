@@ -77,5 +77,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             """)
     List<OrderDto> findOrderSummariesByUserId(Long userId);
 
-    
+    Page<Order> findByUser_HoTenContainingIgnoreCase(String hoTen, Pageable pageable);
+
+    Page<Order> findByUser_HoTenContainingIgnoreCaseAndTrangThai(String hoTen, String trangThai, Pageable pageable);
 }

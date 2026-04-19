@@ -66,13 +66,13 @@ public class loginConTroller {
         }
 
 
-        // 3️⃣ Check trạng thái (true = bị khóa)
+        // 3️ Check trạng thái (true = bị khóa)
         if (Boolean.TRUE.equals(user.getTrangThai())) {
             model.addAttribute("errorMessage", "Tài khoản này đã bị khóa");
             return "User/login";
         }
 
-        // 4️⃣ Xác định ROLE
+        // 4️ Xác định ROLE
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         if (Boolean.TRUE.equals(user.getVaiTro())) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -80,7 +80,7 @@ public class loginConTroller {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
 
-        // 5️⃣ Tạo UserDetails để Spring Security nhận diện
+        // 5️ Tạo UserDetails để Spring Security nhận diện
         org.springframework.security.core.userdetails.UserDetails userDetails =
                 org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
@@ -88,7 +88,7 @@ public class loginConTroller {
                         .authorities(authorities)
                         .build();
 
-        // 6️⃣ Tạo Authentication token
+        // 6️ Tạo Authentication token
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
@@ -103,7 +103,7 @@ public class loginConTroller {
         cookie.setMaxAge(7 * 24 * 60 * 60); // 7 ngày
         response.addCookie(cookie);
 
-        // 9️⃣ Redirect theo role
+        // 9️ Redirect theo role
         if (Boolean.TRUE.equals(user.getVaiTro())) {
             return "redirect:/admin/dashboard";
         } else {

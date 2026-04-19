@@ -123,4 +123,30 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
+    @Override
+    public Page<OrderSummaryDTO> searchOrderSummaries(String keyword, String status, Pageable pageable) {
+        if (keyword == null) keyword = "";
+        if ("all".equalsIgnoreCase(status)) {
+            return orderRepository.findByUser_HoTenContainingIgnoreCase(keyword, pageable)
+                    .map(this::toSummaryDTO);
+        } else {
+            return orderRepository.findByUser_HoTenContainingIgnoreCaseAndTrangThai(keyword, status, pageable)
+                    .map(this::toSummaryDTO);
+        }
+    }
+
+    // Hàm map entity sang DTO
+    private OrderSummaryDTO toSummaryDTO(Order order) {
+        OrderSummaryDTO dto = new OrderSummaryDTO();
+        dto.setId(order.getId());
+        dto.setCustomerName(order.getHoTenNguoiNhan());
+        dto.setCustomerEmail(order.getEmailNguoiNhan());
+        dto.setOrderDate(order.getNgayDat());
+        dto.setTotalAmount(order.getTongTien());
+        dto.setItemCount(order.getOrderItems() != null ? order.getOrderItems().size() : 0);
+        dto.setStatus(order.getTrangThai());
+        return dto;
+    }
+
+
 }

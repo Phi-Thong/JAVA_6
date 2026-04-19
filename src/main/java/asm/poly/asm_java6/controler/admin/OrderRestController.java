@@ -30,21 +30,10 @@ public class OrderRestController {
             @RequestParam(defaultValue = "newest") String sort,
             @RequestParam(required = false, defaultValue = "all") String status,
             @RequestParam(required = false) String keyword
-
     ) {
-        System.out.println("Status param: " + status);
         Sort.Direction direction = "oldest".equalsIgnoreCase(sort) ? Sort.Direction.ASC : Sort.Direction.DESC;
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, "ngayDat"));
-        Page<OrderSummaryDTO> result;
-        if ("all".equalsIgnoreCase(status)) {
-            result = orderService.getAllOrderSummaries(pageRequest);
-        } else {
-            result = orderService.getAllOrderSummariesByStatus(status, pageRequest);
-        }
-        for (OrderSummaryDTO dto : result.getContent()) {
-            System.out.println("Order ID: " + dto.getId() + " - Trạng thái: " + dto.getStatus());
-        }
-        return result;
+        return orderService.searchOrderSummaries(keyword, status, pageRequest);
     }
 
     // Lấy chi tiết 1 đơn hàng theo id (dùng cho modal cập nhật)

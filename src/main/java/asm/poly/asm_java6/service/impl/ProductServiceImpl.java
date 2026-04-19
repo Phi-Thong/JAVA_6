@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import asm.poly.asm_java6.dto.BestSellerProductDTO;
+import asm.poly.asm_java6.dto.FeaturedProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -110,6 +112,24 @@ public class ProductServiceImpl implements ProductService {
                 (String) row[4],
                 row[5] == null ? 0L : ((Number) row[5]).longValue()
         ));
+    }
+
+    @Override
+    public List<FeaturedProductDTO> getFeaturedProducts() {
+        // Gọi native query trả về List<Object[]>
+        List<Object[]> results = productRepository.findFeaturedProducts();
+
+        // Map sang DTO
+        return results.stream().map(obj -> {
+            FeaturedProductDTO dto = new FeaturedProductDTO();
+            dto.setId(((Number) obj[0]).longValue());
+            dto.setTenSanPham((String) obj[1]);
+            dto.setGia(obj[2] != null ? ((Number) obj[2]).doubleValue() : null);
+            dto.setAnhChinh((String) obj[3]);
+            dto.setBrand((String) obj[4]);
+            dto.setTotalAddedToCart(obj[5] != null ? ((Number) obj[5]).longValue() : 0L);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
 

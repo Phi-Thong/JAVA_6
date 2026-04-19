@@ -23,4 +23,7 @@ public interface OrderService {
     OrderDto getOrderDetailById(Long id);
 
     OrderDetailDto getOrderDetailDtoById(Long id);
+
+    //    Page<OrderSummaryDTO> searchOrderSummaries(String keyword, String status, Pageable pageable);
+    Page<OrderSummaryDTO> searchOrderSummaries(String keyword, String status, Pageable pageable);
 }

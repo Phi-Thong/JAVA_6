@@ -238,9 +238,10 @@
 
 
         let currentSort = "newest";
-        let currentStatus = "all"; // trạng thái mặc định
+        let currentStatus = "all";
+        let currentKeyword = "";// trạng thái mặc định
 
-        async function loadOrders(page = 0, sort = "newest", status = "all") {
+        async function loadOrders(page = 0, sort = "newest", status = "all", keyword = "") {
             const tbody = document.getElementById("orderTableBody");
             const tableContainer = document.querySelector('.overflow-x-auto');
 
@@ -253,6 +254,7 @@
                 try {
                     let url = `/api/orders?page=${page}&size=5&sort=${sort}`;
                     if (status && status !== "all") url += `&status=${status}`;
+                    if (keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
                     const res = await fetch(url);
                     const data = await res.json();
                     const orders = data.content || [];

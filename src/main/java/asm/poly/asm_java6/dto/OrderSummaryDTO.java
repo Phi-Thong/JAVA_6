@@ -1,11 +1,15 @@
 package asm.poly.asm_java6.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import lombok.NoArgsConstructor;
+
 @Data
+@NoArgsConstructor
 public class OrderSummaryDTO {
 
     private Long id;

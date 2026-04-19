@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,9 @@ public class Message {
 
     @Column(name = "sent_at")
     private LocalDateTime sentAt;
+
+    @Column(name = "is_read")
+    private Boolean isRead; // Đã đọc hay chưa
 
     @Column(name = "sender_name")
     private String senderName;

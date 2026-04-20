@@ -76,7 +76,7 @@
         </div>
     </section>
     <!-- Column 2: Main Chat Frame -->
-    <section class="flex-1 flex flex-col min-w-0 bg-slate-50/10">
+    <section class="w-[600px] flex flex-col min-w-0 bg-slate-50/10">
         <!-- Chat Header -->
         <header class="h-16 flex-shrink-0 flex items-center justify-between px-6 bg-white border-b border-slate-100">
             <div class="flex items-center gap-3">
@@ -105,63 +105,7 @@
             </div>
         </header>
         <!-- Chat Body -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar">
-            <!-- Message Group -->
-            <div class="flex flex-col items-start gap-1">
-                <div class="flex items-end gap-2 max-w-[80%]">
-                    <div class="bg-white px-4 py-3 rounded-2xl rounded-bl-none shadow-sm border border-slate-100">
-                        <p class="text-sm text-slate-700 leading-relaxed">Chào shop ạ, mình đang quan tâm đến đôi
-                            Nike Air Jordan 1 Low 'Wolf Grey'.</p>
-                    </div>
-                    <span class="text-[10px] text-slate-400 mb-1">09:15</span>
-                </div>
-                <div class="flex items-end gap-2 max-w-[80%]">
-                    <div class="bg-white px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100">
-                        <p class="text-sm text-slate-700 leading-relaxed">Không biết bên mình còn sẵn size 42 không
-                            shop?</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Admin Response -->
-            <div class="flex flex-col items-end gap-1">
-                <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
-                    <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-br-none shadow-md shadow-blue-200">
-                        <p class="text-sm text-white leading-relaxed">Chào Minh Anh ạ! Rất vui được hỗ trợ bạn.</p>
-                    </div>
-                    <span class="text-[10px] text-slate-400 mb-1">09:17</span>
-                </div>
-                <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
-                    <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-tr-none shadow-md shadow-blue-200">
-                        <p class="text-sm text-white leading-relaxed">Để mình kiểm tra kho cho bạn nhé, bạn đợi mình
-                            1 phút ạ!</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Customer Image Query -->
-            <div class="flex flex-col items-start gap-1">
-                <div class="flex items-end gap-2 max-w-[80%]">
-                    <div class="bg-white px-4 py-3 rounded-2xl rounded-bl-none shadow-sm border border-slate-100">
-                        <p class="text-sm text-slate-700 leading-relaxed">Đôi này này shop ơi.</p>
-                    </div>
-                </div>
-                <div class="mt-1">
-                    <img alt="Product image shared"
-                         class="w-48 h-48 rounded-xl object-cover shadow-sm border border-slate-200"
-                         data-alt="A clean shot of Nike Air Jordan 1 Low sneakers in a grey and white colorway, studio lighting"
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZnWrbVluWQ8UUgdsjvELAxORVCu8vq780rF1kwzbPgKjSGbv3GFq1MrTmFt3AmOOg9AMIK4Ed8ZYO6IU9kqY3pxQ1hWrmjF7ELdu1c4A6c7TBnccEEV8soXBRabxPifv1ITk3gcdb2bqihfCpg2J5bzwsa-EdAfL2_XtBpUFRDX9UVx70aIMmjNNP4troE_Z-PehsvLtFJoTFyXHSiGNnKJpTp63p4FAMAkeulHd625OJobrkXMlcfqlADl7u9KCp3-QmDsni800"/>
-                </div>
-            </div>
-            <!-- Admin Confirmation -->
-            <div class="flex flex-col items-end gap-1">
-                <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
-                    <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-br-none shadow-md shadow-blue-200">
-                        <p class="text-sm text-white leading-relaxed">Dạ đúng rồi ạ, mẫu Wolf Grey này bên mình vừa
-                            về thêm hàng sáng nay, hiện còn đúng 1 đôi size 42 cuối cùng luôn ạ!</p>
-                    </div>
-                    <span class="text-[10px] text-slate-400 mb-1">Vừa xong</span>
-                </div>
-            </div>
-        </div>
+        <div id="admin-chat-body" class="flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar"></div>
         <!-- Chat Footer (Input) -->
         <div class="p-4 bg-white border-t border-slate-100">
             <div class="flex items-center gap-2 bg-slate-100 rounded-xl p-2 focus-within:ring-2 focus-within:ring-blue-200 transition-all">
@@ -185,101 +129,110 @@
         </div>
     </section>
     <!-- Column 3: Customer Info -->
-    <section class="w-80 flex-shrink-0 border-l border-slate-100 bg-white flex flex-col">
-        <div class="p-6 flex flex-col items-center text-center border-b border-slate-100">
-            <div class="w-24 h-24 rounded-3xl overflow-hidden mb-4 shadow-xl shadow-slate-200 ring-4 ring-slate-50">
-                <img alt="Customer profile detailed" class="w-full h-full object-cover"
-                     data-alt="Close up high quality portrait of a stylish woman with a bright smile"
-                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeMrk_anwgR1LYp2PQo2qv_W8BxsZrGVXjJLfpdMnJuVT6-lStHzLodZooHt5jZtJCmD4V0tlMcVdnTEzCy14rjB0167BqpOoUsdUyFyGFsjTaLBa9x0WT7tn3CXGjvAXPmWsByEEZTznQ1ZSANCbdfqSWz61ya7I4p1kMCPdPA99nq7osg1XLrZ-lizi_HDR03bCw4haSs6J61jiZdqzsTzeFzQb7vjwaEp8Gq02K7gWuR8lKHLtUTm1DxtMOQBGQcO6nF-RXYfw"/>
-            </div>
-            <h3 class="text-base font-bold text-slate-900 mb-1">Lê Minh Anh</h3>
-            <p class="text-xs text-slate-500 mb-4">Khách hàng Thân thiết</p>
-            <div class="flex gap-3 w-full">
-                <button class="flex-1 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-lg hover:bg-slate-200 transition-colors">
-                    Hồ sơ
-                </button>
-                <button class="flex-1 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors">
-                    Gắn thẻ
-                </button>
-            </div>
-        </div>
-        <div class="flex-1 overflow-y-auto chat-scrollbar p-6 space-y-8">
-            <!-- Contact Info -->
-            <div>
-                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Thông tin liên
-                    hệ</h4>
-                <ul class="space-y-4">
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-slate-400 text-lg">mail</span>
-                        <span class="text-xs text-slate-600">minhanh.le@gmail.com</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-slate-400 text-lg">call</span>
-                        <span class="text-xs text-slate-600">090 123 4567</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
-                        <span class="text-xs text-slate-600 leading-relaxed">123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM</span>
-                    </li>
-                </ul>
-            </div>
-            <!-- Order History -->
-            <div>
-                <div class="flex justify-between items-center mb-4">
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Đơn hàng gần
-                        đây</h4>
-                    <span class="text-[10px] text-blue-600 font-bold cursor-pointer">Xem tất cả</span>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let stompClient = null;
+            let currentConversationId = 1;
+
+            const input = document.querySelector('input[placeholder="Nhập tin nhắn..."]');
+            const sendBtn = document.querySelector('.bg-blue-600.text-white');
+
+            // =========================
+            // CONNECT WEBSOCKET
+            // =========================
+            function connectAdminChat(conversationId) {
+                if (stompClient) stompClient.disconnect();
+
+                const socket = new SockJS('/ws-chat');
+                stompClient = Stomp.over(socket);
+
+                stompClient.connect({}, function () {
+                    console.log("ADMIN CONNECTED");
+
+                    stompClient.subscribe('/topic/conversation.' + conversationId, function (message) {
+                        console.log("ADMIN RECEIVED:", message.body);
+
+                        const msg = JSON.parse(message.body);
+                        appendAdminMessage(msg);
+                    });
+                });
+            }
+
+            // =========================
+            // SEND MESSAGE
+            // =========================
+            function sendAdminMessage(content) {
+                if (stompClient && currentConversationId) {
+                    const msg = {
+                        conversationId: currentConversationId,
+                        content: content,
+                        senderName: "Nhân viên"
+                    };
+
+                    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
+
+                    // hiển thị ngay (không chờ server)
+                    appendAdminMessage(msg);
+                }
+            }
+
+            // =========================
+            // CLICK SEND
+            // =========================
+            sendBtn.addEventListener('click', function () {
+                const content = input.value.trim();
+                if (!content) return;
+
+                sendAdminMessage(content);
+                input.value = '';
+            });
+
+            // =========================
+            // ENTER SEND
+            // =========================
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendBtn.click();
+                }
+            });
+
+            // =========================
+            // RENDER MESSAGE
+            // =========================
+            function appendAdminMessage(msg) {
+                const chatBody = document.getElementById('admin-chat-body');
+
+                const div = document.createElement('div');
+                div.className = 'flex flex-col items-end gap-1';
+
+                div.innerHTML = `
+            <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
+                <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-br-none shadow-md shadow-blue-200">
+                    <p class="text-sm text-white leading-relaxed">${msg.content}</p>
                 </div>
-                <div class="space-y-3">
-                    <!-- Order Item -->
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-colors cursor-pointer">
-                        <div class="flex justify-between items-start mb-1">
-                            <span class="text-[10px] font-bold text-slate-900">#SV-8842</span>
-                            <span class="text-[9px] px-1.5 py-0.5 bg-green-100 text-green-700 rounded font-bold">HOÀN TẤT</span>
-                        </div>
-                        <p class="text-xs text-slate-600 mb-2 truncate">Nike Dunk Low 'Panda'</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-slate-400">12/10/2023</span>
-                            <span class="text-xs font-bold text-slate-900">2.850.000đ</span>
-                        </div>
-                    </div>
-                    <!-- Order Item -->
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-colors cursor-pointer">
-                        <div class="flex justify-between items-start mb-1">
-                            <span class="text-[10px] font-bold text-slate-900">#SV-7210</span>
-                            <span class="text-[9px] px-1.5 py-0.5 bg-green-100 text-green-700 rounded font-bold">HOÀN TẤT</span>
-                        </div>
-                        <p class="text-xs text-slate-600 mb-2 truncate">Adidas Yeezy Boost 350</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-slate-400">05/08/2023</span>
-                            <span class="text-xs font-bold text-slate-900">6.200.000đ</span>
-                        </div>
-                    </div>
-                    <!-- Order Item -->
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-colors cursor-pointer">
-                        <div class="flex justify-between items-start mb-1">
-                            <span class="text-[10px] font-bold text-slate-900">#SV-6601</span>
-                            <span class="text-[9px] px-1.5 py-0.5 bg-slate-200 text-slate-600 rounded font-bold">ĐÃ HUỶ</span>
-                        </div>
-                        <p class="text-xs text-slate-600 mb-2 truncate">Converse Chuck 70 High</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-slate-400">20/05/2023</span>
-                            <span class="text-xs font-bold text-slate-900">1.950.000đ</span>
-                        </div>
-                    </div>
-                </div>
+                <span class="text-[10px] text-slate-400 mb-1">
+                    ${new Date().toLocaleTimeString('vi-VN', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}
+                </span>
             </div>
-            <!-- Customer Stats -->
-            <div class="grid grid-cols-2 gap-3 pb-6">
-                <div class="p-4 bg-slate-50 rounded-xl text-center">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mb-1">Tổng đơn</p>
-                    <p class="text-lg font-black text-slate-900">08</p>
-                </div>
-                <div class="p-4 bg-slate-50 rounded-xl text-center">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mb-1">Chi tiêu</p>
-                    <p class="text-lg font-black text-blue-600">22.4M</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        `;
+
+                chatBody.appendChild(div);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+
+            // =========================
+            // INIT
+            // =========================
+            connectAdminChat(currentConversationId);
+
+        });
+    </script>
 </main>

@@ -95,7 +95,7 @@ public class loginConTroller {
         // Sau khi xác thực thành công:
         List<String> roles = new ArrayList<>();
         roles.add(user.getVaiTro() ? "ROLE_ADMIN" : "ROLE_USER");
-        String token = jwtUtils.generateToken(user.getEmail(), roles, user.getHoTen(), null);
+        String token = jwtUtils.generateToken(user.getId(), user.getEmail(), roles, user.getHoTen(), null);
 
         Cookie cookie = new Cookie("jwt", token);
         cookie.setPath("/");

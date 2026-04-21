@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Component
 public class JwtUtils {
 
@@ -34,14 +36,16 @@ public class JwtUtils {
     /**
      * Generate token with additional claims: roles (List<String>), name, picture
      */
-    public String generateToken(String username, List<String> roles, String name, String picture) {
+    public String generateToken(Long id, String username, List<String> roles, String name, String picture) {
         long now = System.currentTimeMillis();
         JwtBuilder b = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + expirationMs))
                 .signWith(key, SignatureAlgorithm.HS256);
-
+        if (id != null) {
+            b.claim("userId", id); // Thêm id vào payload
+        }
         if (roles != null && !roles.isEmpty()) {
             b.claim("roles", roles);
         }

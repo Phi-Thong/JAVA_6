@@ -1,4 +1,30 @@
-<main class="flex-1 ml-64 flex overflow-hidden bg-white" th:fragment="ChatAdmin">
+<main class="flex-1 ml-64 flex overflow-hidden bg-white h-screen" th:fragment="ChatAdmin">
+    <style>
+        .chat-bubble {
+            max-width: 320px;
+            min-width: 60px;
+            padding: 12px 16px;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-height: 120px; /* Giới hạn chiều cao */
+            overflow-y: auto; /* Hiện thanh cuộn khi vượt quá */
+            margin-bottom: 2px;
+        }
+
+        .chat-bubble.admin {
+            background: #2563eb;
+            color: white;
+            border-bottom-right-radius: 0;
+        }
+
+        .chat-bubble.user {
+            background: #e5e7eb;
+            color: black;
+            border-bottom-left-radius: 0;
+        }
+    </style>
     <!-- Column 1: Conversation List -->
     <section class="w-80 flex-shrink-0 border-r border-slate-100 flex flex-col bg-slate-50/30">
         <div class="p-4 border-b border-slate-100 bg-white">
@@ -76,7 +102,7 @@
         </div>
     </section>
     <!-- Column 2: Main Chat Frame -->
-    <section class="w-[600px] flex flex-col min-w-0 bg-slate-50/10">
+    <section class="w-[600px] flex flex-col min-w-0 min-h-0 bg-slate-50/10">
         <!-- Chat Header -->
         <header class="h-16 flex-shrink-0 flex items-center justify-between px-6 bg-white border-b border-slate-100">
             <div class="flex items-center gap-3">
@@ -105,7 +131,9 @@
             </div>
         </header>
         <!-- Chat Body -->
-        <div id="admin-chat-body" class="flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar"></div>
+        <div id="admin-chat-body"
+             class="flex-1 min-h-0 overflow-y-auto p-6 space-y-6 chat-scrollbar">
+        </div>
         <!-- Chat Footer (Input) -->
         <div class="p-4 bg-white border-t border-slate-100">
             <div class="flex items-center gap-2 bg-slate-100 rounded-xl p-2 focus-within:ring-2 focus-within:ring-blue-200 transition-all">
@@ -129,62 +157,54 @@
         </div>
     </section>
     <!-- Column 3: Customer Info -->
-
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        let stompClient = null;
+        let currentConversationId = 1;
+        let adminId = null;
 
-            let stompClient = null;
-            let currentConversationId = 1;
+        document.addEventListener("DOMContentLoaded", function () {
 
             const input = document.querySelector('input[placeholder="Nhập tin nhắn..."]');
             const sendBtn = document.querySelector('.bg-blue-600.text-white');
 
             // =========================
-            // CONNECT WEBSOCKET
+            // INIT
             // =========================
-            function connectAdminChat(conversationId) {
-                if (stompClient) stompClient.disconnect();
-
-                const socket = new SockJS('/ws-chat');
-                stompClient = Stomp.over(socket);
-
-                stompClient.connect({}, function () {
-                    console.log("ADMIN CONNECTED");
-
-                    stompClient.subscribe('/topic/conversation.' + conversationId, function (message) {
-                        console.log("ADMIN RECEIVED:", message.body);
-
-                        const msg = JSON.parse(message.body);
-                        appendAdminMessage(msg);
-                    });
-                });
+            const savedId = localStorage.getItem("conversationId");
+            if (savedId) {
+                currentConversationId = parseInt(savedId);
             }
+
+            adminId = getUserIdFromJwt();
+
+            loadHistory(currentConversationId);
+            connectAdminChat(currentConversationId);
 
             // =========================
             // SEND MESSAGE
             // =========================
             function sendAdminMessage(content) {
-                if (stompClient && currentConversationId) {
-                    const msg = {
-                        conversationId: currentConversationId,
-                        content: content,
-                        senderId: 16,
-                        senderName: "Nhân viên"
-                    };
 
-                    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
+                if (!stompClient || !stompClient.connected) return;
 
-                    // hiển thị ngay (không chờ server)
+                const msg = {
+                    conversationId: currentConversationId,
+                    content: content,
+                    senderId: adminId,
+                    senderName: "Nhân viên"
+                };
 
-                }
+                stompClient.send("/app/admin.sendMessage", {}, JSON.stringify(msg));
             }
 
             // =========================
             // CLICK SEND
             // =========================
             sendBtn.addEventListener('click', function () {
+
                 const content = input.value.trim();
                 if (!content) return;
 
@@ -203,48 +223,122 @@
             });
 
             // =========================
-            // RENDER MESSAGE
+            // CONNECT WEBSOCKET (FIXED)
             // =========================
-            function appendAdminMessage(msg) {
+            function connectAdminChat(conversationId) {
+
+                if (stompClient !== null) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.log("WS disconnect error:", e);
+                    }
+                }
+
+                const socket = new SockJS('/ws-chat');
+                stompClient = Stomp.over(socket);
+
+                stompClient.connect({}, function () {
+
+                    console.log("ADMIN CONNECTED");
+
+                    stompClient.subscribe('/topic/conversation.' + conversationId, function (message) {
+
+                        const msg = JSON.parse(message.body);
+                        appendAdminMessage(msg);
+                    });
+
+                }, function (error) {
+                    console.error("WS ERROR:", error);
+                });
+            }
+
+            // =========================
+            // RENDER MESSAGE (FIX SCOPE)
+            // =========================
+            window.appendAdminMessage = function (msg) {
+
                 const chatBody = document.getElementById('admin-chat-body');
 
-                const isAdmin = msg.senderId === 16;
+                const isAdmin = msg.senderId === adminId;
 
                 const div = document.createElement('div');
                 div.className = 'flex flex-col ' + (isAdmin ? 'items-end' : 'items-start');
 
                 div.innerHTML = `
-        <div class="flex items-end ${isAdmin ? 'flex-row-reverse' : ''} gap-2 max-w-[80%]">
-
-            <div class="${
-                    isAdmin
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 text-black'
-                } px-4 py-3 rounded-2xl ${
-                    isAdmin ? 'rounded-br-none' : 'rounded-bl-none'
-                } shadow-md">
-
-                <p class="text-sm leading-relaxed">${msg.content}</p>
-            </div>
-
-            <span class="text-[10px] text-slate-400 mb-1">
-                ${new Date().toLocaleTimeString('vi-VN', {
+  <div class="flex items-end ${isAdmin ? 'flex-row-reverse' : ''} gap-2 max-w-[80%]">
+    <div style="
+      ${isAdmin ? 'background-color: #2563eb; color: white;' : 'background-color: #e5e7eb; color: black;'}
+      padding: 12px 16px;
+      border-radius: 1rem;
+      ${isAdmin ? 'border-bottom-right-radius: 0;' : 'border-bottom-left-radius: 0;'}
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      max-width: 320px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-height: 120px;
+      overflow-y: auto;
+      "
+    >
+      <p class="text-sm leading-relaxed" style="margin:0;word-break:break-word;white-space:pre-line;">${msg.content}</p>
+    </div>
+    <span class="text-[10px] text-slate-400 mb-1">
+      ${new Date().toLocaleTimeString('vi-VN', {
                     hour: '2-digit',
                     minute: '2-digit'
                 })}
-            </span>
-        </div>
-    `;
-
+    </span>
+  </div>
+`;
                 chatBody.appendChild(div);
                 chatBody.scrollTop = chatBody.scrollHeight;
-            }
-
-            // =========================
-            // INIT
-            // =========================
-            connectAdminChat(currentConversationId);
+            };
 
         });
+
+        // =========================
+        // LOAD HISTORY (FIXED GLOBAL)
+        // =========================
+        function loadHistory(conversationId) {
+
+            fetch('/api/chat/history/' + conversationId)
+                .then(res => res.json())
+                .then(data => {
+
+                    const chatBody = document.getElementById('admin-chat-body');
+                    chatBody.innerHTML = '';
+
+                    data.forEach(msg => window.appendAdminMessage(msg));
+                })
+                .catch(err => console.error("LOAD HISTORY ERROR:", err));
+        }
+
+        // =========================
+        // OPEN CONVERSATION
+        // =========================
+        function openConversation(id) {
+
+            currentConversationId = id;
+
+            localStorage.setItem("conversationId", id);
+
+            loadHistory(id);
+            connectAdminChat(id);
+        }
+
+        // =========================
+        // JWT HELPERS
+        // =========================
+        function getJwtFromCookie() {
+            const match = document.cookie.match(/(^| )jwt=([^;]+)/);
+            return match ? match[2] : null;
+        }
+
+        function getUserIdFromJwt() {
+            const token = getJwtFromCookie();
+            if (!token) return null;
+            const payload = jwt_decode(token);
+            return payload.userId || payload.sub;
+        }
     </script>
 </main>

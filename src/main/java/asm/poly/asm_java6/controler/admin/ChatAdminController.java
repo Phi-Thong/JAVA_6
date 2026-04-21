@@ -43,7 +43,7 @@ public class ChatAdminController {
 
         messageRepo.save(message);
 
-        // 🔥 QUAN TRỌNG: gửi đúng topic của conversation
+
         messagingTemplate.convertAndSend(
                 "/topic/conversation." + message.getConversationId(),
                 message

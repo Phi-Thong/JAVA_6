@@ -2,6 +2,7 @@
 <div th:fragment="chat-widget">
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <style>
         @keyframes ai-wiggle {
             0% {
@@ -191,15 +192,16 @@
             box.style.display = 'flex';
             bubble.style.transform = 'scale(0.9)';
             bubble.style.opacity = '0';
-
-            if (!openedOnce) {
-                appendMessage(
-                    'Hệ thống',
-                    'Xin chào, chúng tôi có thể giúp gì cho bạn?',
-                    false
-                );
-                openedOnce = true;
-            }
+            loadHistory().then(() => {
+                if (!openedOnce) {
+                    appendMessage(
+                        'Hệ thống',
+                        'Xin chào, chúng tôi có thể giúp gì cho bạn?',
+                        false
+                    );
+                    openedOnce = true;
+                }
+            });
         };
 
         // =========================
@@ -439,7 +441,22 @@
 
         let stompClient = null;
         let conversationId = 1; // luôn là number
-        let userId = 15; // test
+        // let userId = 15;
+        function getJwtFromCookie() {
+            const match = document.cookie.match(/(^| )jwt=([^;]+)/);
+            return match ? match[2] : null;
+        }
+
+        function getUserIdFromJwt() {
+            const token = getJwtFromCookie();
+            if (!token) return null;
+            const payload = jwt_decode(token);
+            // Tùy backend, có thể là payload.userId hoặc payload.sub (phải là số)
+            return payload.userId || payload.sub;
+        }
+
+        let userId = getUserIdFromJwt();
+        console.log("UserId lấy từ JWT:", userId); // Kiểm tra, phải là số (vd: 15)
 
         // =======================
         // INIT
@@ -521,15 +538,32 @@
 
             const msg = input.value.trim();
             if (!msg) return;
+            // appendMessage('Bạn', msg, true);
 
             // hiển thị ngay lập tức
-           
+
 
             input.value = '';
 
             // gửi websocket
             sendChatMessage(msg);
         };
+
+        // lịch sử chat
+        async function loadHistory() {
+            const res = await fetch('/api/chat/history/' + conversationId);
+            const data = await res.json();
+
+            messages.innerHTML = ''; // clear tránh trùng
+
+            data.forEach(msg => {
+                appendMessage(
+                    msg.senderName,
+                    msg.content,
+                    msg.senderId === userId // test userId = 15
+                );
+            });
+        }
     </script>
 
 </div>

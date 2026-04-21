@@ -170,13 +170,14 @@
                     const msg = {
                         conversationId: currentConversationId,
                         content: content,
+                        senderId: 16,
                         senderName: "Nhân viên"
                     };
 
                     stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
 
                     // hiển thị ngay (không chờ server)
-                    appendAdminMessage(msg);
+
                 }
             }
 
@@ -207,22 +208,33 @@
             function appendAdminMessage(msg) {
                 const chatBody = document.getElementById('admin-chat-body');
 
+                const isAdmin = msg.senderId === 16;
+
                 const div = document.createElement('div');
-                div.className = 'flex flex-col items-end gap-1';
+                div.className = 'flex flex-col ' + (isAdmin ? 'items-end' : 'items-start');
 
                 div.innerHTML = `
-            <div class="flex items-end flex-row-reverse gap-2 max-w-[80%]">
-                <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-br-none shadow-md shadow-blue-200">
-                    <p class="text-sm text-white leading-relaxed">${msg.content}</p>
-                </div>
-                <span class="text-[10px] text-slate-400 mb-1">
-                    ${new Date().toLocaleTimeString('vi-VN', {
+        <div class="flex items-end ${isAdmin ? 'flex-row-reverse' : ''} gap-2 max-w-[80%]">
+
+            <div class="${
+                    isAdmin
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 text-black'
+                } px-4 py-3 rounded-2xl ${
+                    isAdmin ? 'rounded-br-none' : 'rounded-bl-none'
+                } shadow-md">
+
+                <p class="text-sm leading-relaxed">${msg.content}</p>
+            </div>
+
+            <span class="text-[10px] text-slate-400 mb-1">
+                ${new Date().toLocaleTimeString('vi-VN', {
                     hour: '2-digit',
                     minute: '2-digit'
                 })}
-                </span>
-            </div>
-        `;
+            </span>
+        </div>
+    `;
 
                 chatBody.appendChild(div);
                 chatBody.scrollTop = chatBody.scrollHeight;

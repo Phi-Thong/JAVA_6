@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,18 +19,19 @@ import java.time.format.DateTimeFormatter;
 public class ChatAdminController {
 
     @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+    @Autowired
     private MessageRepository messageRepo;
 
     @MessageMapping("/admin.sendMessage")
-    @SendTo("/topic/admin")
-    public ChatMessage sendAdminMessage(@Payload ChatMessage chatMessage) {
-        // Set timestamp nếu chưa có
+    public void sendAdminMessage(@Payload ChatMessage chatMessage) {
+
         if (chatMessage.getTimestamp() == null || chatMessage.getTimestamp().isEmpty()) {
-            String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String now = LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             chatMessage.setTimestamp(now);
         }
 
-        // Tạo entity Message và lưu vào DB
         Message message = new Message();
         message.setConversationId(chatMessage.getConversationId());
         message.setSenderId(chatMessage.getSenderId());
@@ -41,6 +43,10 @@ public class ChatAdminController {
 
         messageRepo.save(message);
 
-        return chatMessage;
+        // 🔥 QUAN TRỌNG: gửi đúng topic của conversation
+        messagingTemplate.convertAndSend(
+                "/topic/conversation." + message.getConversationId(),
+                message
+        );
     }
 }

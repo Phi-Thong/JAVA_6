@@ -214,39 +214,39 @@
         // =========================
         // SEND MESSAGE
         // =========================
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            appendMessage('Bạn', msg, true);
-            input.value = '';
-
-            await fetch('/api/chat/send', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({message: msg})
-            });
-
-            setTimeout(() => {
-                let reply;
-
-                // 👇 nếu đã chuyển sang nhân viên thật
-                if (humanMode) {
-                    reply = 'Nhân viên đang xem yêu cầu của bạn, vui lòng chờ trong giây lát';
-                } else {
-                    reply = generateAutoReply(msg);
-                }
-
-                appendMessage('Hệ thống', reply, false);
-
-                if (!humanMode) {
-                    addFeedbackUI();
-                }
-
-            }, 500);
-        };
+        // form.onsubmit = async (e) => {
+        //     e.preventDefault();
+        //
+        //     const msg = input.value.trim();
+        //     if (!msg) return;
+        //
+        //     appendMessage('Bạn', msg, true);
+        //     input.value = '';
+        //
+        //     await fetch('/api/chat/send', {
+        //         method: 'POST',
+        //         headers: {'Content-Type': 'application/json'},
+        //         body: JSON.stringify({message: msg})
+        //     });
+        //
+        //     setTimeout(() => {
+        //         let reply;
+        //
+        //         // 👇 nếu đã chuyển sang nhân viên thật
+        //         if (humanMode) {
+        //             reply = 'Nhân viên đang xem yêu cầu của bạn, vui lòng chờ trong giây lát';
+        //         } else {
+        //             reply = generateAutoReply(msg);
+        //         }
+        //
+        //         appendMessage('Hệ thống', reply, false);
+        //
+        //         if (!humanMode) {
+        //             addFeedbackUI();
+        //         }
+        //
+        //     }, 500);
+        // };
 
         // =========================
         // KEYWORD BOT (UPGRADED)
@@ -523,7 +523,7 @@
             if (!msg) return;
 
             // hiển thị ngay lập tức
-            appendMessage("Bạn", msg, true);
+           
 
             input.value = '';
 

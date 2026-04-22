@@ -7,6 +7,7 @@ import asm.poly.asm_java6.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.List;
 
 @RestController
@@ -36,5 +37,18 @@ public class ChatController {
     public Message sendMessage(@RequestBody Message message) {
         message.setSentAt(java.time.LocalDateTime.now());
         return messageRepo.save(message);
+    }
+
+    @GetMapping("/conversation/current")
+    public Map<String, Long> getOrCreateConversationForCurrentUser(@RequestAttribute("userId") Long userId) {
+        Conversation conversation = conversationRepo.findByUserId(userId)
+                .stream().findFirst().orElse(null);
+
+        if (conversation == null) {
+            conversation = new Conversation();
+            conversation.setUserId(userId);
+            conversation = conversationRepo.save(conversation);
+        }
+        return Map.of("conversationId", conversation.getId());
     }
 }

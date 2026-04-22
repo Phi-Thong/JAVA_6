@@ -44,6 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token != null && jwtUtils.validateToken(token)) {
             String username = jwtUtils.getUsernameFromToken(token);
             List<String> roles = jwtUtils.getRolesFromToken(token);
+            Long userId = jwtUtils.getUserIdFromToken(token);
+            request.setAttribute("userId", userId);
 
             List<SimpleGrantedAuthority> authorities = roles.stream()
                     .map(SimpleGrantedAuthority::new)

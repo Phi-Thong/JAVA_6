@@ -126,4 +126,22 @@ public class JwtUtils {
             return null;
         }
     }
+
+    public Long getUserIdFromToken(String token) {
+        Claims claims = parseClaims(token);
+        if (claims == null) return null;
+        // Nếu bạn lưu userId là số trong claim "userId"
+        Object userIdObj = claims.get("userId");
+        if (userIdObj instanceof Number) {
+            return ((Number) userIdObj).longValue();
+        }
+        if (userIdObj instanceof String) {
+            try {
+                return Long.valueOf((String) userIdObj);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
+    }
 }

@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findByConversationIdOrderBySentAtAsc(Long conversationId);
+
+    // Lấy tin nhắn cuối cùng (gần nhất) theo thời gian gửi
+    Message findTopByConversationIdOrderBySentAtDesc(Long conversationId);
 }

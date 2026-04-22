@@ -188,20 +188,37 @@
         // =========================
         // OPEN CHAT
         // =========================
-        bubble.onclick = () => {
+        // bubble.onclick = () => {
+        //     box.style.display = 'flex';
+        //     bubble.style.transform = 'scale(0.9)';
+        //     bubble.style.opacity = '0';
+        //     loadHistory().then(() => {
+        //         if (!openedOnce) {
+        //             appendMessage(
+        //                 'Hệ thống',
+        //                 'Xin chào, chúng tôi có thể giúp gì cho bạn?',
+        //                 false
+        //             );
+        //             openedOnce = true;
+        //         }
+        //     });
+        // };
+        // phần sau khi sửa
+        bubble.onclick = async () => {
+            conversationId = await getOrCreateConversationId(); // Lấy id phòng riêng cho user
             box.style.display = 'flex';
             bubble.style.transform = 'scale(0.9)';
             bubble.style.opacity = '0';
-            loadHistory().then(() => {
-                if (!openedOnce) {
-                    appendMessage(
-                        'Hệ thống',
-                        'Xin chào, chúng tôi có thể giúp gì cho bạn?',
-                        false
-                    );
-                    openedOnce = true;
-                }
-            });
+            await loadHistory();
+            if (!openedOnce) {
+                appendMessage(
+                    'Hệ thống',
+                    'Xin chào, chúng tôi có thể giúp gì cho bạn?',
+                    false
+                );
+                openedOnce = true;
+            }
+            connectChatWebSocket(); // Kết nối sau khi đã có conversationId
         };
 
         // =========================
@@ -440,7 +457,8 @@
         }
 
         let stompClient = null;
-        let conversationId = 1; // luôn là number
+        let conversationId = null;
+        // let conversationId = 1; // luôn là number
         // let userId = 15;
         function getJwtFromCookie() {
             const match = document.cookie.match(/(^| )jwt=([^;]+)/);
@@ -563,6 +581,13 @@
                     msg.senderId === userId // test userId = 15
                 );
             });
+        }
+
+        // phần hàm sau khi chạy được ròio
+        async function getOrCreateConversationId() {
+            const res = await fetch('/api/chat/conversation/current');
+            const data = await res.json();
+            return data.conversationId;
         }
     </script>
 
